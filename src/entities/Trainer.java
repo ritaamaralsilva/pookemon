@@ -34,8 +34,8 @@ public class Trainer { // classe do jogador inicializada no inicio do jogo
         System.out.println("Nome : " + this.nome);
         System.out.println("Sexo : " + this.sexo);
         System.out.println("Coins : " + this.coins);
-        System.out.println("Pokemon In Use: " + this.pokemonInUse);
-        System.out.println("Gym Badge : " + this.gymBadge);
+        System.out.println("Gym Badges : " + this.gymBadge);
+        this.pokemonInUse.showDetails();
         System.out.println("*********** ***************");
     }
 }

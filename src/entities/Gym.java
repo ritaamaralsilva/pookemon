@@ -7,4 +7,7 @@ public class Gym {
 
    private ArrayList<Pokemon> pokemonsGym; // lista dos pokemon de cada ginasio
 
+
+
 }
+
