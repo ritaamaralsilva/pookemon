@@ -25,8 +25,22 @@ public class Trainer { // classe do jogador inicializada no inicio do jogo
         System.out.println(this.nome + " foi criado com sucesso!\n");
     }
 
+    public Pokemon getPokemonInUse() {
+        return pokemonInUse;
+    }
+
     public void setPokemonInUse(Pokemon pokemonInUse) {
         this.pokemonInUse = pokemonInUse;
+    }
+
+    public void addGymBadge() { // metodo para incrementar crachas ao jogador quando ele ganha contra um gym
+        this.gymBadge++;
+        System.out.println("Tens agora " + gymBadge + " crachá(s)!");
+    }
+
+    public void addCoins(int amountCoins) { // metodo para incrementar o dinheiro
+        this.coins += amountCoins;
+        System.out.println("Recebeste " + amountCoins+ " coins! Total: " + this.coins + " coins.");
     }
 
     public void showDetails() {
