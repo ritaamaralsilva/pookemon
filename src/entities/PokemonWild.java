@@ -8,16 +8,10 @@ public final class PokemonWild extends Pokemon {
         this.coins = coins;
     }
 
-    @Override
-    public boolean pokemonBattle(Pokemon opponent) {
-        // utilizador escolhe se ataca normal, especial
-        //this.pokemonBattle(opponent)getStrength;
-        //fazer ciclo durante a batalha,
-        return false;
-    }
-
     public int getCoins() {
         return coins;
     }
-    public void setCoins(int coins) {}
+    public void setCoins(int coins) {
+        this.coins = coins;
+    }
 }

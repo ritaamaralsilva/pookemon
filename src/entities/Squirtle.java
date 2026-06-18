@@ -5,9 +5,9 @@ public class Squirtle extends Pokemon {
         super(name, maxHp, hp, strength, level, exp);
     }
 
-    @Override
-    public boolean pokemonBattle(Pokemon opponent) {
-        //metodo de ataque do squirtle, esta entre o bulbasaur e o charmander
-        return false;
-    }
+//    @Override
+//    public boolean pokemonBattle(Pokemon opponent) {
+//        //metodo de ataque do squirtle, esta entre o bulbasaur e o charmander
+//        return false;
+//    }
 }

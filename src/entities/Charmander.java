@@ -5,9 +5,9 @@ public class Charmander extends Pokemon {
         super(name, maxHp, hp, strength, level, exp);
     }
 
-    @Override
-    public boolean pokemonBattle(Pokemon opponent) {
-        //metodo de ataque do charmander, é o mais ofensivo, mas tem menos maxHp
-        return false;
-    }
+//    @Override
+//    public boolean pokemonBattle(Pokemon opponent) {
+//        //metodo de ataque do charmander, é o mais ofensivo, mas tem menos maxHp
+//        return false;
+//    }
 }
