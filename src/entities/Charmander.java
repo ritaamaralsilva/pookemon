@@ -1,8 +1,8 @@
 package entities;
 
 public class Charmander extends Pokemon {
-    public Charmander(String name, int maxHp, int hp, int strength, int level) {
-        super(name, maxHp, hp, strength, level);
+    public Charmander(String name, int maxHp, int hp, int strength, int level, int exp) {
+        super(name, maxHp, hp, strength, level, exp);
     }
 
     @Override

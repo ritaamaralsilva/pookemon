@@ -1,8 +1,8 @@
 package entities;
 
 public class Bulbasaur extends Pokemon {
-    public Bulbasaur(String name, int maxHp, int hp, int strength, int level) {
-        super(name, maxHp, hp, strength, level);
+    public Bulbasaur(String name, int maxHp, int hp, int strength, int level, int exp) {
+        super(name, maxHp, hp, strength, level, exp);
     }
 
     @Override
