@@ -1,6 +1,7 @@
 package entities;
 
 import java.util.Scanner;
+import java.util.Random;
 
 public abstract class Pokemon {
     private String name;
@@ -9,6 +10,8 @@ public abstract class Pokemon {
     private int strength;
     private int level; // nivel do Pokemon
     private int exp; // isto representa os pontos que o pokemon do jogador ganha de outro pokemon rival em battles, mas tambem uso para calcular como o pokemonInUse evolui de nivel
+    private StatusEffect statusEffect; // null = sem efeito | se pokemon tiver um estado alterado devido a um consumivel
+    private int sleepTurns; // se pokemon tiver sob efeito de um consumivel de sono
 
     public Pokemon(String name, int maxHp, int hp, int strength, int level, int exp) {
         this.name = name;
@@ -43,9 +46,81 @@ public abstract class Pokemon {
         return exp;
     }
 
+    public StatusEffect getStatusEffect() { return statusEffect; }
+
+    public void setStatusEffect(StatusEffect effect) {
+        if (this.statusEffect == null) {
+            this.statusEffect = effect;
+            this.sleepTurns = effect == StatusEffect.ASLEEP ? 2 : 0;
+            System.out.println(this.name + " ficou " + effect + "!");
+        } else {
+            System.out.println(this.name + " já tem um status effect!");
+        }
+    }
+
+    public void clearStatusEffect() {
+        this.statusEffect = null;
+        this.sleepTurns = 0;
+    }
+
     public void takeLife(int damage) { // método que calcula o dano em determinado pokemon
         this.hp -= damage;
         if (this.hp < 0) this.hp = 0;
+    }
+
+    public void decrementSleepTurns() {
+        if (this.sleepTurns > 0) {
+            this.sleepTurns--;
+            if (this.sleepTurns == 0) {
+                clearStatusEffect();
+                System.out.println(this.name + " acordou!");
+            }
+        }
+    }
+
+    private void applyStatusEffect(Pokemon target) {
+        if (target.getStatusEffect() == null) return;
+
+        switch (target.getStatusEffect()) {
+            case POISONED:
+                int poisonDamage = target.getHp() / 8; // ~12.5% como no pokemon original
+                if (poisonDamage == 0) poisonDamage = 1;
+                target.takeLife(poisonDamage);
+                System.out.println(target.getName() + " sofreu " + poisonDamage + " de dano pelo veneno!");
+                break;
+            case BURNED:
+                int burnDamage = target.getHp() / 16; // ~6% como no pokemon original
+                if (burnDamage == 0) burnDamage = 1;
+                target.takeLife(burnDamage);
+                System.out.println(target.getName() + " sofreu " + burnDamage + " de dano pela queimadura!");
+                break;
+            case ASLEEP:
+                target.decrementSleepTurns();
+                System.out.println(target.getName() + " está a dormir!");
+                break;
+            case PARALYZED:
+                // tratado na lógica de ataque do metodo pokemonBattle
+                break;
+        }
+    }
+    private boolean enemyCanAttack(Pokemon enemy) { // este metodo ve se o pokemon inimigo pode atacar quando esta sob o efeito de consumiveis de combate
+        if (enemy.getStatusEffect() == null) return true;
+
+        switch (enemy.getStatusEffect()) {
+            case ASLEEP:
+                enemy.decrementSleepTurns();
+                System.out.println(enemy.getName() + " está a dormir e não pode atacar!");
+                return false;
+            case PARALYZED:
+                Random rand = new Random();
+                if (rand.nextInt(2) == 0) {
+                    System.out.println(enemy.getName() + " está paralisado e não consegue atacar!");
+                    return false;
+                }
+                return true;
+            default:
+                return true;
+        }
     }
 
     public boolean pokemonBattle(Pokemon enemy) {
@@ -58,22 +133,30 @@ public abstract class Pokemon {
             // escolha do jogador no início do turno
             System.out.println("\nO que vais fazer?");
             System.out.println("1. Atacar");
-            System.out.println("2. Usar Potion");
-            System.out.println("3. Usar Consumable");
+            System.out.println("2. Usar Potion/Consumable");
+            System.out.println("3. Usar BattleConsumable no inimigo");
             int choice = input.nextInt();
+
+            boolean usedItem = false;
+            int xAttackBoost = 0;
 
             switch (choice) {
                 case 2:
-                    // usar potion - a implementar
+                    // mostrar itens Potion/Consumable da mochila - a implementar com Trainer
                     break;
                 case 3:
-                    // usar consumable - a implementar
+                    // mostrar BattleConsumables da mochila - a implementar com Trainer
                     break;
             }
 
-            // após a escolha, ataques por ordem de nível
-            if (this.getLevel() >= enemy.getLevel()) {
-                // meu pokemon ataca primeiro
+            // determinar quem ataca primeiro
+            boolean myPokemonFirst = this.hasSpeedBoost() || this.getLevel() >= enemy.getLevel();
+            // reverter XSpeed após decidir ordem
+            this.setSpeedBoost(false);
+
+            // ataques
+            // pokemon do jogador ataca primeiro
+            if (myPokemonFirst) {
                 int damage = this.getStrength() / 2;
                 enemy.takeLife(damage);
                 System.out.println(this.getName() + " causou " + damage + " de dano! "
@@ -81,29 +164,32 @@ public abstract class Pokemon {
 
                 if (enemy.getHp() <= 0) break;
 
-                // inimigo ataca a seguir
-                damage = enemy.getStrength() / 2;
-                this.takeLife(damage);
-                System.out.println(enemy.getName() + " causou " + damage + " de dano! "
-                        + this.getName() + " ficou com " + this.getHp() + " HP.");
-
+                // verifica se enemy pode atacar
+                if (enemyCanAttack(enemy)) {
+                    damage = enemy.getStrength() / 2;
+                    this.takeLife(damage);
+                    System.out.println(enemy.getName() + " causou " + damage + " de dano! "
+                            + this.getName() + " ficou com " + this.getHp() + " HP.");
+                }
             } else {
-                // inimigo ataca primeiro
-                int damage = enemy.getStrength() / 2;
-                this.takeLife(damage);
-                System.out.println(enemy.getName() + " causou " + damage + " de dano! "
-                        + this.getName() + " ficou com " + this.getHp() + " HP.");
+                // pokemon inimigo ataca primeiro (verifica se consegue atacar por causa de consumiveis de combate)
+                if (enemyCanAttack(enemy)) {
+                    int damage = enemy.getStrength() / 2;
+                    this.takeLife(damage);
+                    System.out.println(enemy.getName() + " causou " + damage + " de dano! "
+                            + this.getName() + " ficou com " + this.getHp() + " HP.");
 
-                if (this.getHp() <= 0) break;
-
-                // meu pokemon ataca a seguir
-                damage = this.getStrength() / 2;
+                    if (this.getHp() <= 0) break; // caso o pokemon inimigo morra, o ciclo da pokemonBattle para
+                }
+                // pokemon do jogador ataca sempre
+                int damage = this.getStrength() / 2;
                 enemy.takeLife(damage);
-                System.out.println(this.getName() + " causou " + damage + " de dano! "
-                        + enemy.getName() + " ficou com " + enemy.getHp() + " HP.");
+                System.out.println(this.getName() + " causou " + damage + " de dano! " + enemy.getName() + " ficou com " + enemy.getHp() + " HP.");
             }
-        }
 
+            // efeitos de status no enemy no fim do turno
+            applyStatusEffect(enemy);
+        }
         if (this.getHp() <= 0) {
             System.out.println("O teu Pookémon foi derrotado... Game Over!");
             return false;
@@ -149,6 +235,32 @@ public abstract class Pokemon {
     public void healPokemon() { // metodo do PookeCenter para curar o pokemon do jogador (restaura todo o hp)
         this.hp = this.maxHp;
         System.out.println(this.name + " foi curado! HP restaurado para " + this.maxHp + ".");
+    }
+    // metodos para Potion e Consumiveis
+    // para Potion e Berry
+    public void heal(int amount) {
+        this.hp += amount;
+        if (this.hp > this.maxHp) this.hp = this.maxHp;
+    }
+
+    // para XAttack
+    public void boostStrength(int amount) {
+        this.strength += amount;
+    }
+
+    public void revertStrength(int amount) {
+        this.strength -= amount;
+    }
+
+    // para XSpeed
+    private boolean speedBoost;
+
+    public void setSpeedBoost(boolean speedBoost) {
+        this.speedBoost = speedBoost;
+    }
+
+    public boolean hasSpeedBoost() {
+        return speedBoost;
     }
 
     public void showDetails () {

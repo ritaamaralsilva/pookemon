@@ -1,4 +1,8 @@
 package entities;
 
-public class StatusEffect {
+public enum StatusEffect {
+    PARALYZED,  // 50% chance de não atacar
+    ASLEEP,     // não ataca durante 2 turnos
+    POISONED,   // perde HP fixo por turno
+    BURNED      // perde HP fixo por turno + strength reduzida
 }
