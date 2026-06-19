@@ -1,7 +1,11 @@
 package game;
 
 import entities.*;
-
+import items.BattleConsumable;
+import items.Consumable;
+import items.Potion;
+import items.TrainerItem;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -114,7 +118,44 @@ public class Game {
                     }
                     break;
                 case 2:
-                    System.out.println("Escolheste ir à loja abastecer!");
+                    System.out.println("Bem-vindo à PookéShop!");
+
+                    PokeShop pewterCityShop = new PokeShop("Pewter Shop");
+                    pewterCityShop.addItem(new Potion("Potion", 300, 20));
+                    pewterCityShop.addItem(new Potion("Super Potion", 700, 50));
+                    pewterCityShop.addItem(new Consumable("Berry", 100, 10, 0, false, false));
+                    pewterCityShop.addItem(new Consumable("X Attack", 500, 0, 10, false, false));
+                    pewterCityShop.addItem(new Consumable("X Speed", 350, 0, 0, true, false));
+                    pewterCityShop.addItem(new BattleConsumable("Paralyze Orb", 300, StatusEffect.PARALYZED));
+                    pewterCityShop.addItem(new BattleConsumable("Sleep Orb", 400, StatusEffect.ASLEEP));
+                    pewterCityShop.addItem(new BattleConsumable("Poison Orb", 250, StatusEffect.POISONED));
+                    pewterCityShop.addItem(new BattleConsumable("Burn Orb", 250, StatusEffect.BURNED));
+
+                    ArrayList<TrainerItem> shopItems = pewterCityShop.getRandomItems();
+
+                    System.out.println("Itens disponíveis hoje:");
+                    for (int i = 0; i < shopItems.size(); i++) {
+                        System.out.println((i + 1) + ". " + shopItems.get(i).getName()
+                                + " - " + shopItems.get(i).getPrice() + " coins");
+                    }
+                    System.out.println("0. Sair da loja");
+                    System.out.print("O que queres comprar? ");
+                    int shopChoice = input.nextInt();
+
+                    if (shopChoice == 0) break;
+
+                    if (shopChoice > 0 && shopChoice <= shopItems.size()) {
+                        TrainerItem chosen = shopItems.get(shopChoice - 1);
+                        if (player.getCoins() >= chosen.getPrice()) {
+                            player.removeCoins(chosen.getPrice());
+                            player.addItemToBag(chosen);
+                            System.out.println("Compraste " + chosen.getName() + "! Tens agora " + player.getCoins() + " coins.");
+                        } else {
+                            System.out.println("Não tens coins suficientes! Tens apenas " + player.getCoins() + " coins.");
+                        }
+                    } else {
+                        System.out.println("Opção inválida!");
+                    }
                     break;
                 case 3:
                     System.out.println("Escolheste ir treinar o teu Pookémon!");
