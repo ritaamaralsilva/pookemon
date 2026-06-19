@@ -7,6 +7,9 @@ public class Consumable extends TrainerItem {
     private int strengthBoost;   // para X Attack
     private boolean speedBoost;  // para X Speed (pokemon ataca sempre primeiro, mesmo que tenha nivel mais baixo)
     private boolean levelUp;     // para Rare Candy (pokemon sobe 1 nivel)
+    private int decreaseStrength; // para o X Defense , neste caso, este consumivel vai reduzir o strenth do pokemon inimigo
+    private int decreaseSpecialAttack; // para o X-Take Special, neste caso o consumivel reduz ataque especial do pokemon inimigo
+    private int SpecialAttackBoost; // para o X-Special, incrementa ao special attack do pokemon do jogador
 
     public Consumable(String name, int price, int healAmount, int strengthBoost, boolean speedBoost, boolean levelUp) {
         super(name, price);

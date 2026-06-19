@@ -14,16 +14,22 @@ public abstract class Pokemon {
     private int maxHp;
     private int hp;
     private int strength;
+    private int specialAttack; // ataque especial do pokemon
+    private int specialAttackUses; // quantas vezes o pokemon pode usar o Special Attack (nos jogos OG, isto representa o PP )
+    private int specialAttackUsesLeft; // usos restantes de Special Attack que o Pokemon ainda tem (aka PP left)
     private int level; // nivel do Pokemon
     private int exp; // isto representa os pontos que o pokemon do jogador ganha de outro pokemon rival em battles, mas tambem uso para calcular como o pokemonInUse evolui de nivel
     private StatusEffect statusEffect; // null = sem efeito | se pokemon tiver um estado alterado devido a um consumivel
     private int sleepTurns; // se pokemon tiver sob efeito de um consumivel de sono
 
-    public Pokemon(String name, int maxHp, int hp, int strength, int level, int exp) {
+    public Pokemon(String name, int maxHp, int hp, int strength, int specialAttack, int specialAttackUses, int specialAttackUsesLeft, int level, int exp) {
         this.name = name;
         this.maxHp = maxHp;
         this.hp = hp;
         this.strength = strength;
+        this.specialAttack = specialAttack;
+        this.specialAttackUses = specialAttackUses;
+        this.specialAttackUsesLeft = specialAttackUsesLeft;
         this.level = level;
         this.exp = exp;
     }
@@ -44,6 +50,19 @@ public abstract class Pokemon {
         return strength;
     }
 
+    public int getSpecialAttack() {
+        return specialAttack;
+    }
+
+    public int getSpecialAttackUses() {
+        // começa com 1 uso, ganha +1 a cada 10 níveis
+        // nível 1-9  → 1 uso
+        // nível 10-19 → 2 usos
+        // nível 20-29 → 3 usos
+        // etc.
+        return 1 + (this.level / 10); // isto incrementa o nr de vezes que o pokemon pode usar special attack
+    }
+
     public int getLevel() {
         return level;
     }
@@ -53,6 +72,10 @@ public abstract class Pokemon {
     }
 
     public StatusEffect getStatusEffect() { return statusEffect; }
+
+    public int getSleepTurns() {
+        return sleepTurns;
+    }
 
     public void setStatusEffect(StatusEffect effect) {
         if (this.statusEffect == null) {
@@ -64,9 +87,26 @@ public abstract class Pokemon {
         }
     }
 
+    // inicio dos metodos
+    public void resetSpecialAttackUses() { // isto faz reset ao nr de vezes que o pokemon pode usar o special attack (vou implementar que no PookeCenter, para alem do Hp, o PP do Special attack tambem volta ao nr maximo que o pokemon pode usar naquele nivel)
+        this.specialAttackUsesLeft = getSpecialAttackUses();
+    }
+
+    public void useSpecialAttack() {
+        // se tiver PP no Special attack, pokemon usa e decrementa no specialAttackUsesLeft
+        if (specialAttackUsesLeft > 0) specialAttackUsesLeft--;
+    }
+
     public void clearStatusEffect() {
         this.statusEffect = null;
         this.sleepTurns = 0;
+    }
+
+    // metodo do specialAttack default (depois implemento override nos starters)
+    public int applySpecialAttack (Pokemon enemy) {
+        int damage = this.getSpecialAttack() / 2;
+        System.out.println(this.getName() + " usou Ataque Especial e causou " + damage + " de dano!");
+        return damage;
     }
 
     public void takeLife(int damage) { // método que calcula o dano em determinado pokemon
@@ -151,15 +191,15 @@ public abstract class Pokemon {
                     // filtrar itens Potion e Consumable da mochila
                     ArrayList<TrainerItem> myItems = new ArrayList<>();
                     for (TrainerItem item : itemsBag) {
-                        if (item instanceof Potion || item instanceof Consumable) {
+                        if (item instanceof Potion || item instanceof Consumable) { // se item for instancia de potion ou consumivel
                             myItems.add(item);
                         }
                     }
-                    if (myItems.isEmpty()) {
+                    if (myItems.isEmpty()) { // nao ha items
                         System.out.println("Não tens Potions ou Consumables na mochila!");
                         break;
                     }
-                    System.out.println("Escolhe um item:");
+                    System.out.println("Escolhe um item:"); // mostra os items disponiveis na mochila
                     for (int i = 0; i < myItems.size(); i++) {
                         System.out.println((i + 1) + ". " + myItems.get(i).getName());
                     }
@@ -219,7 +259,7 @@ public abstract class Pokemon {
                 }
             } else {
                 // pokemon inimigo ataca primeiro (verifica se consegue atacar por causa de consumiveis de combate)
-                if (enemyCanAttack(enemy)) {
+                if (enemyCanAttack(enemy) ) {
                     int damage = enemy.getStrength() / 2;
                     this.takeLife(damage);
                     System.out.println(enemy.getName() + " causou " + damage + " de dano! "
@@ -267,7 +307,13 @@ public abstract class Pokemon {
         System.out.println(this.name + " subiu para o nível " + this.level + "!");
         System.out.println("  HP: +" + hpGain + " (max agora: " + this.maxHp + ")");
         System.out.println("  Força: +" + strengthGain + " (agora: " + this.strength + ")");
+
+        // avisa quando ganha um uso extra de special attack
+        if (this.level % 10 == 0) {
+            System.out.println("  Ataque Especial: agora tens "
+                    + getSpecialAttackUses() + " uso(s) por batalha!");
         }
+    }
 
     // Chamado no Pokémon do jogador após ganhar uma batalha
     public void gainExp(int amountExpPokemonEnemy) { // quando o pokemonInUse ganha uma battle, herda os exp do pokemon inimigo

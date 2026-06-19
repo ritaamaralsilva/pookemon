@@ -1,8 +1,8 @@
 package entities;
 
 public class PokemonLegendary extends Pokemon {
-    public PokemonLegendary(String name, int maxHp, int hp, int strength, int level, int exp) {
-        super(name, maxHp, hp, strength, level, exp);
+    public PokemonLegendary(String name, int maxHp, int hp, int strength, int specialAttack, int level, int exp) {
+        super(name, maxHp, hp, strength, specialAttack, level, exp);
     }
 
 //    @Override
