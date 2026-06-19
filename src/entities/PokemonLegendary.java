@@ -5,8 +5,8 @@ public class PokemonLegendary extends Pokemon {
         super(name, maxHp, hp, strength, level, exp);
     }
 
-    @Override
-    public boolean pokemonBattle(Pokemon opponent) {
-        return false;
-    }
+//    @Override
+//    public boolean pokemonBattle(Pokemon opponent) {
+//        return false;
+//    }
 }

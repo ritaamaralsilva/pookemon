@@ -1,5 +1,11 @@
 package entities;
 
+import items.BattleConsumable;
+import items.Consumable;
+import items.Potion;
+import items.TrainerItem;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
 
@@ -123,7 +129,7 @@ public abstract class Pokemon {
         }
     }
 
-    public boolean pokemonBattle(Pokemon enemy) {
+    public boolean pokemonBattle(Pokemon enemy, ArrayList<TrainerItem> itemsBag) {
         Scanner input = new Scanner(System.in);
 
         System.out.println("Batalha entre " + this.getName() + " e " + enemy.getName() + "!");
@@ -142,10 +148,50 @@ public abstract class Pokemon {
 
             switch (choice) {
                 case 2:
-                    // mostrar itens Potion/Consumable da mochila - a implementar com Trainer
+                    // filtrar itens Potion e Consumable da mochila
+                    ArrayList<TrainerItem> myItems = new ArrayList<>();
+                    for (TrainerItem item : itemsBag) {
+                        if (item instanceof Potion || item instanceof Consumable) {
+                            myItems.add(item);
+                        }
+                    }
+                    if (myItems.isEmpty()) {
+                        System.out.println("Não tens Potions ou Consumables na mochila!");
+                        break;
+                    }
+                    System.out.println("Escolhe um item:");
+                    for (int i = 0; i < myItems.size(); i++) {
+                        System.out.println((i + 1) + ". " + myItems.get(i).getName());
+                    }
+                    int itemChoice = input.nextInt();
+                    if (itemChoice > 0 && itemChoice <= myItems.size()) {
+                        TrainerItem chosen = myItems.get(itemChoice - 1);
+                        chosen.use(this); // aplica no meu pokemon
+                        itemsBag.remove(chosen); // remove da mochila após usar
+                    }
                     break;
                 case 3:
-                    // mostrar BattleConsumables da mochila - a implementar com Trainer
+                    // filtrar BattleConsumables da mochila
+                    ArrayList<TrainerItem> battleItems = new ArrayList<>();
+                    for (TrainerItem item : itemsBag) {
+                        if (item instanceof BattleConsumable) {
+                            battleItems.add(item);
+                        }
+                    }
+                    if (battleItems.isEmpty()) {
+                        System.out.println("Não tens BattleConsumables na mochila!");
+                        break;
+                    }
+                    System.out.println("Escolhe um item para usar no inimigo:");
+                    for (int i = 0; i < battleItems.size(); i++) {
+                        System.out.println((i + 1) + ". " + battleItems.get(i).getName());
+                    }
+                    int battleItemChoice = input.nextInt();
+                    if (battleItemChoice > 0 && battleItemChoice <= battleItems.size()) {
+                        TrainerItem chosen = battleItems.get(battleItemChoice - 1);
+                        chosen.use(enemy); // aplica no enemy
+                        itemsBag.remove(chosen); // remove da mochila após usar
+                    }
                     break;
             }
 

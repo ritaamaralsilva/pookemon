@@ -55,6 +55,10 @@ public class Trainer { // classe do jogador inicializada no inicio do jogo
         this.itemsBag.add(itemsBag);
     }
 
+    public ArrayList<TrainerItem> getItemsBag() {
+        return itemsBag;
+    }
+
     public void showDetails() {
         System.out.println("*********** Trainer Details **************");
         System.out.println("Nome : " + this.nome);
