@@ -34,6 +34,10 @@ public abstract class Pokemon {
         this.exp = exp;
     }
 
+    public Pokemon() {
+
+    }
+
     public String getName() {
         return name;
     }
@@ -178,15 +182,21 @@ public abstract class Pokemon {
 
             // escolha do jogador no início do turno
             System.out.println("\nO que vais fazer?");
-            System.out.println("1. Atacar");
+            System.out.println("1. Atacar"); // vou precisar de outro switch para definir se ataque normal usando strength ou ataque especial usando special attack
             System.out.println("2. Usar Potion/Consumable");
             System.out.println("3. Usar BattleConsumable no inimigo");
+            System.out.println("4. Ataque especial");
             int choice = input.nextInt();
 
             boolean usedItem = false;
             int xAttackBoost = 0;
+            boolean choseSpecialAttak = false; // booleano para determinar se jogador escolheu usar Special Attack em combate
 
             switch (choice) {
+
+                case 1:
+                    // opcao default de ataque normal
+                    break;
                 case 2:
                     // filtrar itens Potion e Consumable da mochila
                     ArrayList<TrainerItem> myItems = new ArrayList<>();
@@ -233,6 +243,15 @@ public abstract class Pokemon {
                         itemsBag.remove(chosen); // remove da mochila após usar
                     }
                     break;
+                case 4:
+                    // Validação de PP / Usos Restantes de Special Attack
+                    if (this.specialAttackUsesLeft > 0) {
+                        choseSpecialAttak = true; // jogador escolhe usar ataque especial
+                        this.useSpecialAttack(); // Decrementa os usos restantes (PP left)
+                    } else {
+                        System.out.println("Não tens usos restantes de Ataque Especial! Executando Ataque Normal...");
+                    }
+                    break;
             }
 
             // determinar quem ataca primeiro
@@ -243,37 +262,63 @@ public abstract class Pokemon {
             // ataques
             // pokemon do jogador ataca primeiro
             if (myPokemonFirst) {
-                int damage = this.getStrength() / 2;
+                int damage;
+
+                if (choseSpecialAttak) {
+                    damage = this.applySpecialAttack(enemy);
+                } else {
+                    damage = this.getStrength() / 2;
+                    System.out.println(this.getName() + " usou Ataque normal e causou " + damage + " de dano! ");
+                }
                 enemy.takeLife(damage);
-                System.out.println(this.getName() + " causou " + damage + " de dano! "
-                        + enemy.getName() + " ficou com " + enemy.getHp() + " HP.");
+                System.out.println(enemy.getName() + " ficou com " + enemy.getHp() + " HP.");
 
                 if (enemy.getHp() <= 0) break;
 
                 // verifica se enemy pode atacar
                 if (enemyCanAttack(enemy)) {
-                    damage = enemy.getStrength() / 2;
-                    this.takeLife(damage);
-                    System.out.println(enemy.getName() + " causou " + damage + " de dano! "
-                            + this.getName() + " ficou com " + this.getHp() + " HP.");
+                    Random rd = new Random();
+                    int enemyAttackChance= rd.nextInt(100);
+
+                    if (enemyAttackChance<=30){
+                        enemy.applySpecialAttack(this);
+                        //System.out.println("O pokemon adversario usou o seu bombástico ataque especial, prepara-te!");
+                    }else {
+                        damage = enemy.getStrength() / 2;
+                        this.takeLife(damage);
+                        System.out.println(enemy.getName() + " causou " + damage + " de dano! "
+                                + this.getName() + " ficou com " + this.getHp() + " HP.");
+                    }
+
                 }
             } else {
                 // pokemon inimigo ataca primeiro (verifica se consegue atacar por causa de consumiveis de combate)
                 if (enemyCanAttack(enemy) ) {
-                    int damage = enemy.getStrength() / 2;
-                    this.takeLife(damage);
-                    System.out.println(enemy.getName() + " causou " + damage + " de dano! "
-                            + this.getName() + " ficou com " + this.getHp() + " HP.");
+                    Random rd = new Random();
+                    int enemyAttackChance = rd.nextInt(100);
 
-                    if (this.getHp() <= 0) break; // caso o pokemon inimigo morra, o ciclo da pokemonBattle para
+                    if (enemyAttackChance <= 30) {
+                        enemy.applySpecialAttack(this);
+                    } else {
+                        int damage = enemy.getStrength() / 2;
+                        this.takeLife(damage);
+                        System.out.println(enemy.getName() + " causou " + damage + " de dano! " + this.getName() + " ficou com " + this.getHp() + " HP.");
+                    }
+
+                    if (this.getHp() <= 0) break;
                 }
-                // pokemon do jogador ataca sempre
-                int damage = this.getStrength() / 2;
+                // pokemon do jogador ataca em segundo
+                int damage;
+                if (choseSpecialAttak) {
+                    damage = this.applySpecialAttack(enemy); // 👈 Também mapeado aqui se atacares em segundo
+                } else {
+                    damage = this.getStrength() / 2;
+                    System.out.println(this.getName() + " usou Ataque Normal e causou " + damage + " de dano!");
+                }
                 enemy.takeLife(damage);
                 System.out.println(this.getName() + " causou " + damage + " de dano! " + enemy.getName() + " ficou com " + enemy.getHp() + " HP.");
             }
 
-            // efeitos de status no enemy no fim do turno
             applyStatusEffect(enemy);
         }
         if (this.getHp() <= 0) {

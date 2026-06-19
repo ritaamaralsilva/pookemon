@@ -6,6 +6,7 @@ public class Charmander extends Pokemon {
         super(name, maxHp, hp, strength, specialAttack, specialAttackUses, specialAttackUsesLeft, level, exp);
     }
 
+    @Override
     public int applySpecialAttack(Pokemon enemy) {
         int damage = this.getSpecialAttack() / 2;
         Random random = new Random();

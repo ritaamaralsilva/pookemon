@@ -202,6 +202,7 @@ public class Game {
                     System.out.println("Bem-vindo ao PookéCenter!");
                     System.out.println("A Nurse Joy trata do teu Pookémon...");
                     player.getPokemonInUse().healPokemon();
+                    player.getPokemonInUse().resetSpecialAttackUses(); // volta a ter special attack uses
                     player.showDetails();
                     break;
                 default:
@@ -349,6 +350,7 @@ public class Game {
                     System.out.println("Bem-vindo ao PookéCenter!");
                     System.out.println("A Nurse Joy trata do teu Pookémon...");
                     player.getPokemonInUse().healPokemon();
+                    player.getPokemonInUse().resetSpecialAttackUses();
                     player.showDetails();
                     break;
                 default:
@@ -496,6 +498,7 @@ public class Game {
                     System.out.println("Bem-vindo ao PookéCenter!");
                     System.out.println("A Nurse Joy trata do teu Pookémon...");
                     player.getPokemonInUse().healPokemon();
+                    player.getPokemonInUse().resetSpecialAttackUses();
                     player.showDetails();
                     break;
                 default:
@@ -938,6 +941,7 @@ public class Game {
                     System.out.println("Bem-vindo ao PookéCenter!");
                     System.out.println("A Nurse Joy trata do teu Pookémon...");
                     player.getPokemonInUse().healPokemon();
+                    player.getPokemonInUse().resetSpecialAttackUses();
                     player.showDetails();
                     break;
                 default:
@@ -1085,6 +1089,7 @@ public class Game {
                     System.out.println("Bem-vindo ao PookéCenter!");
                     System.out.println("A Nurse Joy trata do teu Pookémon...");
                     player.getPokemonInUse().healPokemon();
+                    player.getPokemonInUse().resetSpecialAttackUses();
                     player.showDetails();
                     break;
                 default:
@@ -1233,6 +1238,7 @@ public class Game {
                     System.out.println("Bem-vindo ao PookéCenter!");
                     System.out.println("A Nurse Joy trata do teu Pookémon...");
                     player.getPokemonInUse().healPokemon();
+                    player.getPokemonInUse().resetSpecialAttackUses();
                     player.showDetails();
                     break;
                 default:
