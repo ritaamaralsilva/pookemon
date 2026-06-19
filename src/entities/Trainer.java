@@ -43,6 +43,18 @@ public class Trainer { // classe do jogador inicializada no inicio do jogo
         System.out.println("Recebeste " + amountCoins+ " coins! Total: " + this.coins + " coins.");
     }
 
+    public int getCoins() {
+        return coins;
+    }
+
+    public void removeCoins(int amountCoins) {
+        this.coins -= amountCoins;
+    }
+
+    public void addItemToBag(TrainerItem itemsBag) {
+        this.itemsBag.add(itemsBag);
+    }
+
     public void showDetails() {
         System.out.println("*********** Trainer Details **************");
         System.out.println("Nome : " + this.nome);
