@@ -2,7 +2,7 @@ package entities;
 
 import items.TrainerItem;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Collections; // para usar o shuffle
 
 public class PokeShop {
     private String name;
@@ -19,17 +19,12 @@ public class PokeShop {
 
     // devolve até 10 itens aleatórios sem repetição
     public ArrayList<TrainerItem> getRandomItems() {
-        ArrayList<TrainerItem> randomItems = new ArrayList<>();
-        ArrayList<TrainerItem> temporaryListOfItems = new ArrayList<>(availableItemsToBuy);
-        Random random = new Random();
-
-        int limit = 10;
-        if (temporaryListOfItems.size() < 10) limit = temporaryListOfItems.size();
-
-        for (int i = 0; i < limit; i++) {
-            int index = random.nextInt(temporaryListOfItems.size());
-            randomItems.add(temporaryListOfItems.get(index));
-            temporaryListOfItems.remove(index);
+        ArrayList<TrainerItem> randomItems = new ArrayList<>(availableItemsToBuy);
+        Collections.shuffle(randomItems);
+        // subList(0, 5) pega nos primeiros 5 após o shuffle
+        // como a lista foi baralhada, os primeiros 5 são sempre diferentes a cada visita
+        if (randomItems.size() >= 5) {
+            return new ArrayList<>(randomItems.subList(0, 5));
         }
         return randomItems;
     }

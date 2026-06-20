@@ -38,6 +38,10 @@ public class Trainer { // classe do jogador inicializada no inicio do jogo
         System.out.println("Tens agora " + gymBadge + " crachá(s)!");
     }
 
+    public int getGymBadge() {
+        return gymBadge;
+    }
+
     public void addCoins(int amountCoins) { // metodo para incrementar o dinheiro
         this.coins += amountCoins;
         System.out.println("Recebeste " + amountCoins+ " coins! Total: " + this.coins + " coins.");
