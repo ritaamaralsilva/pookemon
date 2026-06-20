@@ -527,6 +527,18 @@ public class Game {
     public void celadonCity () {
         Scanner input = new Scanner(System.in);
 
+        // desbloqueia secret cave com 3+ crachás
+        if (player.getGymBadge() >= 3) {
+            System.out.println("\n🌑 No caminho para Celadon City, reparas numa entrada estranha atrás de uma cascata...");
+            System.out.println("Queres investigar?");
+            System.out.println("1. Entrar na Caverna Secreta");
+            System.out.println("2. Seguir para Celadon City");
+            int caveDecision = input.nextInt();
+            if (caveDecision == 1) {
+                secretCave();
+            }
+        }
+
         boolean inCity = true;
         while (inCity) {
             System.out.println("\n Chegaste a Celadon City, o que vais fazer a seguir? ");
@@ -1305,6 +1317,249 @@ public class Game {
             }
         }
     }
+
+    public void secretCave() {
+        Scanner input = new Scanner(System.in);
+        Random random = new Random();
+
+        System.out.println("\n No caminho para Celadon City, encontras uma entrada escondida atrás de uma cascata...");
+        System.out.println("É uma caverna. Está escuro. Quase não se vê nada.");
+        System.out.println("Mas ao pé de uma rocha, encontras uma LANTERNA e um PAPEL VELHO dobrado...");
+        System.out.println("Parece um mapa, mas está muito gasto para leres bem.");
+        System.out.println("\n O que queres fazer?");
+        System.out.println("1. Entrar na caverna e explorar");
+        System.out.println("2. Ignorar e seguir para Celadon City");
+        int entranceCaveChoice = input.nextInt();
+
+        if (entranceCaveChoice == 2) { // para voltar para o menu de Celadon City e fazer a rota normal dos ginasios
+            System.out.println("Decides não arriscar. Seguiste para Celadon City.");
+            return;
+        }
+
+        // se jogador escolher outra opcao que não a 2, entra na caverna secreta
+        System.out.println("\nPegas na lanterna e no mapa. A caverna é enorme e misteriosa...");
+        System.out.println("Sentes que há algo especial aqui dentro.");
+
+        boolean inSecretCave = true;
+        while (inSecretCave) {
+            System.out.println("\n═══════════════════════════════");
+            System.out.println("       CAVERNA SECRETA");
+            System.out.println("═══════════════════════════════");
+            System.out.println("1. Continuar a explorar e seguir o mapa");
+            System.out.println("2. Voltar a Celadon City");
+            int secretCaveChoice = input.nextInt();
+
+            if (secretCaveChoice == 2) {
+                System.out.println("Decides sair da caverna. A luz do dia é bem-vinda e tu tens medo do escuro.");
+                inSecretCave = false;
+                return;
+            }
+
+            int randomSecretCaveEvent = random.nextInt(100); // randomizar os possiveis eventos dentro da cave secreta
+
+            // mewtwo e win game alternativo (mewtwo)
+            if (randomSecretCaveEvent < 2) {
+                System.out.println("\n✨ A caverna começa a vibrar...");
+                System.out.println("Uma luz enorme ilumina tudo à tua volta.");
+                System.out.println("É... é o MEWTWO!!!");
+                System.out.println("Os seus olhos fixam-se em ti... e depois fecha os olhos.");
+                System.out.println("O Mewtwo inclina a cabeça, como se reconhecesse algo em ti.");
+                System.out.println("\"...O Chosen One.\"");
+                System.out.println("\n🏆 O MEWTWO ABENÇOOU-TE! O jogo termina aqui — apenas o Chosen One merece este momento!");
+                winGameMewtwo();
+                return;
+            } else if (randomSecretCaveEvent < 12) {
+                System.out.println("\n Uma luz cor-de-rosa aparece ao fundo da caverna...");
+                System.out.println("É o MEW! O Pokémon mais raro do mundo flutua à tua frente!");
+
+                if (player.getPokemonInUse().getLevel() < 35) {
+                    System.out.println("O Mew olha para o teu " + player.getPokemonInUse().getName()
+                            + " e sorri... e desaparece num piscar de olhos.");
+                    System.out.println("O teu Pokémon é demasiado fraco para combater o Mew. Precisa de estar acima do nível 35.");
+                } else {
+                    System.out.println("O teu " + player.getPokemonInUse().getName()
+                            + " está pronto! O Mew aceita o desafio!");
+
+
+                }
+            }
+        }
+    }
+
+    public void indigoPlateau() {
+        Scanner input = new Scanner(System.in);
+        Random rand = new Random();
+
+        System.out.println("\n🏔️ INDIGO PLATEAU");
+        System.out.println("O portal do Gold Ticket fechou-se atrás de ti.");
+        System.out.println("À tua frente está o Trainer BLUE — o teu rival desde o início!");
+        System.out.println("\"Hah! Sabia que apareceria aqui. Estás pronto para perder?\"");
+
+        // 🌟 OTIMIZAÇÃO: Cria o stock da loja uma única vez no arranque do método
+        PokeShop blueShop = new PokeShop("Blue's Shop");
+        blueShop.addItem(new Potion("Sacred Potion", 5000, 999));
+        blueShop.addItem(new Consumable("Champion Elixir", 8000, 999, 50, true, true));
+        blueShop.addItem(new Consumable("Master Herb", 6000, 999, 30, false, true));
+        blueShop.addItem(new Consumable("Titan Seed", 5000, 0, 50, false, false));
+        blueShop.addItem(new Consumable("Rare Candy", 800, 0, 0, false, true));
+        blueShop.addItem(new Consumable("Rare Candy", 800, 0, 0, false, true));
+        blueShop.addItem(new Consumable("Rare Candy", 800, 0, 0, false, true));
+        blueShop.addItem(new BattleConsumable("Doom Orb", 2000, StatusEffect.ASLEEP));
+        blueShop.addItem(new BattleConsumable("Chaos Orb", 1500, StatusEffect.PARALYZED));
+        blueShop.addItem(new BattleConsumable("Inferno Orb", 1200, StatusEffect.BURNED));
+
+        boolean inPlateau = true;
+        while (inPlateau) {
+            System.out.println("\n═══════════════════════════════");
+            System.out.println("  🔵 INDIGO PLATEAU");
+            System.out.println("═══════════════════════════════");
+            System.out.println("1. Enfrentar o Blue (Desafio de Equipa)");
+            System.out.println("2. Ir à Blue's Shop");
+            System.out.println("3. Treinar com Pokémon semi-lendários");
+            System.out.println("4. Ir ao PokéCenter");
+            int choice = input.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.println("\n\"Prepara-te!\" — BLUE");
+
+                    PokemonWild pidgeot   = new PokemonWild("Pidgeot",  108, 108,  80,  70, 4, 4, 50, 2000, 0);
+                    PokemonWild alakazam2 = new PokemonWild("Alakazam",  65,  65,  45, 135, 4, 4, 53, 2500, 0);
+                    PokemonWild rhydon2   = new PokemonWild("Rhydon",   145, 145, 130,  45, 4, 4, 54, 2800, 0);
+                    PokemonWild arcanine3 = new PokemonWild("Arcanine", 130, 130, 110, 100, 4, 4, 53, 2500, 0);
+                    PokemonWild exeggutor = new PokemonWild("Exeggutor", 105, 105,  95, 125, 4, 4, 53, 2500, 0);
+                    PokemonWild blastoise2= new PokemonWild("Blastoise", 109, 109,  83, 100, 4, 4, 55, 3000, 0);
+
+                    PokemonWild[] blueTeam = {pidgeot, alakazam2, rhydon2, arcanine3, exeggutor, blastoise2};
+
+                    boolean blueDefeated = true;
+
+                    // 🌟 LOOP DE COMBATE DA EQUIPA DA LIGA 🌟
+                    for (int i = 0; i < blueTeam.length; i++) {
+                        PokemonWild bluePokemon = blueTeam[i];
+
+                        // 🌟 OTIMIZAÇÃO: Menu de Interrupção para Cura entre combates do Blue (a partir do 2º rival)
+                        if (i > 0) {
+                            System.out.println("\n-------------------------------------------------");
+                            System.out.println("Blue prepara-se para mandar o próximo Pokémon.");
+                            System.out.println("Queres abrir a tua mochila para curar o teu Pokémon antes?");
+                            System.out.println("1. Sim, abrir mochila (Menu de Cura)");
+                            System.out.println("2. Não, vir o próximo!");
+                            int healMenu = input.nextInt();
+                            if (healMenu == 1) {
+                                // Filtra apenas Poções/Consumíveis da mochila para curar fora de batalha
+                                ArrayList<TrainerItem> myCures = new ArrayList<>();
+                                for (TrainerItem item : player.getItemsBag()) {
+                                    if (item instanceof Potion || item instanceof Consumable) {
+                                        myCures.add(item);
+                                    }
+                                }
+                                if (myCures.isEmpty()) {
+                                    System.out.println("Não tens itens de cura na mochila!");
+                                } else {
+                                    System.out.println("Escolhe uma Potion/Consumable para usar no teu " + player.getPokemonInUse().getName() + ":");
+                                    for (int k = 0; k < myCures.size(); k++) {
+                                        System.out.println((k + 1) + ". " + myCures.get(k).getName());
+                                    }
+                                    int itemChoice = input.nextInt();
+                                    if (itemChoice > 0 && itemChoice <= myCures.size()) {
+                                        TrainerItem chosen = myCures.get(itemChoice - 1);
+                                        chosen.use(player.getPokemonInUse());
+                                        player.getItemsBag().remove(chosen);
+                                    }
+                                }
+                            }
+                        }
+
+                        System.out.println("\n💥 Blue enviou " + bluePokemon.getName() + "!");
+                        boolean won = player.getPokemonInUse().pokemonBattle(bluePokemon, player.getItemsBag());
+
+                        Pokemon evolved = player.getPokemonInUse().getPendingEvolution();
+                        if (evolved != null) {
+                            player.setPokemonInUse(evolved);
+                            player.getPokemonInUse().clearPendingEvolution();
+                        }
+
+                        if (!won) {
+                            blueDefeated = false;
+                            inPlateau = false;
+                            gameOver();
+                            break;
+                        }
+                        player.showDetails();
+                    }
+
+                    if (blueDefeated) {
+                        System.out.println("\n\"Im-impossível...\" — BLUE");
+                        System.out.println("🏆 Derrotaste o Blue no Indigo Plateau!");
+                        player.addCoins(5000);
+                        player.addGymBadge();
+                        inPlateau = false;
+                        winGame();
+                    }
+                    break;
+
+                case 2:
+                    // 🌟 OTIMIZAÇÃO POO: Passa o controlo de venda para o método herdeiro do teu Vendedor/PokeShop!
+                    System.out.println("\n🔵 Acedendo ao stock da Blue's Shop...");
+                    blueShop.vender(player);
+                    break;
+
+                case 3:
+                    System.out.println("Escolheste treinar no Indigo Plateau!");
+                    boolean training = true;
+
+                    while (training) {
+                        PokemonWild[] legendaryTraining = {
+                                new PokemonWild("Dragonite",  121, 121, 134, 100, 4, 4, 53, 3000, 2000),
+                                new PokemonWild("Gyarados",   138, 138, 125, 100, 4, 4, 52, 2500, 1800),
+                                new PokemonWild("Lapras",     145, 145,  85,  95, 4, 4, 51, 2200, 1600),
+                                new PokemonWild("Gengar",      95,  95,  65, 130, 4, 4, 50, 2000, 1500),
+                                new PokemonWild("Alakazam",    65,  65,  45, 135, 4, 4, 52, 2500, 1800),
+                                new PokemonWild("Exeggutor",  105, 105,  95, 125, 4, 4, 51, 2200, 1600)
+                        };
+
+                        PokemonWild enemy = legendaryTraining[rand.nextInt(legendaryTraining.length)];
+                        System.out.println("Um " + enemy.getName() + " poderoso apareceu!");
+
+                        boolean won = player.getPokemonInUse().pokemonBattle(enemy, player.getItemsBag());
+
+                        Pokemon evolved = player.getPokemonInUse().getPendingEvolution();
+                        if (evolved != null) {
+                            player.setPokemonInUse(evolved);
+                            player.getPokemonInUse().clearPendingEvolution();
+                        }
+
+                        if (!won) {
+                            training = false;
+                            inPlateau = false;
+                            gameOver();
+                        } else {
+                            player.addCoins(enemy.getCoins());
+                            player.showDetails();
+                            System.out.println("\n1. Continuar a treinar");
+                            System.out.println("2. Voltar ao menu");
+                            if (input.nextInt() == 2) training = false;
+                        }
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("Bem-vindo ao PokéCenter do Indigo Plateau!");
+                    System.out.println("A Nurse Joy trata do teu Pokémon...");
+                    player.getPokemonInUse().healPokemon();
+                    player.getPokemonInUse().resetSpecialAttackUses(); // Agora com PP restaurado!
+                    player.showDetails();
+                    break;
+
+                default:
+                    System.out.println("Opção inválida!");
+                    break;
+            }
+        }
+    }
+
+    // todos os winGames em baixo
     public void winGame() {
         Scanner input = new Scanner(System.in);
 
@@ -1334,6 +1589,67 @@ public class Game {
             System.exit(0);
         }
     }
+    public void winGameMewtwo() {
+            Scanner input = new Scanner(System.in);
+
+            System.out.println("\n");
+            System.out.println("█████████████████████████████████████████████████████████");
+            System.out.println("█                                                       █");
+            System.out.println("█          🔮 O DESTINO REVELADO: THE CHOSEN ONE!       █");
+            System.out.println("█                                                       █");
+            System.out.println("█   Penetraste na caverna e a tua aura foi reconhecida  █");
+            System.out.println("█   pela entidade psíquica mais poderosa do universo.   █");
+            System.out.println("█   O Mewtwo escolheu-te. Tu transcendeste a Liga!     █");
+            System.out.println("█                                                       █");
+            System.out.println("█████████████████████████████████████████████████████████");
+            System.out.println("\n  🔮 Estado Cósmico: Abençoado por Mewtwo");
+            System.out.println("  ⭐ Pookémon no momento: " + player.getPokemonInUse().getName()
+                    + " | Nível: " + player.getPokemonInUse().getLevel());
+            System.out.println("  💰 Moedas acumuladas: " + player.getCoins());
+            System.out.println("\nO que queres fazer?");
+            System.out.println("1. Jogar novamente (Explorar o resto do mundo)");
+            System.out.println("2. Sair do jogo");
+            int choice = input.nextInt();
+
+            if (choice == 1) {
+                new Game().pookemon(); // reinicia o jogo
+            } else {
+                System.out.println("\nA tua lenda ficará guardada nas sombras da Secret Cave. Adeus!");
+                System.exit(0);
+            }
+        }
+    public void winGameBlue() {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("\n");
+        System.out.println("█████████████████████████████████████████████████████████");
+        System.out.println("█                                                       █");
+        System.out.println("█        👑 NOVO CAMPEÃO DA LIGA INDIGO! 👑             █");
+        System.out.println("█                                                       █");
+        System.out.println("█   Superaste o portal do Gold Ticket e destruíste     █");
+        System.out.println("█   a lendária equipa do Trainer Blue!                  █");
+        System.out.println("█   És oficialmente o número 1 do Indigo Plateau!       █");
+        System.out.println("█                                                       █");
+        System.out.println("█████████████████████████████████████████████████████████");
+        System.out.println("\n  🏆 Título: Kanto League Champion");
+        System.out.println("  ⭐ Pookémon Parceiro: " + player.getPokemonInUse().getName()
+                + " | Nível: " + player.getPokemonInUse().getLevel()
+                + " | HP: " + player.getPokemonInUse().getHp());
+        System.out.println("  💰 Coins de Elite: " + player.getCoins());
+        System.out.println("\nO que queres fazer?");
+        System.out.println("1. Jogar novamente (Tentar outra rota)");
+        System.out.println("2. Sair do jogo");
+        int choice = input.nextInt();
+
+        if (choice == 1) {
+            new Game().pookemon(); // reinicia o jogo
+        } else {
+            System.out.println("\nObrigado por jogares Pookémon! Até à próxima, Campeão!");
+            System.exit(0);
+        }
+    }
+
+    // game over
     public void gameOver() {
         Scanner input = new Scanner(System.in);
 
