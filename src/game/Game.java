@@ -70,6 +70,8 @@ public class Game {
         System.out.println("Agora sim, começa a tua jornada para te tornares o próximo Pookémon Champion.");
         System.out.println("... mas para isso vais precisar de conquistar todos os crachás dos ginásios da Liga de Kanto.");
         System.out.println("Próxima paragem: Pewter City, a cidade dos penedos e rochedos, espero que sejas forte na escalada!");
+
+        pewterCity();
     }
     // funcoes das 8 cidades
     public void pewterCity() {
@@ -105,6 +107,7 @@ public class Game {
                         if (!won) {
                             gymWon = false;
                             inCity = false;
+                            gameOver();
                             break;
                         }
                         player.showDetails();
@@ -183,7 +186,7 @@ public class Game {
                         if (!winBattle) { // se perde pokemonBattle, acaba os ciclos porque game over
                             training = false;
                             inCity = false;
-                            System.out.println("Ohhh, o teu " + player.getPokemonInUse().getName() + " era tão fraquinho que morreu... Game Over, melhor sorte da próxima!");
+                            gameOver();
                         } else if (winBattle) {
                             player.addCoins(enemy.getCoins()); // vai buscar os coins do pokemon inimigo para atribuir ao player
                             player.showDetails(); // mostra o estado atual do jogador
@@ -245,6 +248,7 @@ public class Game {
                         if (!won) {
                             gymWon = false;
                             inCity = false;
+                            gameOver();
                             break;
                         }
                         player.showDetails();
@@ -331,7 +335,7 @@ public class Game {
                         if (!winBattle) { // se perde pokemonBattle, acaba os ciclos porque game over
                             training = false;
                             inCity = false;
-                            System.out.println("Ohhh, o teu " + player.getPokemonInUse().getName() + " era tão fraquinho que morreu... Game Over, melhor sorte da próxima!");
+                            gameOver();
                         } else if (winBattle) {
                             player.addCoins(enemy.getCoins()); // vai buscar os coins do pokemon inimigo para atribuir ao player
                             player.showDetails(); // mostra o estado atual do jogador
@@ -375,7 +379,8 @@ public class Game {
                 case 1:
                     Gym vermilionCityGym = new Gym("Vermilion City Gym", 21, 2471);
                     vermilionCityGym.addPokemon(new PokemonWildGymSurge("Voltorb", 40, 40, 35, 55, 2, 2, 21, 612, 635));
-                    vermilionCityGym.addPokemon(new PokemonWildGymSurge("Starmie", 60, 60, 90, 90, 2, 2, 24, 1457, 1358));
+                    vermilionCityGym.addPokemon(new PokemonWildGymSurge("Pikachu", 45, 45, 55, 50, 2, 2, 18, 350, 500));
+                    vermilionCityGym.addPokemon(new PokemonWildGymSurge("Raichu",  60, 60, 90, 90, 2, 2, 24, 800, 1200));
 
                     if (player.getPokemonInUse().getLevel() < vermilionCityGym.getMinLevelToBattle()) {
                         System.out.println("O teu Pookémon é fraco demais! Precisas de estar pelo menos no nível "
@@ -393,6 +398,7 @@ public class Game {
                         if (!won) {
                             gymWon = false;
                             inCity = false;
+                            gameOver();
                             break;
                         }
                         player.showDetails();
@@ -409,14 +415,17 @@ public class Game {
                     System.out.println("Bem-vindo à PookéShop!");
 
                     PokeShop vermilionCityShop = new PokeShop("Vermilion Shop");
-                    vermilionCityShop.addItem(new Potion("Potion", 300, 20));
+                    vermilionCityShop.addItem(new Potion("Golden Milk", 300, 30));
                     vermilionCityShop.addItem(new Potion("Super Potion", 700, 50));
 
                     vermilionCityShop.addItem(new Consumable("Berry", 100, 10, 0, false, false));
+                    vermilionCityShop.addItem(new Consumable("Lugia's Secret", 1200, 100, 40, true, true));
                     vermilionCityShop.addItem(new Consumable("Oran Berry", 150, 15, 0, false, false));
+                    vermilionCityShop.addItem(new Consumable("Fast Growth", 1000, 0, 0, false, true));
                     vermilionCityShop.addItem(new Consumable("Sitrus Berry", 400, 30, 0, false, false));
                     vermilionCityShop.addItem(new Consumable("X Attack", 500, 0, 10, false, false));
                     vermilionCityShop.addItem(new Consumable("X Speed", 350, 0, 0, true, false));
+                    vermilionCityShop.addItem(new Consumable("Rare Candy", 1000, 0, 0, false, true));
                     vermilionCityShop.addItem(new Consumable("X Defense", 350, 0, -10, false, false)); // X Defense a implementar, em vez de alterar stat de defesa que nao existe como atributo, vai afetar no strength do pokemon inimigo e reduz 10, ou seja, vai afetar pokemon inimigo
 
                     vermilionCityShop.addItem(new BattleConsumable("Paralyze Orb", 300, StatusEffect.PARALYZED));
@@ -455,21 +464,27 @@ public class Game {
                     boolean training = true;
 
                     while (training) {
-                        PokemonWild spearow   = new PokemonWild("Spearow",  53, 53, 60, 31, 1, 1, 13, 300, 350);
-                        PokemonWild rattata   = new PokemonWild("Rattata",  44, 44, 56, 25, 1, 1, 13, 250, 200);
-                        PokemonWild pidgey    = new PokemonWild("Pidgey",   51, 51, 45, 35, 1, 1, 12, 250, 300);
-                        PokemonWild oddish    = new PokemonWild("Oddish",   55, 55, 50, 75, 1, 1, 12, 350, 450);
-                        PokemonWild bellsprout = new PokemonWild("Bellsprout", 60, 60, 75, 70, 1, 1, 13, 350, 350);
-                        PokemonWild venonat   = new PokemonWild("Venonat",  68, 68, 55, 40, 1, 1, 13, 300, 300);
-                        PokemonWild magikarp  = new PokemonWild("Magikarp", 25, 25, 0, 15,  0, 0,5, 100, 100);
-                        PokemonWild poliwag   = new PokemonWild("Poliwag",  52, 52, 50, 40, 1, 1, 15, 350, 450);
-                        PokemonWild goldeen   = new PokemonWild("Goldeen",  57, 57, 67, 50, 1, 1,15, 400, 350);
-                        PokemonWild psyduck   = new PokemonWild("Psyduck",  65, 65, 52, 50, 2, 2, 20, 450, 600);
-                        PokemonWild krabby    = new PokemonWild("Krabby",   45, 45, 105, 25, 2, 2, 20, 500, 350);
+                        PokemonWild ekans      = new PokemonWild("Ekans",      48,  48,  60,  50, 1, 1, 18, 350, 300); // Red exclusivo
+                        PokemonWild sandshrew  = new PokemonWild("Sandshrew",  58,  58,  75,  30, 1, 1, 18, 350, 300); // Blue exclusivo
+                        PokemonWild drowzee    = new PokemonWild("Drowzee",    68,  68,  48,  93, 1, 1, 20, 400, 400);
+                        PokemonWild voltorb    = new PokemonWild("Voltorb",    50,  50,  30,  55, 1, 1, 20, 400, 350);
+                        PokemonWild meowth     = new PokemonWild("Meowth",     50,  50,  45,  40, 1, 1, 18, 300, 300);
+                        PokemonWild diglett    = new PokemonWild("Diglett",    22,  22,  55,  45, 1, 1, 19, 350, 300);
+                        PokemonWild jigglypuff = new PokemonWild("Jigglypuff", 125, 125, 45,  25, 1, 1, 18, 300, 250);
+                        PokemonWild doduo      = new PokemonWild("Doduo",       55,  55,  85,  35, 1, 1, 20, 350, 300); // Route 22 e arredores, nível 20
+                        PokemonWild mankey     = new PokemonWild("Mankey",      50,  50,  80,  35, 1, 1, 18, 350, 300); // Route 5/6, agressivo fisicamente
+                        PokemonWild growlithe  = new PokemonWild("Growlithe",   63,  63,  70,  70, 1, 1, 19, 400, 400); // Red exclusivo, Route 7/8
+                        PokemonWild tentacool  = new PokemonWild("Tentacool",   52,  52,  40, 100, 2, 2, 20, 450, 400);
+                        PokemonWild shellder   = new PokemonWild("Shellder",    42,  42,  65,  45, 2, 2, 20, 400, 350);
+                        PokemonWild horsea     = new PokemonWild("Horsea",      40,  40,  40,  70, 2, 2, 20, 400, 350); // Special alto para o nível
+                        PokemonWild seel       = new PokemonWild("Seel",        70,  70,  45,  70, 2, 2, 21, 450, 400); // aguenta bem, Special decente
+                        PokemonWild staryu     = new PokemonWild("Staryu",      52,  52,  45,  70, 2, 2, 21, 450, 400); // aparece em água em várias zonas de Kanto
 
-
-                        PokemonWild[] wildPokemonVermilionCity = {spearow, rattata, pidgey, oddish, bellsprout, venonat, magikarp, poliwag, goldeen, psyduck, krabby};
-
+                        PokemonWild[] wildPokemonVermilionCity = {
+                                ekans, sandshrew, drowzee, voltorb, meowth,
+                                diglett, jigglypuff, doduo, mankey, growlithe,
+                                tentacool, shellder, horsea, seel, staryu
+                        };
                         Random random = new Random();
                         PokemonWild enemy = wildPokemonVermilionCity[random.nextInt(wildPokemonVermilionCity.length)];
 
@@ -479,7 +494,8 @@ public class Game {
                         if (!winBattle) { // se perde pokemonBattle, acaba os ciclos porque game over
                             training = false;
                             inCity = false;
-                            System.out.println("Ohhh, o teu " + player.getPokemonInUse().getName() + " era tão fraquinho que morreu... Game Over, melhor sorte da próxima!");
+                            gameOver();
+
                         } else if (winBattle) {
                             player.addCoins(enemy.getCoins()); // vai buscar os coins do pokemon inimigo para atribuir ao player
                             player.showDetails(); // mostra o estado atual do jogador
@@ -541,6 +557,7 @@ public class Game {
                         if (!won) {
                             gymWon = false;
                             inCity = false;
+                            gameOver();
                             break;
                         }
                         player.showDetails();
@@ -557,16 +574,13 @@ public class Game {
                     System.out.println("Bem-vindo à PookéShop!");
 
                     PokeShop celadonCityShop = new PokeShop("Celadon Shop");
-                    celadonCityShop.addItem(new Potion("Potion", 300, 20));
                     celadonCityShop.addItem(new Potion("Super Potion", 700, 50));
-
-                    celadonCityShop.addItem(new Consumable("Berry", 100, 10, 0, false, false));
-                    celadonCityShop.addItem(new Consumable("Oran Berry", 150, 15, 0, false, false));
+                    celadonCityShop.addItem(new Potion("Hyper Potion", 1200, 100));
                     celadonCityShop.addItem(new Consumable("Sitrus Berry", 400, 30, 0, false, false));
                     celadonCityShop.addItem(new Consumable("X Attack", 500, 0, 10, false, false));
                     celadonCityShop.addItem(new Consumable("X Speed", 350, 0, 0, true, false));
-                    celadonCityShop.addItem(new Consumable("X Defense", 350, 0, -10, false, false)); // X Defense a implementar, em vez de alterar stat de defesa que nao existe como atributo, vai afetar no strength do pokemon inimigo e reduz 10, ou seja, vai afetar pokemon inimigo
-
+                    celadonCityShop.addItem(new Consumable("X Defense", 350, 0, -10, false, false));
+                    celadonCityShop.addItem(new Consumable("Rare Candy", 800, 0, 0, false, true));
                     celadonCityShop.addItem(new BattleConsumable("Paralyze Orb", 300, StatusEffect.PARALYZED));
                     celadonCityShop.addItem(new BattleConsumable("Sleep Orb", 400, StatusEffect.ASLEEP));
                     celadonCityShop.addItem(new BattleConsumable("Poison Orb", 250, StatusEffect.POISONED));
@@ -603,20 +617,27 @@ public class Game {
                     boolean training = true;
 
                     while (training) {
-                        PokemonWild spearow   = new PokemonWild("Spearow",  53, 53, 60, 31, 1, 1, 13, 300, 350);
-                        PokemonWild rattata   = new PokemonWild("Rattata",  44, 44, 56, 25, 1, 1, 13, 250, 200);
-                        PokemonWild pidgey    = new PokemonWild("Pidgey",   51, 51, 45, 35, 1, 1, 12, 250, 300);
-                        PokemonWild oddish    = new PokemonWild("Oddish",   55, 55, 50, 75, 1, 1, 12, 350, 450);
-                        PokemonWild bellsprout = new PokemonWild("Bellsprout", 60, 60, 75, 70, 1, 1, 13, 350, 350);
-                        PokemonWild venonat   = new PokemonWild("Venonat",  68, 68, 55, 40, 1, 1, 13, 300, 300);
-                        PokemonWild magikarp  = new PokemonWild("Magikarp", 25, 25, 0, 15,  0, 0,5, 100, 100);
-                        PokemonWild poliwag   = new PokemonWild("Poliwag",  52, 52, 50, 40, 1, 1, 15, 350, 450);
-                        PokemonWild goldeen   = new PokemonWild("Goldeen",  57, 57, 67, 50, 1, 1,15, 400, 350);
-                        PokemonWild psyduck   = new PokemonWild("Psyduck",  65, 65, 52, 50, 2, 2, 20, 450, 600);
-                        PokemonWild krabby    = new PokemonWild("Krabby",   45, 45, 105, 25, 2, 2, 20, 500, 350);
+                        PokemonWild vulpix     = new PokemonWild("Vulpix",     48,  48,  41,  65, 1, 1, 25, 500, 400); // Red exclusivo
+                        PokemonWild growlithe2 = new PokemonWild("Growlithe",  67,  67,  70,  70, 1, 1, 27, 550, 450); // Blue exclusivo
+                        PokemonWild ponyta     = new PokemonWild("Ponyta",     73,  73,  85,  65, 1, 1, 26, 500, 400);
+                        PokemonWild doduo2     = new PokemonWild("Doduo",      59,  59,  85,  35, 1, 1, 25, 400, 350);
+                        PokemonWild meowth2    = new PokemonWild("Meowth",     54,  54,  45,  40, 1, 1, 24, 350, 300);
+                        PokemonWild persian    = new PokemonWild("Persian",    70,  70,  70,  65, 1, 1, 28, 600, 500);
+                        PokemonWild scyther    = new PokemonWild("Scyther",    80,  80, 110,  55, 2, 2, 28, 700, 600); // raro, Safari Zone
+                        PokemonWild kangaskhan = new PokemonWild("Kangaskhan", 115, 115,  95,  40, 2, 2, 28, 800, 700); // Safari Zone
+                        PokemonWild tauros     = new PokemonWild("Tauros",     95,  95, 100,  70, 2, 2, 27, 750, 650); // Safari Zone
+                        PokemonWild lickitung  = new PokemonWild("Lickitung",  90,  90,  55,  60, 2, 2, 26, 600, 500);
+                        PokemonWild slowpoke   = new PokemonWild("Slowpoke",   90,  90,  65,  40, 2, 2, 25, 500, 400);
+                        PokemonWild krabby2    = new PokemonWild("Krabby",     49,  49, 105,  25, 2, 2, 25, 550, 400);
+                        PokemonWild poliwhirl  = new PokemonWild("Poliwhirl",  70,  70,  65,  50, 2, 2, 27, 600, 500);
+                        PokemonWild horsea2    = new PokemonWild("Horsea",     44,  44,  40,  70, 2, 2, 25, 450, 400);
+                        PokemonWild goldeen2   = new PokemonWild("Goldeen",    61,  61,  67,  50, 2, 2, 25, 450, 400);
 
-
-                        PokemonWild[] wildPokemonCeladonCity = {spearow, rattata, pidgey, oddish, bellsprout, venonat, magikarp, poliwag, goldeen, psyduck, krabby};
+                        PokemonWild[] wildPokemonCeladonCity = {
+                                vulpix, growlithe2, ponyta, doduo2, meowth2,
+                                persian, scyther, kangaskhan, tauros, lickitung,
+                                slowpoke, krabby2, poliwhirl, horsea2, goldeen2
+                        };
 
                         Random random = new Random();
                         PokemonWild enemy = wildPokemonCeladonCity[random.nextInt(wildPokemonCeladonCity.length)];
@@ -627,7 +648,8 @@ public class Game {
                         if (!winBattle) { // se perde pokemonBattle, acaba os ciclos porque game over
                             training = false;
                             inCity = false;
-                            System.out.println("Ohhh, o teu " + player.getPokemonInUse().getName() + " era tão fraquinho que morreu... Game Over, melhor sorte da próxima!");
+                            gameOver();
+                            //System.out.println("Ohhh, o teu " + player.getPokemonInUse().getName() + " era tão fraquinho que morreu... Game Over, melhor sorte da próxima!");
                         } else if (winBattle) {
                             player.addCoins(enemy.getCoins()); // vai buscar os coins do pokemon inimigo para atribuir ao player
                             player.showDetails(); // mostra o estado atual do jogador
@@ -688,6 +710,7 @@ public class Game {
                         if (!won) {
                             gymWon = false;
                             inCity = false;
+                            gameOver();
                             break;
                         }
                         player.showDetails();
@@ -704,16 +727,14 @@ public class Game {
                     System.out.println("Bem-vindo à PookéShop!");
 
                     PokeShop fuchsiaCityShop = new PokeShop("Fuchsia Shop");
-                    fuchsiaCityShop.addItem(new Potion("Potion", 300, 20));
-                    fuchsiaCityShop.addItem(new Potion("Super Potion", 700, 50));
-
-                    fuchsiaCityShop.addItem(new Consumable("Berry", 100, 10, 0, false, false));
-                    fuchsiaCityShop.addItem(new Consumable("Oran Berry", 150, 15, 0, false, false));
+                    fuchsiaCityShop.addItem(new Potion("Hyper Potion", 1200, 100));
+                    fuchsiaCityShop.addItem(new Potion("Max Potion", 2500, 999));
                     fuchsiaCityShop.addItem(new Consumable("Sitrus Berry", 400, 30, 0, false, false));
                     fuchsiaCityShop.addItem(new Consumable("X Attack", 500, 0, 10, false, false));
                     fuchsiaCityShop.addItem(new Consumable("X Speed", 350, 0, 0, true, false));
-                    fuchsiaCityShop.addItem(new Consumable("X Defense", 350, 0, -10, false, false)); // X Defense a implementar, em vez de alterar stat de defesa que nao existe como atributo, vai afetar no strength do pokemon inimigo e reduz 10, ou seja, vai afetar pokemon inimigo
-
+                    fuchsiaCityShop.addItem(new Consumable("X Defense", 350, 0, -10, false, false));
+                    fuchsiaCityShop.addItem(new Consumable("Rare Candy", 800, 0, 0, false, true));
+                    fuchsiaCityShop.addItem(new Consumable("Rare Candy", 800, 0, 0, false, true)); // 2x stock — fast paced
                     fuchsiaCityShop.addItem(new BattleConsumable("Paralyze Orb", 300, StatusEffect.PARALYZED));
                     fuchsiaCityShop.addItem(new BattleConsumable("Sleep Orb", 400, StatusEffect.ASLEEP));
                     fuchsiaCityShop.addItem(new BattleConsumable("Poison Orb", 250, StatusEffect.POISONED));
@@ -750,20 +771,27 @@ public class Game {
                     boolean training = true;
 
                     while (training) {
-                        PokemonWild spearow   = new PokemonWild("Spearow",  53, 53, 60, 31, 1, 1, 13, 300, 350);
-                        PokemonWild rattata   = new PokemonWild("Rattata",  44, 44, 56, 25, 1, 1, 13, 250, 200);
-                        PokemonWild pidgey    = new PokemonWild("Pidgey",   51, 51, 45, 35, 1, 1, 12, 250, 300);
-                        PokemonWild oddish    = new PokemonWild("Oddish",   55, 55, 50, 75, 1, 1, 12, 350, 450);
-                        PokemonWild bellsprout = new PokemonWild("Bellsprout", 60, 60, 75, 70, 1, 1, 13, 350, 350);
-                        PokemonWild venonat   = new PokemonWild("Venonat",  68, 68, 55, 40, 1, 1, 13, 300, 300);
-                        PokemonWild magikarp  = new PokemonWild("Magikarp", 25, 25, 0, 15,  0, 0,5, 100, 100);
-                        PokemonWild poliwag   = new PokemonWild("Poliwag",  52, 52, 50, 40, 1, 1, 15, 350, 450);
-                        PokemonWild goldeen   = new PokemonWild("Goldeen",  57, 57, 67, 50, 1, 1,15, 400, 350);
-                        PokemonWild psyduck   = new PokemonWild("Psyduck",  65, 65, 52, 50, 2, 2, 20, 450, 600);
-                        PokemonWild krabby    = new PokemonWild("Krabby",   45, 45, 105, 25, 2, 2, 20, 500, 350);
+                        PokemonWild pinsir     = new PokemonWild("Pinsir",      90,  90, 125,  55, 2, 2, 33, 800, 700); // Safari Zone, rival do Scyther
+                        PokemonWild rhyhorn2   = new PokemonWild("Rhyhorn",     90,  90, 130,  30, 2, 2, 32, 750, 600);
+                        PokemonWild nidorina   = new PokemonWild("Nidorina",    80,  80,  62,  55, 2, 2, 31, 650, 550);
+                        PokemonWild nidorino   = new PokemonWild("Nidorino",    81,  81,  72,  57, 2, 2, 31, 650, 550);
+                        PokemonWild exeggcute  = new PokemonWild("Exeggcute",   80,  80,  40,  45, 2, 2, 30, 550, 450); // Safari Zone
+                        PokemonWild parasect   = new PokemonWild("Parasect",    80,  80,  95,  80, 2, 2, 32, 700, 550);
+                        PokemonWild venomoth   = new PokemonWild("Venomoth",    80,  80,  65,  90, 2, 2, 33, 700, 550);
+                        PokemonWild weepinbell = new PokemonWild("Weepinbell",  80,  80,  90,  85, 2, 2, 31, 650, 500);
+                        PokemonWild gloom      = new PokemonWild("Gloom",       75,  75,  55,  75, 2, 2, 30, 600, 500);
+                        PokemonWild ditto      = new PokemonWild("Ditto",       76,  76,  48,  48, 2, 2, 31, 600, 500);
+                        PokemonWild tentacruel = new PokemonWild("Tentacruel",  90,  90,  70, 120, 2, 2, 34, 850, 700);
+                        PokemonWild slowbro    = new PokemonWild("Slowbro",    100, 100,  75, 100, 2, 2, 33, 800, 650);
+                        PokemonWild seadra     = new PokemonWild("Seadra",      75,  75,  65,  95, 2, 2, 32, 750, 600);
+                        PokemonWild seaking    = new PokemonWild("Seaking",     95,  95,  92,  65, 2, 2, 33, 750, 600);
+                        PokemonWild dewgong    = new PokemonWild("Dewgong",    100, 100,  70,  70, 2, 2, 33, 750, 600);
 
-
-                        PokemonWild[] wildPokemonFuchsiaCity = {spearow, rattata, pidgey, oddish, bellsprout, venonat, magikarp, poliwag, goldeen, psyduck, krabby};
+                        PokemonWild[] wildPokemonFuchsiaCity = {
+                                pinsir, rhyhorn2, nidorina, nidorino, exeggcute,
+                                parasect, venomoth, weepinbell, gloom, ditto,
+                                tentacruel, slowbro, seadra, seaking, dewgong
+                        };
 
                         Random random = new Random();
                         PokemonWild enemy = wildPokemonFuchsiaCity[random.nextInt(wildPokemonFuchsiaCity.length)];
@@ -774,7 +802,8 @@ public class Game {
                         if (!winBattle) { // se perde pokemonBattle, acaba os ciclos porque game over
                             training = false;
                             inCity = false;
-                            System.out.println("Ohhh, o teu " + player.getPokemonInUse().getName() + " era tão fraquinho que morreu... Game Over, melhor sorte da próxima!");
+                            gameOver();
+                            //System.out.println("Ohhh, o teu " + player.getPokemonInUse().getName() + " era tão fraquinho que morreu... Game Over, melhor sorte da próxima!");
                         } else if (winBattle) {
                             player.addCoins(enemy.getCoins()); // vai buscar os coins do pokemon inimigo para atribuir ao player
                             player.showDetails(); // mostra o estado atual do jogador
@@ -836,6 +865,7 @@ public class Game {
                         if (!won) {
                             gymWon = false;
                             inCity = false;
+                            gameOver();
                             break;
                         }
                         player.showDetails();
@@ -852,16 +882,14 @@ public class Game {
                     System.out.println("Bem-vindo à PookéShop!");
 
                     PokeShop saffronCityShop = new PokeShop("Saffron Shop");
-                    saffronCityShop.addItem(new Potion("Potion", 300, 20));
-                    saffronCityShop.addItem(new Potion("Super Potion", 700, 50));
-
-                    saffronCityShop.addItem(new Consumable("Berry", 100, 10, 0, false, false));
-                    saffronCityShop.addItem(new Consumable("Oran Berry", 150, 15, 0, false, false));
+                    saffronCityShop.addItem(new Potion("Max Potion", 2500, 999));
                     saffronCityShop.addItem(new Consumable("Sitrus Berry", 400, 30, 0, false, false));
                     saffronCityShop.addItem(new Consumable("X Attack", 500, 0, 10, false, false));
                     saffronCityShop.addItem(new Consumable("X Speed", 350, 0, 0, true, false));
-                    saffronCityShop.addItem(new Consumable("X Defense", 350, 0, -10, false, false)); // X Defense a implementar, em vez de alterar stat de defesa que nao existe como atributo, vai afetar no strength do pokemon inimigo e reduz 10, ou seja, vai afetar pokemon inimigo
-
+                    saffronCityShop.addItem(new Consumable("X Defense", 350, 0, -10, false, false));
+                    saffronCityShop.addItem(new Consumable("Rare Candy", 800, 0, 0, false, true));
+                    saffronCityShop.addItem(new Consumable("Rare Candy", 800, 0, 0, false, true));
+                    saffronCityShop.addItem(new Consumable("Rare Candy", 800, 0, 0, false, true)); // 3x stock
                     saffronCityShop.addItem(new BattleConsumable("Paralyze Orb", 300, StatusEffect.PARALYZED));
                     saffronCityShop.addItem(new BattleConsumable("Sleep Orb", 400, StatusEffect.ASLEEP));
                     saffronCityShop.addItem(new BattleConsumable("Poison Orb", 250, StatusEffect.POISONED));
@@ -898,20 +926,27 @@ public class Game {
                     boolean training = true;
 
                     while (training) {
-                        PokemonWild spearow   = new PokemonWild("Spearow",  53, 53, 60, 31, 1, 1, 13, 300, 350);
-                        PokemonWild rattata   = new PokemonWild("Rattata",  44, 44, 56, 25, 1, 1, 13, 250, 200);
-                        PokemonWild pidgey    = new PokemonWild("Pidgey",   51, 51, 45, 35, 1, 1, 12, 250, 300);
-                        PokemonWild oddish    = new PokemonWild("Oddish",   55, 55, 50, 75, 1, 1, 12, 350, 450);
-                        PokemonWild bellsprout = new PokemonWild("Bellsprout", 60, 60, 75, 70, 1, 1, 13, 350, 350);
-                        PokemonWild venonat   = new PokemonWild("Venonat",  68, 68, 55, 40, 1, 1, 13, 300, 300);
-                        PokemonWild magikarp  = new PokemonWild("Magikarp", 25, 25, 0, 15,  0, 0,5, 100, 100);
-                        PokemonWild poliwag   = new PokemonWild("Poliwag",  52, 52, 50, 40, 1, 1, 15, 350, 450);
-                        PokemonWild goldeen   = new PokemonWild("Goldeen",  57, 57, 67, 50, 1, 1,15, 400, 350);
-                        PokemonWild psyduck   = new PokemonWild("Psyduck",  65, 65, 52, 50, 2, 2, 20, 450, 600);
-                        PokemonWild krabby    = new PokemonWild("Krabby",   45, 45, 105, 25, 2, 2, 20, 500, 350);
+                        PokemonWild kadabra2   = new PokemonWild("Kadabra",     48,  48,  35, 120, 2, 2, 38, 900, 700);
+                        PokemonWild haunter    = new PokemonWild("Haunter",     55,  55,  50,  95, 2, 2, 36, 850, 650);
+                        PokemonWild gengar     = new PokemonWild("Gengar",      75,  75,  65, 130, 3, 3, 40, 1200, 900); // raro
+                        PokemonWild electabuzz = new PokemonWild("Electabuzz",  85,  85,  83,  95, 2, 2, 38, 900, 750);
+                        PokemonWild magmar     = new PokemonWild("Magmar",      85,  85,  95,  100, 2, 2, 38, 900, 750);
+                        PokemonWild porygon    = new PokemonWild("Porygon",     85,  85,  60,  75, 2, 2, 36, 850, 700);
+                        PokemonWild mr_mime    = new PokemonWild("Mr. Mime",    55,  55,  45,  100, 2, 2, 37, 850, 650);
+                        PokemonWild jynx       = new PokemonWild("Jynx",        75,  75,  50,  115, 2, 2, 38, 900, 700);
+                        PokemonWild persian2   = new PokemonWild("Persian",     74,  74,  70,  65, 2, 2, 37, 700, 600);
+                        PokemonWild clefairy   = new PokemonWild("Clefairy",    80,  80,  45,  60, 2, 2, 35, 700, 550);
+                        PokemonWild poliwrath  = new PokemonWild("Poliwrath",   100, 100,  95,  70, 3, 3, 40, 1000, 800);
+                        PokemonWild gyarados   = new PokemonWild("Gyarados",    130, 130, 125,  100, 3, 3, 42, 1500, 1200); // raro mas devastador
+                        PokemonWild lapras     = new PokemonWild("Lapras",      140, 140,  85,  95, 3, 3, 40, 1200, 1000);
+                        PokemonWild vaporeon   = new PokemonWild("Vaporeon",    140, 140,  65, 110, 3, 3, 40, 1100, 900);
+                        PokemonWild starmie2   = new PokemonWild("Starmie",     80,  80,  75, 100, 3, 3, 40, 1200, 900);
 
-
-                        PokemonWild[] wildPokemonSaffronCity = {spearow, rattata, pidgey, oddish, bellsprout, venonat, magikarp, poliwag, goldeen, psyduck, krabby};
+                        PokemonWild[] wildPokemonSaffronCity = {
+                                kadabra2, haunter, gengar, electabuzz, magmar,
+                                porygon, mr_mime, jynx, persian2, clefairy,
+                                poliwrath, gyarados, lapras, vaporeon, starmie2
+                        };
 
                         Random random = new Random();
                         PokemonWild enemy = wildPokemonSaffronCity[random.nextInt(wildPokemonSaffronCity.length)];
@@ -922,7 +957,8 @@ public class Game {
                         if (!winBattle) { // se perde pokemonBattle, acaba os ciclos porque game over
                             training = false;
                             inCity = false;
-                            System.out.println("Ohhh, o teu " + player.getPokemonInUse().getName() + " era tão fraquinho que morreu... Game Over, melhor sorte da próxima!");
+                            gameOver();
+                            //System.out.println("Ohhh, o teu " + player.getPokemonInUse().getName() + " era tão fraquinho que morreu... Game Over, melhor sorte da próxima!");
                         } else if (winBattle) {
                             player.addCoins(enemy.getCoins()); // vai buscar os coins do pokemon inimigo para atribuir ao player
                             player.showDetails(); // mostra o estado atual do jogador
@@ -984,6 +1020,7 @@ public class Game {
                         if (!won) {
                             gymWon = false;
                             inCity = false;
+                            gameOver();
                             break;
                         }
                         player.showDetails();
@@ -1000,16 +1037,15 @@ public class Game {
                     System.out.println("Bem-vindo à PookéShop!");
 
                     PokeShop cinnabarIslandShop = new PokeShop("Cinnabar Shop");
-                    cinnabarIslandShop.addItem(new Potion("Potion", 300, 20));
-                    cinnabarIslandShop.addItem(new Potion("Super Potion", 700, 50));
-
-                    cinnabarIslandShop.addItem(new Consumable("Berry", 100, 10, 0, false, false));
-                    cinnabarIslandShop.addItem(new Consumable("Oran Berry", 150, 15, 0, false, false));
+                    cinnabarIslandShop.addItem(new Potion("Max Potion", 2500, 999));
                     cinnabarIslandShop.addItem(new Consumable("Sitrus Berry", 400, 30, 0, false, false));
                     cinnabarIslandShop.addItem(new Consumable("X Attack", 500, 0, 10, false, false));
                     cinnabarIslandShop.addItem(new Consumable("X Speed", 350, 0, 0, true, false));
-                    cinnabarIslandShop.addItem(new Consumable("X Defense", 350, 0, -10, false, false)); // X Defense a implementar, em vez de alterar stat de defesa que nao existe como atributo, vai afetar no strength do pokemon inimigo e reduz 10, ou seja, vai afetar pokemon inimigo
-
+                    cinnabarIslandShop.addItem(new Consumable("X Defense", 350, 0, -10, false, false));
+                    cinnabarIslandShop.addItem(new Consumable("Rare Candy", 800, 0, 0, false, true));
+                    cinnabarIslandShop.addItem(new Consumable("Rare Candy", 800, 0, 0, false, true));
+                    cinnabarIslandShop.addItem(new Consumable("Rare Candy", 800, 0, 0, false, true));
+                    cinnabarIslandShop.addItem(new Consumable("Rare Candy", 800, 0, 0, false, true)); // 4x stock
                     cinnabarIslandShop.addItem(new BattleConsumable("Paralyze Orb", 300, StatusEffect.PARALYZED));
                     cinnabarIslandShop.addItem(new BattleConsumable("Sleep Orb", 400, StatusEffect.ASLEEP));
                     cinnabarIslandShop.addItem(new BattleConsumable("Poison Orb", 250, StatusEffect.POISONED));
@@ -1046,20 +1082,27 @@ public class Game {
                     boolean training = true;
 
                     while (training) {
-                        PokemonWild spearow   = new PokemonWild("Spearow",  53, 53, 60, 31, 1, 1, 13, 300, 350);
-                        PokemonWild rattata   = new PokemonWild("Rattata",  44, 44, 56, 25, 1, 1, 13, 250, 200);
-                        PokemonWild pidgey    = new PokemonWild("Pidgey",   51, 51, 45, 35, 1, 1, 12, 250, 300);
-                        PokemonWild oddish    = new PokemonWild("Oddish",   55, 55, 50, 75, 1, 1, 12, 350, 450);
-                        PokemonWild bellsprout = new PokemonWild("Bellsprout", 60, 60, 75, 70, 1, 1, 13, 350, 350);
-                        PokemonWild venonat   = new PokemonWild("Venonat",  68, 68, 55, 40, 1, 1, 13, 300, 300);
-                        PokemonWild magikarp  = new PokemonWild("Magikarp", 25, 25, 0, 15,  0, 0,5, 100, 100);
-                        PokemonWild poliwag   = new PokemonWild("Poliwag",  52, 52, 50, 40, 1, 1, 15, 350, 450);
-                        PokemonWild goldeen   = new PokemonWild("Goldeen",  57, 57, 67, 50, 1, 1,15, 400, 350);
-                        PokemonWild psyduck   = new PokemonWild("Psyduck",  65, 65, 52, 50, 2, 2, 20, 450, 600);
-                        PokemonWild krabby    = new PokemonWild("Krabby",   45, 45, 105, 25, 2, 2, 20, 500, 350);
+                        PokemonWild magmar2    = new PokemonWild("Magmar",    91,  91,  95, 100, 3, 3, 43, 1000, 800);
+                        PokemonWild rapidash   = new PokemonWild("Rapidash", 103, 103, 100,  80, 3, 3, 44, 1100, 900);
+                        PokemonWild ninetales  = new PokemonWild("Ninetales", 98,  98,  76, 100, 3, 3, 43, 1100, 900);
+                        PokemonWild flareon    = new PokemonWild("Flareon",  105, 105, 130,  95, 3, 3, 44, 1200, 950);
+                        PokemonWild ponyta2    = new PokemonWild("Ponyta",    83,  83,  85,  65, 3, 3, 42, 900,  750);
+                        PokemonWild dewgong2   = new PokemonWild("Dewgong",  104, 104,  70,  70, 3, 3, 42, 900,  700);
+                        PokemonWild seel2      = new PokemonWild("Seel",      78,  78,  45,  70, 3, 3, 40, 800,  600);
+                        PokemonWild shellder2  = new PokemonWild("Shellder",  46,  46,  65,  45, 3, 3, 40, 750,  600);
+                        PokemonWild cloyster   = new PokemonWild("Cloyster",  80,  80,  95,  85, 3, 3, 43, 1000, 800);
+                        PokemonWild jynx2      = new PokemonWild("Jynx",      79,  79,  50, 115, 3, 3, 42, 950,  750);
+                        PokemonWild tentacruel2 = new PokemonWild("Tentacruel",  94,  94,  70, 120, 3, 3, 43, 1000, 800);
+                        PokemonWild seadra2     = new PokemonWild("Seadra",      79,  79,  65,  95, 3, 3, 42,  950, 750);
+                        PokemonWild seaking2    = new PokemonWild("Seaking",     99,  99,  92,  65, 3, 3, 43,  950, 750);
+                        PokemonWild kingler     = new PokemonWild("Kingler",     85,  85, 130,  50, 3, 3, 43, 1100, 900);
+                        PokemonWild golduck     = new PokemonWild("Golduck",    100, 100,  82,  80, 3, 3, 43, 1000, 800);
 
-
-                        PokemonWild[] wildPokemonCinnabarIsland = {spearow, rattata, pidgey, oddish, bellsprout, venonat, magikarp, poliwag, goldeen, psyduck, krabby};
+                        PokemonWild[] wildPokemonCinnabarIsland = {
+                                magmar2, rapidash, ninetales, flareon, ponyta2,
+                                dewgong2, seel2, shellder2, cloyster, jynx2,
+                                tentacruel2, seadra2, seaking2, kingler, golduck
+                        };
 
                         Random random = new Random();
                         PokemonWild enemy = wildPokemonCinnabarIsland[random.nextInt(wildPokemonCinnabarIsland.length)];
@@ -1070,7 +1113,8 @@ public class Game {
                         if (!winBattle) { // se perde pokemonBattle, acaba os ciclos porque game over
                             training = false;
                             inCity = false;
-                            System.out.println("Ohhh, o teu " + player.getPokemonInUse().getName() + " era tão fraquinho que morreu... Game Over, melhor sorte da próxima!");
+                            gameOver();
+                            //System.out.println("Ohhh, o teu " + player.getPokemonInUse().getName() + " era tão fraquinho que morreu... Game Over, melhor sorte da próxima!");
                         } else if (winBattle) {
                             player.addCoins(enemy.getCoins()); // vai buscar os coins do pokemon inimigo para atribuir ao player
                             player.showDetails(); // mostra o estado atual do jogador
@@ -1133,6 +1177,7 @@ public class Game {
                         if (!won) {
                             gymWon = false;
                             inCity = false;
+                            gameOver();
                             break;
                         }
                         player.showDetails();
@@ -1142,27 +1187,31 @@ public class Game {
                         System.out.println("Parabéns! Derrotaste o Giovani e ganhaste o Earth Badge!");
                         player.addCoins(viridianCityGym.getReward());
                         player.addGymBadge();
-                        inCity = false; // avança para a próxima cidade
+                        inCity = false; // ganha jogo
+                        winGame(); // ecrã de vitória
                     }
                     break;
                 case 2:
                     System.out.println("Bem-vindo à PookéShop!");
 
-                    PokeShop viridianCityShop = new PokeShop("Cinnabar Shop");
-                    viridianCityShop.addItem(new Potion("Potion", 300, 20));
-                    viridianCityShop.addItem(new Potion("Super Potion", 700, 50));
-
-                    viridianCityShop.addItem(new Consumable("Berry", 100, 10, 0, false, false));
-                    viridianCityShop.addItem(new Consumable("Oran Berry", 150, 15, 0, false, false));
-                    viridianCityShop.addItem(new Consumable("Sitrus Berry", 400, 30, 0, false, false));
-                    viridianCityShop.addItem(new Consumable("X Attack", 500, 0, 10, false, false));
-                    viridianCityShop.addItem(new Consumable("X Speed", 350, 0, 0, true, false));
-                    viridianCityShop.addItem(new Consumable("X Defense", 350, 0, -10, false, false)); // X Defense a implementar, em vez de alterar stat de defesa que nao existe como atributo, vai afetar no strength do pokemon inimigo e reduz 10, ou seja, vai afetar pokemon inimigo
-
-                    viridianCityShop.addItem(new BattleConsumable("Paralyze Orb", 300, StatusEffect.PARALYZED));
-                    viridianCityShop.addItem(new BattleConsumable("Sleep Orb", 400, StatusEffect.ASLEEP));
-                    viridianCityShop.addItem(new BattleConsumable("Poison Orb", 250, StatusEffect.POISONED));
-                    viridianCityShop.addItem(new BattleConsumable("Burn Orb", 250, StatusEffect.BURNED));
+                    PokeShop viridianCityShop = new PokeShop("Viridian Shop");
+                    viridianCityShop.addItem(new Potion("Max Potion", 2500, 999));
+                    viridianCityShop.addItem(new Potion("Sacred Potion", 5000, 999)); // cura total, nome épico
+                    viridianCityShop.addItem(new Consumable("Enigma Berry", 1000, 80, 0, false, false));
+                    viridianCityShop.addItem(new Consumable("Salac Berry", 800, 50, 0, false, false));
+                    viridianCityShop.addItem(new Consumable("Rare Candy", 800, 0, 0, false, true));
+                    viridianCityShop.addItem(new Consumable("Rare Candy", 800, 0, 0, false, true));
+                    viridianCityShop.addItem(new Consumable("Rare Candy", 800, 0, 0, false, true));
+                    viridianCityShop.addItem(new Consumable("Rare Candy", 800, 0, 0, false, true));
+                    viridianCityShop.addItem(new Consumable("Rare Candy", 800, 0, 0, false, true));
+                    viridianCityShop.addItem(new Consumable("Champion Elixir", 8000, 999, 50, true, true));  // cura total + boost strength + speed + level up
+                    viridianCityShop.addItem(new Consumable("Master Herb", 6000, 999, 30, false, true));     // cura total + boost strength + level up
+                    viridianCityShop.addItem(new Consumable("Titan Seed", 5000, 0, 50, false, false));       // boost de strength massivo
+                    viridianCityShop.addItem(new Consumable("Storm Seed", 4500, 0, 0, true, false));         // speed garantido
+                    viridianCityShop.addItem(new BattleConsumable("Chaos Orb", 1500, StatusEffect.PARALYZED));  // paralisia
+                    viridianCityShop.addItem(new BattleConsumable("Doom Orb", 2000, StatusEffect.ASLEEP));      // sono
+                    viridianCityShop.addItem(new BattleConsumable("Venom Orb", 1200, StatusEffect.POISONED));   // veneno
+                    viridianCityShop.addItem(new BattleConsumable("Inferno Orb", 1200, StatusEffect.BURNED));   // queimadura
 
                     ArrayList<TrainerItem> shopItems = viridianCityShop.getRandomItems(); // randomiza os itens na loja
 
@@ -1195,20 +1244,27 @@ public class Game {
                     boolean training = true;
 
                     while (training) {
-                        PokemonWild spearow   = new PokemonWild("Spearow",  53, 53, 60, 31, 1, 1, 13, 300, 350);
-                        PokemonWild rattata   = new PokemonWild("Rattata",  44, 44, 56, 25, 1, 1, 13, 250, 200);
-                        PokemonWild pidgey    = new PokemonWild("Pidgey",   51, 51, 45, 35, 1, 1, 12, 250, 300);
-                        PokemonWild oddish    = new PokemonWild("Oddish",   55, 55, 50, 75, 1, 1, 12, 350, 450);
-                        PokemonWild bellsprout = new PokemonWild("Bellsprout", 60, 60, 75, 70, 1, 1, 13, 350, 350);
-                        PokemonWild venonat   = new PokemonWild("Venonat",  68, 68, 55, 40, 1, 1, 13, 300, 300);
-                        PokemonWild magikarp  = new PokemonWild("Magikarp", 25, 25, 0, 15,  0, 0,5, 100, 100);
-                        PokemonWild poliwag   = new PokemonWild("Poliwag",  52, 52, 50, 40, 1, 1, 15, 350, 450);
-                        PokemonWild goldeen   = new PokemonWild("Goldeen",  57, 57, 67, 50, 1, 1,15, 400, 350);
-                        PokemonWild psyduck   = new PokemonWild("Psyduck",  65, 65, 52, 50, 2, 2, 20, 450, 600);
-                        PokemonWild krabby    = new PokemonWild("Krabby",   45, 45, 105, 25, 2, 2, 20, 500, 350);
+                        PokemonWild rhydon2    = new PokemonWild("Rhydon",    135, 135, 130,  45, 3, 3, 50, 2000, 1500);
+                        PokemonWild nidoking2  = new PokemonWild("Nidoking",  107, 107, 102,  85, 3, 3, 48, 1800, 1400);
+                        PokemonWild nidoqueen2 = new PokemonWild("Nidoqueen", 110, 110,  82,  85, 3, 3, 48, 1800, 1400);
+                        PokemonWild dugtrio    = new PokemonWild("Dugtrio",    65,  65, 100,  50, 3, 3, 48, 1500, 1200);
+                        PokemonWild electrode  = new PokemonWild("Electrode",  80,  80,  50,  80, 3, 3, 48, 1500, 1100);
+                        PokemonWild tauros2    = new PokemonWild("Tauros",    105, 105, 100,  70, 3, 3, 49, 1600, 1300);
+                        PokemonWild dragonair  = new PokemonWild("Dragonair",  91,  91,  84,  70, 3, 3, 50, 2000, 1500);
+                        PokemonWild kangaskhan2= new PokemonWild("Kangaskhan",123, 123,  95,  40, 3, 3, 49, 1700, 1400);
+                        PokemonWild Persian2   = new PokemonWild("Persian",    78,  78,  70,  65, 3, 3, 48, 1400, 1100);
+                        PokemonWild arcanine2  = new PokemonWild("Arcanine",  120, 120, 110, 100, 3, 3, 49, 1600, 1300);
+                        PokemonWild gyarados3  = new PokemonWild("Gyarados",  138, 138, 125, 100, 3, 3, 50, 2000, 1600);
+                        PokemonWild poliwrath  = new PokemonWild("Poliwrath", 104, 104,  95,  70, 3, 3, 49, 1600, 1300);
+                        PokemonWild slowbro2   = new PokemonWild("Slowbro",   108, 108,  75, 100, 3, 3, 49, 1500, 1200);
+                        PokemonWild starmie2   = new PokemonWild("Starmie",    84,  84,  75, 100, 3, 3, 49, 1600, 1200);
+                        PokemonWild lapras     = new PokemonWild("Lapras",    145, 145,  85,  95, 3, 3, 50, 2000, 1500);
 
-
-                        PokemonWild[] wildPokemonViridianCity = {spearow, rattata, pidgey, oddish, bellsprout, venonat, magikarp, poliwag, goldeen, psyduck, krabby};
+                        PokemonWild[] wildPokemonViridianCity = {
+                                rhydon2, nidoking2, nidoqueen2, dugtrio, electrode,
+                                tauros2, dragonair, kangaskhan2, Persian2, arcanine2,
+                                gyarados3, poliwrath, slowbro2, starmie2, lapras
+                        };
 
                         Random random = new Random();
                         PokemonWild enemy = wildPokemonViridianCity[random.nextInt(wildPokemonViridianCity.length)];
@@ -1219,7 +1275,9 @@ public class Game {
                         if (!winBattle) { // se perde pokemonBattle, acaba os ciclos porque game over
                             training = false;
                             inCity = false;
-                            System.out.println("Ohhh, o teu " + player.getPokemonInUse().getName() + " era tão fraquinho que morreu... Game Over, melhor sorte da próxima!");
+                            System.out.println("Ohhh, o teu " + player.getPokemonInUse().getName() + " era tão fraquinho que morreu...");
+                            gameOver();
+
                         } else if (winBattle) {
                             player.addCoins(enemy.getCoins()); // vai buscar os coins do pokemon inimigo para atribuir ao player
                             player.showDetails(); // mostra o estado atual do jogador
@@ -1246,7 +1304,62 @@ public class Game {
                     break;
             }
         }
-        //winGame();
+    }
+    public void winGame() {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("\n");
+        System.out.println("█████████████████████████████████████████████████████████");
+        System.out.println("█                                                       █");
+        System.out.println("█          PARABÉNS, POOKÉMON MASTER!                  █");
+        System.out.println("█                                                       █");
+        System.out.println("█   Derrotaste Giovanni e todos os 8 Gym Leaders!      █");
+        System.out.println("█   Tornaste-te o maior treinador de Kanto!            █");
+        System.out.println("█                                                       █");
+        System.out.println("█████████████████████████████████████████████████████████");
+        System.out.println("\n  🏅 Crachás conquistados: " + player.getGymBadge() + "/8");
+        System.out.println("  ⭐ Pookémon: " + player.getPokemonInUse().getName()
+                + " | Nível: " + player.getPokemonInUse().getLevel()
+                + " | HP: " + player.getPokemonInUse().getHp());
+        System.out.println("  💰 Coins: " + player.getCoins());
+        System.out.println("\nO que queres fazer?");
+        System.out.println("1. Jogar novamente");
+        System.out.println("2. Sair");
+        int choice = input.nextInt();
+
+        if (choice == 1) {
+            new Game().pookemon(); // reinicia o jogo
+        } else {
+            System.out.println("\nObrigado por jogares Pookémon! Até à próxima, treinador!");
+            System.exit(0);
+        }
+    }
+    public void gameOver() {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("\n");
+        System.out.println("█████████████████████████████████████████████████████████");
+        System.out.println("█                                                       █");
+        System.out.println("█                     GAME OVER...                      █");
+        System.out.println("█                                                       █");
+        System.out.println("█              O teu Pookémon desmaiou!                 █");
+        System.out.println("█                                                       █");
+        System.out.println("█████████████████████████████████████████████████████████");
+        System.out.println("\n  Pookémon: " + player.getPokemonInUse().getName()
+                + " | Nível: " + player.getPokemonInUse().getLevel());
+        System.out.println("  Crachás conquistados: " + player.getGymBadge() + "/8");
+        System.out.println("  Coins: " + player.getCoins());
+        System.out.println("\nO que queres fazer?");
+        System.out.println("1. Jogar novamente");
+        System.out.println("2. Sair");
+        int choice = input.nextInt();
+
+        if (choice == 1) {
+            new Game().pookemon(); // reinicia o jogo
+        } else {
+            System.out.println("\nNão desistas, treinador! Até à próxima!");
+            System.exit(0);
+        }
     }
 }
 
