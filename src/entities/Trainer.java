@@ -1,5 +1,7 @@
 package entities;
 
+import game.ConsoleColors;
+
 import items.Consumable;
 import items.TrainerItem;
 
@@ -22,7 +24,7 @@ public class Trainer { // classe do jogador inicializada no inicio do jogo
         this.gymBadge = 0; //inicia a 0, à medida que o jogador ganhe batalhas nos gyms, o contador gymBadge incrementa
         this.itemsBag = new ArrayList<TrainerItem>(); // mochila vazia
 
-        System.out.println(this.nome + " foi criado com sucesso!\n");
+        System.out.println(this.nome + " foi criado/a com sucesso!\n");
     }
 
     public Pokemon getPokemonInUse() {
@@ -64,13 +66,31 @@ public class Trainer { // classe do jogador inicializada no inicio do jogo
     }
 
     public void showDetails() {
-        System.out.println("*********** Trainer Details **************");
-        System.out.println("Nome : " + this.nome);
-        System.out.println("Sexo : " + this.sexo);
-        System.out.println("Coins : " + this.coins);
-        System.out.println("Gym Badges : " + this.gymBadge);
-        this.pokemonInUse.showDetails();
-        System.out.println("*********** ***************");
+        ConsoleColors.println("╔═══════════════════════════════════════════╗", ConsoleColors.CYAN_BOLD);
+        ConsoleColors.println("║            🎒 DETALHES DO TREINADOR       ║", ConsoleColors.CYAN_BOLD);
+        ConsoleColors.println("╠═══════════════════════════════════════════╣", ConsoleColors.CYAN_BOLD);
+
+        ConsoleColors.print("    Nome       : ", ConsoleColors.WHITE_BOLD);
+        System.out.println(this.nome);
+
+        ConsoleColors.print("    Identidade : ", ConsoleColors.WHITE_BOLD);
+        System.out.println(this.sexo);
+
+        ConsoleColors.print("    Moedas     : ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println(this.coins + "  ", ConsoleColors.YELLOW_BOLD);
+
+        ConsoleColors.print("    Crachás    : ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println(this.gymBadge + " ", ConsoleColors.PURPLE_BOLD);
+
+        ConsoleColors.println("╠═══════════════════════════════════════════╣", ConsoleColors.CYAN_BOLD);
+        ConsoleColors.println("║               POOKÉMON EM DESTAQUE        ║", ConsoleColors.CYAN_BOLD);
+        ConsoleColors.println("╚═══════════════════════════════════════════╝", ConsoleColors.CYAN_BOLD);
+
+        if (this.pokemonInUse != null) {
+            this.pokemonInUse.showDetails();
+        } else {
+            ConsoleColors.warning("  Nenhum Pookémon selecionado de momento.");
+        }
     }
 }
 

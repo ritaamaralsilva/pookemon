@@ -1,5 +1,6 @@
 package entities;
 
+import game.ConsoleColors;
 import items.BattleConsumable;
 import items.Consumable;
 import items.Potion;
@@ -413,12 +414,24 @@ public abstract class Pokemon {
         return speedBoost;
     }
 
-    public void showDetails () {
-        System.out.println("********** Pokemon Details *********");
-        System.out.println("Name: " + name);
-        System.out.println("HP: " + hp);
-        System.out.println("Strength: " + strength);
-        System.out.println("Level: " + level);
-        System.out.println("Exp para próximo nível: " + (expToNextLevel() - exp));
+    public void showDetails() {
+        ConsoleColors.println("┌─────────────────────────────────────────────────┐", ConsoleColors.YELLOW_BOLD);
+        ConsoleColors.print("  │          Name: ", ConsoleColors.YELLOW_BOLD);
+        ConsoleColors.println(name + " ⚪ ", ConsoleColors.WHITE_BOLD_BRIGHT);
+        ConsoleColors.println("├─────────────────────────────────────────────────┤", ConsoleColors.YELLOW_BOLD);
+
+        ConsoleColors.print("  │     HP        : ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println(hp + " / " + maxHp, ConsoleColors.GREEN_BOLD); // Usa maxHp se tiveres essa variável, senão deixa só hp
+
+        ConsoleColors.print("  │     Força     : ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println(String.valueOf(strength), ConsoleColors.RED_BOLD);
+
+        ConsoleColors.print("  │     Nível     : ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println("Lv. " + level, ConsoleColors.CYAN_BOLD);
+
+        ConsoleColors.print("  │     EXP faltam: ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println((expToNextLevel() - exp) + " pontos para nível " + (level+1)  , ConsoleColors.PURPLE_BRIGHT);
+
+        ConsoleColors.println("└─────────────────────────────────────────────────┘", ConsoleColors.YELLOW_BOLD);
     }
 }

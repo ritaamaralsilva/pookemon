@@ -8,8 +8,11 @@ import items.Consumable;
 import items.Potion;
 import items.TrainerItem;
 
+import game.ConsoleColors;
+import game.FileTools;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -18,7 +21,7 @@ public class Game {
 
     public void pookemon() throws FileNotFoundException{ // metodo do jogo, instancio aqui todos os objetos
 
-        Scanner userInput = new Scanner(System.in);
+        // método do jogo, instancio aqui todos os objetos
 
         try {
             FileTools.printFile("resources/art/pokemon.txt");
@@ -27,12 +30,68 @@ public class Game {
             System.out.println("Aviso: Imagem do logo não encontrada.");
         }
 
+        Scanner userInput = new Scanner(System.in);
+        String userPlayerName = "";
+        String userGenderName = "";
 
-        System.out.println("Olá! Bem vindo ao POOKÉMON!");
-        System.out.print("Como te chamas? ");
-        String userPlayerName = userInput.next();
-        System.out.print("Qual o teu sexo? ");
-        String userGenderName = userInput.next();
+        // Título estilizado automaticamente usando o método do ConsoleColors
+        ConsoleColors.title("Olá! Bem-vindo/a ao POOKÉMON! ");
+
+        // validar nome (Garante que não tem números nem fica vazio)
+        while (true) {
+            ConsoleColors.print("Como te chamas? ", ConsoleColors.YELLOW_BOLD);
+            userPlayerName = userInput.nextLine().trim();
+
+            if (userPlayerName.isEmpty()) {
+                ConsoleColors.error("O nome não pode ficar em branco.\n");
+            } else if (userPlayerName.matches(".*\\d.*")) {
+                ConsoleColors.error("Por favor, introduz um nome válido (sem números).\n");
+            } else {
+                break; // Nome válido!
+            }
+        }
+
+        System.out.println();
+        ConsoleColors.success("Prazer em conhecer-te, " + userPlayerName + "!");
+        System.out.println();
+
+        while (true) {
+            ConsoleColors.separator();
+            ConsoleColors.println("Seleciona a tua identidade: ", ConsoleColors.PURPLE_BOLD);
+            System.out.println("1. Feminino");
+            System.out.println("2. Masculino");
+            System.out.println("3. Prefiro não dizer");
+            ConsoleColors.separator();
+
+            ConsoleColors.print("Escolha (1-3): ", ConsoleColors.YELLOW_BOLD);
+
+            try {
+                int opcaoGend = userInput.nextInt();
+                userInput.nextLine(); // Limpar o buffer do Scanner
+
+                if (opcaoGend == 1) {
+                    userGenderName = "Feminino";
+                    break;
+                } else if (opcaoGend == 2) {
+                    userGenderName = "Masculino";
+                    break;
+                } else if (opcaoGend == 3) {
+                    userGenderName = "Não Especificado";
+                    break;
+                } else {
+                    ConsoleColors.error("Opção inválida! Escolhe um número entre 1 e 3.\n");
+                }
+
+            } catch (InputMismatchException e) {
+                ConsoleColors.error("Tipo de dados inválido! Deves introduzir um número (1, 2 ou 3).\n");
+                userInput.nextLine(); // Limpar o buffer
+            }
+        }
+
+        // CONFIRMAÇÃO FINAL USANDO O MÉTODO BOX DO PROFESSOR
+        System.out.println();
+        ConsoleColors.box("Treinador/a registado/a! Nome: " + userPlayerName + " | Género: " + userGenderName, ConsoleColors.GREEN_BOLD);
+        System.out.println();
 
         // pokemon starter
         Bulbasaur bulbasaur = new Bulbasaur("Bulba", 45, 45, 49, 65, 1, 1, 5, 0);
@@ -48,15 +107,33 @@ public class Game {
             System.out.println(" Erro Real: " + e.getMessage());
             System.out.println("Aviso: Imagem do trainer não encontrada.");
         }
-        System.out.println("... São 7:30h da manhã, o teu despertador está a tocar. O que vais fazer?");
-        // criar booleano de acordar quando o despertador toca, user escolhe.
-        // se escolher acordar, escolhe depois um dos 3 pokemon (bulbasaur, charmander ou squirtle)
-        // se escolher não acordar, vai ficar com o pikachu porque os outros deixam de estar disponíveis porque o jogador se atrasa
-        System.out.println("1. Acordar");
-        System.out.println("2. So mais 5 minutos");
-        System.out.println("O que vais fazer: ");
-        int wakeUp = userInput.nextInt();
 
+        int wakeUp = 0;
+
+        while (true) {
+            ConsoleColors.separator();
+            ConsoleColors.story("trim trim ... São 7:30h da manhã, o teu despertador está a tocar.");
+            ConsoleColors.story("O que vais fazer?");
+            System.out.println("1. Acordar");
+            System.out.println("2. Só mais 5 minutos...");
+            ConsoleColors.separator();
+
+            ConsoleColors.print("O que vais fazer: ", ConsoleColors.YELLOW_BOLD);
+
+            try {
+                wakeUp = userInput.nextInt();
+                userInput.nextLine(); // Limpa o buffer
+
+                if (wakeUp == 1 || wakeUp == 2) {
+                    break; // Opção válida, sai do loop
+                } else {
+                    ConsoleColors.error("Opção inválida! Escolhe 1 ou 2.\n");
+                }
+            } catch (InputMismatchException e) {
+                ConsoleColors.error("Entrada inválida! Introduz um número (1 ou 2).\n");
+                userInput.nextLine(); // Limpa o buffer
+            }
+        }
 
         switch (wakeUp) {
             case 1:
@@ -98,7 +175,7 @@ public class Game {
                 break;
 
             case 2:
-                System.out.println("... Ups... Perdeste o autocarro, o pneu da bicicleta está furado e não há ubers por perto, mas ganhaste um Pikachu, nem tudo é mau... Mas cuidade que ele dá choques! ");
+                ConsoleColors.story("... Ups... Perdeste o autocarro, o pneu da bicicleta está furado e não há ubers por perto, mas ganhaste um Pikachu, nem tudo é mau... Mas cuidade que ele dá choques! ");
                 try {
                     FileTools.printFile("resources/art/starters/pikachu.txt");
                 } catch (FileNotFoundException e) {
@@ -110,9 +187,10 @@ public class Game {
         }
         player.showDetails();
 
-        System.out.println("Agora sim, começa a tua jornada para te tornares o próximo Pookémon Champion.");
-        System.out.println("... mas para isso vais precisar de conquistar todos os crachás dos ginásios da Liga de Kanto.");
-        System.out.println("Próxima paragem: Pewter City, a cidade dos penedos e rochedos, espero que sejas forte na escalada!");
+        ConsoleColors.separator();
+        ConsoleColors.story("Agora sim, começa a tua jornada para te tornares o próximo Pookémon Champion.");
+        ConsoleColors.story("... mas para isso vais precisar de conquistar todos os crachás dos ginásios da Liga de Kanto.");
+        ConsoleColors.story("Próxima paragem: Pewter City, a cidade dos penedos e rochedos, espero que sejas forte na escalada!");
 
         pewterCity();
     }
