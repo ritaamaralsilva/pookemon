@@ -3,8 +3,11 @@ package entities;
 import java.util.Random;
 
 public class Charizard extends Pokemon { // evolucao do charmeleon no nivel 36
-    public Charizard(String name, int maxHp, int hp, int strength, int specialAttack, int specialAttackUses, int specialAttackUsesLeft, int level, int exp) {
-        super(name, maxHp, hp, strength, specialAttack, specialAttackUses, specialAttackUsesLeft, level, exp);
+    public Charizard(int maxHp, int hp, int strength, int specialAttack, int level, int exp) {
+        super("Charizard", maxHp, hp, strength, specialAttack,
+                1 + (level / 10),
+                1 + (level / 10),
+                level, exp);
     }
 
     @Override

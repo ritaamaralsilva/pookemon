@@ -104,7 +104,7 @@ public class Game {
 
                     for (Pokemon gymPokemon : pewterCityGym.getPokemonGym()) {
                         System.out.println("Brock enviou o " + gymPokemon.getName() + "!");
-                        boolean won = player.getPokemonInUse().pokemonBattle(gymPokemon, player.getItemsBag());
+                        boolean won = player.getPokemonInUse().pokemonBattle(gymPokemon, player);
 
                         if (!won) {
                             gymWon = false;
@@ -183,7 +183,7 @@ public class Game {
                         PokemonWild enemy = wildPokemonPewterCity[random.nextInt(wildPokemonPewterCity.length)];
 
                         System.out.println("Um " + enemy.getName() + " selvagem apareceu!");
-                        boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player.getItemsBag());
+                        boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player);
 
                         if (!winBattle) { // se perde pokemonBattle, acaba os ciclos porque game over
                             training = false;
@@ -245,7 +245,7 @@ public class Game {
 
                     for (Pokemon gymPokemon : ceruleanCityGym.getPokemonGym()) {
                         System.out.println("Misty enviou a " + gymPokemon.getName() + "!");
-                        boolean won = player.getPokemonInUse().pokemonBattle(gymPokemon, player.getItemsBag());
+                        boolean won = player.getPokemonInUse().pokemonBattle(gymPokemon, player);
 
                         if (!won) {
                             gymWon = false;
@@ -332,7 +332,7 @@ public class Game {
                         PokemonWild enemy = wildPokemonCeruleanCity[random.nextInt(wildPokemonCeruleanCity.length)];
 
                         System.out.println("Um " + enemy.getName() + " selvagem apareceu!");
-                        boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player.getItemsBag());
+                        boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player);
 
                         if (!winBattle) { // se perde pokemonBattle, acaba os ciclos porque game over
                             training = false;
@@ -395,7 +395,7 @@ public class Game {
 
                     for (Pokemon gymPokemon : vermilionCityGym.getPokemonGym()) {
                         System.out.println("Lt. Lurge enviou " + gymPokemon.getName() + "!");
-                        boolean won = player.getPokemonInUse().pokemonBattle(gymPokemon, player.getItemsBag());
+                        boolean won = player.getPokemonInUse().pokemonBattle(gymPokemon, player);
 
                         if (!won) {
                             gymWon = false;
@@ -491,7 +491,7 @@ public class Game {
                         PokemonWild enemy = wildPokemonVermilionCity[random.nextInt(wildPokemonVermilionCity.length)];
 
                         System.out.println("Um " + enemy.getName() + " selvagem apareceu!");
-                        boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player.getItemsBag());
+                        boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player);
 
                         if (!winBattle) { // se perde pokemonBattle, acaba os ciclos porque game over
                             training = false;
@@ -566,7 +566,7 @@ public class Game {
 
                     for (Pokemon gymPokemon : celadonCityGym.getPokemonGym()) {
                         System.out.println("Erika enviou " + gymPokemon.getName() + "!");
-                        boolean won = player.getPokemonInUse().pokemonBattle(gymPokemon, player.getItemsBag());
+                        boolean won = player.getPokemonInUse().pokemonBattle(gymPokemon, player);
 
                         if (!won) {
                             gymWon = false;
@@ -657,7 +657,7 @@ public class Game {
                         PokemonWild enemy = wildPokemonCeladonCity[random.nextInt(wildPokemonCeladonCity.length)];
 
                         System.out.println("Um " + enemy.getName() + " selvagem apareceu!");
-                        boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player.getItemsBag());
+                        boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player);
 
                         if (!winBattle) { // se perde pokemonBattle, acaba os ciclos porque game over
                             training = false;
@@ -721,7 +721,7 @@ public class Game {
 
                     for (Pokemon gymPokemon : fuchsiaCityGym.getPokemonGym()) {
                         System.out.println("Koga enviou " + gymPokemon.getName() + "!");
-                        boolean won = player.getPokemonInUse().pokemonBattle(gymPokemon, player.getItemsBag());
+                        boolean won = player.getPokemonInUse().pokemonBattle(gymPokemon, player);
 
                         if (!won) {
                             gymWon = false;
@@ -813,7 +813,7 @@ public class Game {
                         PokemonWild enemy = wildPokemonFuchsiaCity[random.nextInt(wildPokemonFuchsiaCity.length)];
 
                         System.out.println("Um " + enemy.getName() + " selvagem apareceu!");
-                        boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player.getItemsBag());
+                        boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player);
 
                         if (!winBattle) { // se perde pokemonBattle, acaba os ciclos porque game over
                             training = false;
@@ -878,7 +878,7 @@ public class Game {
 
                     for (Pokemon gymPokemon : saffronCityGym.getPokemonGym()) {
                         System.out.println("Sabrina enviou " + gymPokemon.getName() + "!");
-                        boolean won = player.getPokemonInUse().pokemonBattle(gymPokemon, player.getItemsBag());
+                        boolean won = player.getPokemonInUse().pokemonBattle(gymPokemon, player);
 
                         if (!won) {
                             gymWon = false;
@@ -970,7 +970,7 @@ public class Game {
                         PokemonWild enemy = wildPokemonSaffronCity[random.nextInt(wildPokemonSaffronCity.length)];
 
                         System.out.println("Um " + enemy.getName() + " selvagem apareceu!");
-                        boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player.getItemsBag());
+                        boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player);
 
                         if (!winBattle) { // se perde pokemonBattle, acaba os ciclos porque game over
                             training = false;
@@ -1035,7 +1035,7 @@ public class Game {
 
                     for (Pokemon gymPokemon : cinnabarIslandGym.getPokemonGym()) {
                         System.out.println("Blaine enviou " + gymPokemon.getName() + "!");
-                        boolean won = player.getPokemonInUse().pokemonBattle(gymPokemon, player.getItemsBag());
+                        boolean won = player.getPokemonInUse().pokemonBattle(gymPokemon, player);
 
                         if (!won) {
                             gymWon = false;
@@ -1128,7 +1128,7 @@ public class Game {
                         PokemonWild enemy = wildPokemonCinnabarIsland[random.nextInt(wildPokemonCinnabarIsland.length)];
 
                         System.out.println("Um " + enemy.getName() + " selvagem apareceu!");
-                        boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player.getItemsBag());
+                        boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player);
 
                         if (!winBattle) { // se perde pokemonBattle, acaba os ciclos porque game over
                             training = false;
@@ -1192,7 +1192,7 @@ public class Game {
 
                     for (Pokemon gymPokemon : viridianCityGym.getPokemonGym()) {
                         System.out.println("Giovani enviou " + gymPokemon.getName() + "!");
-                        boolean won = player.getPokemonInUse().pokemonBattle(gymPokemon, player.getItemsBag());
+                        boolean won = player.getPokemonInUse().pokemonBattle(gymPokemon, player);
 
                         if (!won) {
                             gymWon = false;
@@ -1290,7 +1290,7 @@ public class Game {
                         PokemonWild enemy = wildPokemonViridianCity[random.nextInt(wildPokemonViridianCity.length)];
 
                         System.out.println("Um " + enemy.getName() + " selvagem apareceu!");
-                        boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player.getItemsBag());
+                        boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player);
 
                         if (!winBattle) { // se perde pokemonBattle, acaba os ciclos porque game over
                             training = false;
@@ -1393,7 +1393,7 @@ public class Game {
 
                     System.out.println("\n O Mew flutua no ar, rodeado por uma barreira mística! A batalha começou!");
 
-                    boolean winMewBattle = player.getPokemonInUse().pokemonBattle(mewEnemy, player.getItemsBag());
+                    boolean winMewBattle = player.getPokemonInUse().pokemonBattle(mewEnemy, player);
 
                     if (!winMewBattle) { // se perde contra o mew
                         System.out.println("O teu Pokémon desmaiou contra a força avassaladora do Mew...");
@@ -1473,7 +1473,7 @@ public class Game {
                 PokemonWild enemy = secretCavePokemon[random.nextInt(secretCavePokemon.length)];
                 System.out.println("\n Um " + enemy.getName() + " selvagem e poderoso apareceu!");
 
-                boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player.getItemsBag());
+                boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player);
 
                 // aplicar aqui o check das evolucoes
 
@@ -1561,7 +1561,7 @@ public class Game {
                         }
 
                         System.out.println("\n Blue enviou " + bluePokemon.getName() + "!");
-                        boolean battleWin = player.getPokemonInUse().pokemonBattle(bluePokemon, player.getItemsBag());
+                        boolean battleWin = player.getPokemonInUse().pokemonBattle(bluePokemon, player);
 
                         //Pokemon evolved = player.getPokemonInUse().getPendingEvolution();
                         //if (evolved != null) {
@@ -1620,7 +1620,7 @@ public class Game {
                         PokemonWild enemy = indigoPlateauTraining[rand.nextInt(indigoPlateauTraining.length)];
                         System.out.println("Um " + enemy.getName() + " poderoso apareceu!");
 
-                        boolean battleWin = player.getPokemonInUse().pokemonBattle(enemy, player.getItemsBag());
+                        boolean battleWin = player.getPokemonInUse().pokemonBattle(enemy, player);
 
                         //Pokemon evolved = player.getPokemonInUse().getPendingEvolution();
                         //if (evolved != null) {

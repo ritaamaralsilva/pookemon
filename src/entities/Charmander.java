@@ -16,10 +16,23 @@ public class Charmander extends Pokemon {
         System.out.println(this.getName() + " usou Ember!");
         return damage;
     }
+    @Override
+    public Pokemon evolve() {
+        if (this.getLevel() == 16) {
+            System.out.println(" Charmander evoluiu para CHARMELEON! ");
+            Charmeleon charmeleon = new Charmeleon( //  construtor do ivysaur e o que ele herda do bulbasaur
+                    this.getMaxHp() + 20, // boost de vida ao evoluir
+                    this.getHp() + 20,
+                    this.getStrength() + 15, // boost de força (ataque normal)
+                    this.getSpecialAttack() + 15, // boost de special attack
+                    this.getLevel(),
+                    this.getExp()
+            );
+            charmeleon.resetSpecialAttackUses(); // começa com PP a cheio
+            return charmeleon;
+        }
+        return null;
+    }
 
-//    @Override
-//    public boolean pokemonBattle(Pokemon opponent) {
-//        //metodo de ataque do charmander, é o mais ofensivo, mas tem menos maxHp
-//        return false;
-//    }
+
 }

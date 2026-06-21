@@ -67,6 +67,10 @@ public abstract class Pokemon {
         return 1 + (this.level / 10); // isto incrementa o nr de vezes que o pokemon pode usar special attack
     }
 
+    public int getSpecialAttackUsesLeft() {
+        return specialAttackUsesLeft;
+    }
+
     public int getLevel() {
         return level;
     }
@@ -173,7 +177,12 @@ public abstract class Pokemon {
         }
     }
 
-    public boolean pokemonBattle(Pokemon enemy, ArrayList<TrainerItem> itemsBag) {
+    public Pokemon evolve() {
+        return null;
+    }
+
+    public boolean pokemonBattle(Pokemon enemy, Trainer player) {
+        ArrayList<TrainerItem> itemsBag = player.getItemsBag();
         Scanner input = new Scanner(System.in);
 
         System.out.println("Batalha entre " + this.getName() + " e " + enemy.getName() + "!");
@@ -310,7 +319,7 @@ public abstract class Pokemon {
                 // pokemon do jogador ataca em segundo
                 int damage;
                 if (choseSpecialAttak) {
-                    damage = this.applySpecialAttack(enemy); // 👈 Também mapeado aqui se atacares em segundo
+                    damage = this.applySpecialAttack(enemy);
                 } else {
                     damage = this.getStrength() / 2;
                     System.out.println(this.getName() + " usou Ataque Normal e causou " + damage + " de dano!");
@@ -327,7 +336,11 @@ public abstract class Pokemon {
         } else {
             System.out.println(enemy.getName() + " foi derrotado!");
             this.gainExp(enemy.getExp());
-            //
+            // aqui checka se o pokemon do jogador evolui
+            Pokemon evolved = this.evolve();
+            if (evolved != null) {
+                player.setPokemonInUse(evolved);
+            }
             return true;
         }
     }

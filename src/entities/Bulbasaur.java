@@ -14,9 +14,21 @@ public class Bulbasaur extends Pokemon {
         return damage;
     }
 
-//    @Override
-//    public boolean pokemonBattle(Pokemon opponent) {
-//        // metodo de ataque do bulbasaur, tem mais defesa, age como um tanque
-//        return false;
-//    }
+    @Override
+    public Pokemon evolve() {
+        if (this.getLevel() == 16) { // quando bulbasaur chega a nivel 16, evolui para ivysaur, mas os stats do bulbasaur passam para esta evolucao, o que vai mudar depois é o special attack que o ivysaur tem especifico na subclasse dele
+            System.out.println(" Bulbasaur evoluiu para IVYSAUR! ");
+            Ivysaur ivysaur = new Ivysaur( //  construtor do ivysaur e o que ele herda do bulbasaur
+                    this.getMaxHp() + 15, // boost de vida ao evoluir
+                    this.getHp() + 15,
+                    this.getStrength() + 15, // boost de força (ataque normal)
+                    this.getSpecialAttack() + 15, // boost de special attack
+                    this.getLevel(),
+                    this.getExp()
+            );
+            ivysaur.resetSpecialAttackUses(); // começa com PP a cheio
+            return ivysaur;
+        }
+        return null;
+    }
 }
