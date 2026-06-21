@@ -7,6 +7,7 @@ import items.Potion;
 import items.TrainerItem;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Random;
 
@@ -186,52 +187,90 @@ public abstract class Pokemon {
         ArrayList<TrainerItem> itemsBag = player.getItemsBag();
         Scanner input = new Scanner(System.in);
 
-        System.out.println("Batalha entre " + this.getName() + " e " + enemy.getName() + "!");
+        ConsoleColors.clear();
+        ConsoleColors.title("BATALHA POOKÉMON");
+        ConsoleColors.separator();
+        ConsoleColors.story("Confronto iniciado: " + this.getName() + " VS " + enemy.getName() + "!");
+        ConsoleColors.separator();
 
         while (this.getHp() > 0 && enemy.getHp() > 0) {
 
-            // escolha do jogador no início do turno
-            System.out.println("\nO que vais fazer?");
-            System.out.println("1. Atacar"); // vou precisar de outro switch para definir se ataque normal usando strength ou ataque especial usando special attack
-            System.out.println("2. Usar Potion/Consumable");
-            System.out.println("3. Usar BattleConsumable no inimigo");
-            System.out.println("4. Ataque especial");
-            int choice = input.nextInt();
+            // PAINEL DE ESTADO DO TURNO
+            System.out.println("\n--- ESTADO DO COMBATE ---");
+            ConsoleColors.print("    O teu " + this.getName() + ": ", ConsoleColors.GREEN_BOLD);
+            System.out.println(this.getHp() + " HP [Ataques Especiais Restantes: " + this.specialAttackUsesLeft + "]");
+            ConsoleColors.print("    Inimigo " + enemy.getName() + ": ", ConsoleColors.RED_BOLD);
+            System.out.println(enemy.getHp() + " HP");
+            System.out.println("---------------------------");
 
-            boolean usedItem = false;
-            int xAttackBoost = 0;
-            boolean choseSpecialAttak = false; // booleano para determinar se jogador escolheu usar Special Attack em combate
+            System.out.println("\nO que vais fazer?");
+            System.out.println("1. Ataque Normal");
+            System.out.println("2. Usar Potion / Consumable (Mochila)");
+            System.out.println("3. Usar BattleConsumable no inimigo");
+            System.out.println("4. Ataque Especial");
+
+            ConsoleColors.print("\nEscolha (1-4): ", ConsoleColors.YELLOW_BOLD);
+
+            int choice;
+            try {
+                choice = input.nextInt();
+                input.nextLine(); // Limpar buffer
+            } catch (InputMismatchException e) {
+                ConsoleColors.error("Comando inválido! Perdeste a oportunidade do turno por distração.");
+                input.nextLine();
+                choice = 1; // Força ataque normal por falha de input
+            }
+
+            boolean choseSpecialAttak = false;
+            boolean usedItem = false; // Controla se o jogador usou um item neste turno (para corrigir o pokemon do jogador usar item e atacar no mesmo turno)
 
             switch (choice) {
-
                 case 1:
-                    // opcao default de ataque normal
+                    // Opção padrão de ataque normal (mantida vazia para processar abaixo)
                     break;
+
                 case 2:
-                    // filtrar itens Potion e Consumable da mochila
                     ArrayList<TrainerItem> myItems = new ArrayList<>();
                     for (TrainerItem item : itemsBag) {
-                        if (item instanceof Potion || item instanceof Consumable) { // se item for instancia de potion ou consumivel
+                        if (item instanceof Potion || item instanceof Consumable) {
                             myItems.add(item);
                         }
                     }
-                    if (myItems.isEmpty()) { // nao ha items
-                        System.out.println("Não tens Potions ou Consumables na mochila!");
+                    if (myItems.isEmpty()) {
+                        ConsoleColors.error("Não tens Potions ou Consumables na mochila!");
                         break;
                     }
-                    System.out.println("Escolhe um item:"); // mostra os items disponiveis na mochila
+                    System.out.println("\nEscolhe um item para aplicar no teu Pookémon:");
                     for (int i = 0; i < myItems.size(); i++) {
                         System.out.println((i + 1) + ". " + myItems.get(i).getName());
                     }
-                    int itemChoice = input.nextInt();
+                    System.out.println("0. Voltar atrás");
+
+                    ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
+                    int itemChoice;
+                    try {
+                        itemChoice = input.nextInt();
+                        input.nextLine();
+                    } catch (InputMismatchException e) {
+                        input.nextLine();
+                        continue;
+                    }
+
+                    if (itemChoice == 0) continue; // Voltar atrás não gasta turno
+
                     if (itemChoice > 0 && itemChoice <= myItems.size()) {
                         TrainerItem chosen = myItems.get(itemChoice - 1);
-                        chosen.use(this); // aplica no meu pokemon
-                        itemsBag.remove(chosen); // remove da mochila após usar
+                        chosen.use(this);
+                        itemsBag.remove(chosen);
+                        ConsoleColors.success("Utilizaste " + chosen.getName() + " com sucesso.");
+                        usedItem = true;
+                    } else {
+                        ConsoleColors.error("Opção inválida!");
+                        continue;
                     }
                     break;
+
                 case 3:
-                    // filtrar BattleConsumables da mochila
                     ArrayList<TrainerItem> battleItems = new ArrayList<>();
                     for (TrainerItem item : itemsBag) {
                         if (item instanceof BattleConsumable) {
@@ -239,71 +278,62 @@ public abstract class Pokemon {
                         }
                     }
                     if (battleItems.isEmpty()) {
-                        System.out.println("Não tens BattleConsumables na mochila!");
-                        break;
+                        ConsoleColors.error("Não tens BattleConsumables na mochila!");
+                        continue;
                     }
-                    System.out.println("Escolhe um item para usar no inimigo:");
+                    System.out.println("\nEscolhe um item estratégico para lançar ao inimigo:");
                     for (int i = 0; i < battleItems.size(); i++) {
                         System.out.println((i + 1) + ". " + battleItems.get(i).getName());
                     }
-                    int battleItemChoice = input.nextInt();
+                    System.out.println("0. Voltar atrás");
+
+                    ConsoleColors.print("Escolha: ", ConsoleColors.YELLOW_BOLD);
+                    int battleItemChoice;
+                    try {
+                        battleItemChoice = input.nextInt();
+                        input.nextLine();
+                    } catch (InputMismatchException e) {
+                        input.nextLine();
+                        continue;
+                    }
+
                     if (battleItemChoice > 0 && battleItemChoice <= battleItems.size()) {
                         TrainerItem chosen = battleItems.get(battleItemChoice - 1);
-                        chosen.use(enemy); // aplica no enemy
-                        itemsBag.remove(chosen); // remove da mochila após usar
+                        chosen.use(enemy);
+                        itemsBag.remove(chosen);
+                        ConsoleColors.success("Lançaste " + chosen.getName() + " contra o alvo.");
+                        usedItem = true;
+                    } else {
+                        ConsoleColors.error("Opção inválida!");
+                        continue;
                     }
                     break;
+
                 case 4:
-                    // Validação de PP / Usos Restantes de Special Attack
                     if (this.specialAttackUsesLeft > 0) {
-                        choseSpecialAttak = true; // jogador escolhe usar ataque especial
-                        this.useSpecialAttack(); // Decrementa os usos restantes (PP left)
+                        choseSpecialAttak = true;
+                        this.useSpecialAttack();
                     } else {
-                        System.out.println("Não tens usos restantes de Ataque Especial! Executando Ataque Normal...");
+                        ConsoleColors.warning("Sem usos restantes de Ataque Especial! A executar Ataque Normal...");
                     }
+                    break;
+
+                default:
+                    ConsoleColors.warning("Opção desconhecida. Executando Ataque Normal...");
                     break;
             }
 
-            // determinar quem ataca primeiro
+            // DETERMINAÇÃO DE VELOCIDADE
             boolean myPokemonFirst = this.hasSpeedBoost() || this.getLevel() >= enemy.getLevel();
-            // reverter XSpeed após decidir ordem
             this.setSpeedBoost(false);
 
-            // ataques
-            // pokemon do jogador ataca primeiro
-            if (myPokemonFirst) {
-                int damage;
+            System.out.println();
+            ConsoleColors.separator();
 
-                if (choseSpecialAttak) {
-                    damage = this.applySpecialAttack(enemy);
-                } else {
-                    damage = this.getStrength() / 2;
-                    System.out.println(this.getName() + " usou Ataque normal e causou " + damage + " de dano! ");
-                }
-                enemy.takeLife(damage);
-                System.out.println(enemy.getName() + " ficou com " + enemy.getHp() + " HP.");
-
-                if (enemy.getHp() <= 0) break;
-
-                // verifica se enemy pode atacar
+            // EXECUÇÃO DO FLUXO DE TURNO (AGORA COM SUPORTE A ITENS)
+            if (usedItem) {
+                // Se usou item, o jogador NÃO ataca. Apenas o inimigo joga se puder.
                 if (enemyCanAttack(enemy)) {
-                    Random rd = new Random();
-                    int enemyAttackChance= rd.nextInt(100);
-
-                    if (enemyAttackChance<=30){
-                        enemy.applySpecialAttack(this);
-                        //System.out.println("O pokemon adversario usou o seu bombástico ataque especial, prepara-te!");
-                    }else {
-                        damage = enemy.getStrength() / 2;
-                        this.takeLife(damage);
-                        System.out.println(enemy.getName() + " causou " + damage + " de dano! "
-                                + this.getName() + " ficou com " + this.getHp() + " HP.");
-                    }
-
-                }
-            } else {
-                // pokemon inimigo ataca primeiro (verifica se consegue atacar por causa de consumiveis de combate)
-                if (enemyCanAttack(enemy) ) {
                     Random rd = new Random();
                     int enemyAttackChance = rd.nextInt(100);
 
@@ -312,36 +342,93 @@ public abstract class Pokemon {
                     } else {
                         int damage = enemy.getStrength() / 2;
                         this.takeLife(damage);
-                        System.out.println(enemy.getName() + " causou " + damage + " de dano! " + this.getName() + " ficou com " + this.getHp() + " HP.");
+                        ConsoleColors.println(enemy.getName() + " aproveitou o teu compasso de espera e infligiu " + damage + " de dano!", ConsoleColors.RED_BOLD);
+                        ConsoleColors.println("A vida do teu " + this.getName() + " desceu para " + this.getHp() + " HP.", ConsoleColors.GREEN_BRIGHT);
                     }
-
-                    if (this.getHp() <= 0) break;
                 }
-                // pokemon do jogador ataca em segundo
+            } else if (myPokemonFirst) {
+                // Fluxo normal: Jogador é mais rápido e ataca primeiro
                 int damage;
                 if (choseSpecialAttak) {
                     damage = this.applySpecialAttack(enemy);
                 } else {
                     damage = this.getStrength() / 2;
-                    System.out.println(this.getName() + " usou Ataque Normal e causou " + damage + " de dano!");
+                    ConsoleColors.println(this.getName() + " desferiu um Ataque Normal e infligiu " + damage + " de dano!", ConsoleColors.WHITE_BOLD);
                 }
                 enemy.takeLife(damage);
-                System.out.println(this.getName() + " causou " + damage + " de dano! " + enemy.getName() + " ficou com " + enemy.getHp() + " HP.");
+                ConsoleColors.println("Vida de " + enemy.getName() + " reduzida para " + enemy.getHp() + " HP.", ConsoleColors.RED_BRIGHT);
+
+                if (enemy.getHp() <= 0) break;
+
+                if (enemyCanAttack(enemy)) {
+                    Random rd = new Random();
+                    int enemyAttackChance = rd.nextInt(100);
+
+                    if (enemyAttackChance <= 30) {
+                        enemy.applySpecialAttack(this);
+                    } else {
+                        damage = enemy.getStrength() / 2;
+                        this.takeLife(damage);
+                        ConsoleColors.println(enemy.getName() + " contra-atacou e causou " + damage + " de dano!", ConsoleColors.RED_BOLD);
+                        ConsoleColors.println("A vida do teu " + this.getName() + " desceu para " + this.getHp() + " HP.", ConsoleColors.GREEN_BRIGHT);
+                    }
+                }
+            } else {
+                // Fluxo normal: Inimigo é mais rápido e ataca primeiro
+                if (enemyCanAttack(enemy)) {
+                    Random rd = new Random();
+                    int enemyAttackChance = rd.nextInt(100);
+
+                    if (enemyAttackChance <= 30) {
+                        enemy.applySpecialAttack(this);
+                    } else {
+                        int damage = enemy.getStrength() / 2;
+                        this.takeLife(damage);
+                        ConsoleColors.println(enemy.getName() + " antecipou-se e infligiu " + damage + " de dano!", ConsoleColors.RED_BOLD);
+                        ConsoleColors.println("A vida do teu " + this.getName() + " desceu para " + this.getHp() + " HP.", ConsoleColors.GREEN_BRIGHT);
+                    }
+
+                    if (this.getHp() <= 0) break;
+                }
+
+                // Jogador ataca em segundo
+                int damage;
+                if (choseSpecialAttak) {
+                    damage = this.applySpecialAttack(enemy);
+                } else {
+                    damage = this.getStrength() / 2;
+                    ConsoleColors.println(this.getName() + " recuperou a postura, usando Ataque Normal para infligir " + damage + " de dano!", ConsoleColors.WHITE_BOLD);
+                }
+                enemy.takeLife(damage);
+                ConsoleColors.println("Vida de " + enemy.getName() + " reduzida para " + enemy.getHp() + " HP.", ConsoleColors.RED_BRIGHT);
             }
 
             applyStatusEffect(enemy);
+            ConsoleColors.separator();
+
+            // Pequena pausa para o jogador ler o resumo do turno
+            System.out.println("\nPressiona Enter para avançar o turno...");
+            input.nextLine();
         }
+
+        // RESOLUÇÃO FINAL DA BATALHA
+        System.out.println();
+        ConsoleColors.separator();
         if (this.getHp() <= 0) {
-            System.out.println("O teu Pookémon foi derrotado... Game Over!");
+            ConsoleColors.error("O teu Pookémon esgotou as forças e foi subjugado no combate.");
             return false;
         } else {
-            System.out.println(enemy.getName() + " foi derrotado!");
+            ConsoleColors.success(enemy.getName() + " foi completamente derrotado!");
             this.gainExp(enemy.getExp());
-            // aqui checka se o pokemon do jogador evolui
+
             Pokemon evolved = this.evolve();
             if (evolved != null) {
+                ConsoleColors.box("Incrível! O teu Pookémon reuniu energia suficiente e evoluiu!", ConsoleColors.CYAN_BOLD);
                 player.setPokemonInUse(evolved);
             }
+
+            System.out.println("\nPressiona Enter para recolher as recompensas...");
+            input.nextLine();
             return true;
         }
     }
@@ -363,15 +450,22 @@ public abstract class Pokemon {
         this.strength += strengthGain;
         this.hp += hpGain;
 
-        System.out.println(this.name + " subiu para o nível " + this.level + "!");
-        System.out.println("  HP: +" + hpGain + " (max agora: " + this.maxHp + ")");
-        System.out.println("  Força: +" + strengthGain + " (agora: " + this.strength + ")");
 
-        // avisa quando ganha um uso extra de special attack
+        ConsoleColors.box("    LEVEL UP! " + this.name + " subiu para o nível " + this.level + "!", ConsoleColors.CYAN_BOLD);
+
+
+        ConsoleColors.print("  HP    : ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println("+" + hpGain + " (Máximo atual: " + this.maxHp + ")", ConsoleColors.GREEN_BOLD);
+
+        ConsoleColors.print("  Força : ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println("+" + strengthGain + " (Atual: " + this.strength + ")", ConsoleColors.RED_BOLD);
+
+        // Avisar quando o pokemon ganha um uso extra de special attack
         if (this.level % 10 == 0) {
-            System.out.println("  Ataque Especial: agora tens "
-                    + getSpecialAttackUses() + " uso(s) por batalha!");
+            ConsoleColors.println("     Ataque Especial: Ganhaste um uso extra! Agora tens "
+                    + getSpecialAttackUses() + " usos por batalha!", ConsoleColors.PURPLE_BRIGHT);
         }
+        System.out.println(); // Linha em branco
     }
 
     // Chamado no Pokémon do jogador após ganhar uma batalha
@@ -385,7 +479,7 @@ public abstract class Pokemon {
 
     public void healPokemon() { // metodo do PookeCenter para curar o pokemon do jogador (restaura todo o hp)
         this.hp = this.maxHp;
-        System.out.println(this.name + " foi curado! HP restaurado para " + this.maxHp + ".");
+        ConsoleColors.success(this.name + " foi curado! HP restaurado para " + this.maxHp + ".");
     }
     // metodos para Potion e Consumiveis
     // para Potion e Berry

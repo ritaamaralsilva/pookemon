@@ -200,29 +200,61 @@ public class Game {
 
         boolean inCity = true;
         while (inCity) {
-            System.out.println("\n Chegaste a Pewter City, o que vais fazer a seguir? ");
+            ConsoleColors.clear();
+            ConsoleColors.title("Pewter City - A Cidade dos Penedos");
+
+            ConsoleColors.separator();
+            ConsoleColors.story("Estás nas ruas cinzentas de Pewter City. O ar é fresco e vês o imponente Ginásio de Rocha ao longe.");
+            ConsoleColors.story("O que pretendes fazer a seguir?");
+            ConsoleColors.separator();
+
             System.out.println("1. Enfrentar o Brock, o Gym Leader");
-            System.out.println("2. Comprar itens na Pooke Shop");
+            System.out.println("2. Comprar itens na Pooké Shop");
             System.out.println("3. Treinar o teu Pookémon");
             System.out.println("4. Ir ao PookéCenter");
-            int cityChoice = input.nextInt();
+
+            ConsoleColors.print("\nEscolha: ", ConsoleColors.YELLOW_BOLD);
+
+            int cityChoice;
+            try {
+                cityChoice = input.nextInt();
+                input.nextLine(); // Limpar buffer
+            } catch (InputMismatchException e) {
+                ConsoleColors.error("Opção inválida! Introduz um número.");
+                input.nextLine();
+                continue;
+            }
+
             switch (cityChoice) {
                 case 1:
+                    ConsoleColors.clear();
+                    ConsoleColors.title("Ginásio de Pewter City");
+
                     Gym pewterCityGym = new Gym("Pewter City Gym", 12, 1386);
                     pewterCityGym.addPokemon(new PokemonWildGymBrock("Geodude", 50, 50, 80, 30, 2, 2, 12, 300, 500));
-                    pewterCityGym.addPokemon(new PokemonWildGymBrock("Onix", 35, 35, 45, 30, 2,2, 14, 500, 1000));
+                    pewterCityGym.addPokemon(new PokemonWildGymBrock("Onix", 35, 35, 45, 30, 2, 2, 14, 500, 1000));
 
                     if (player.getPokemonInUse().getLevel() < pewterCityGym.getMinLevelToBattle()) {
-                        System.out.println("O teu Pookémon é fraco demais! Precisas de estar pelo menos no nível "
-                                + pewterCityGym.getMinLevelToBattle() + " para entrar neste gym.");
+                        ConsoleColors.error("O teu Pookémon é fraco demais!");
+                        ConsoleColors.warning("Precisas de estar pelo menos no nível " + pewterCityGym.getMinLevelToBattle() + " para entrar neste gym.");
+                        System.out.println("\nPressiona Enter para voltar...");
+                        input.nextLine();
                         break;
                     }
 
-                    System.out.println("Escolheste enfrentar o Gym Leader Brock!");
+                    ConsoleColors.separator();
+                    ConsoleColors.story("Entras no ginásio arenoso. Brock aguarda-te no topo de um pedestal de pedra.");
+                    ConsoleColors.story("Escolheste enfrentar o Gym Leader Brock!");
+                    ConsoleColors.separator();
+
                     boolean gymWon = true;
 
                     for (Pokemon gymPokemon : pewterCityGym.getPokemonGym()) {
-                        System.out.println("Brock enviou o " + gymPokemon.getName() + "!");
+                        ConsoleColors.separator();
+                        ConsoleColors.story("Brock faz um sinal com a mão e lança uma Pookébola!");
+                        ConsoleColors.println("Brock enviou o " + gymPokemon.getName() + "!", ConsoleColors.RED_BOLD);
+                        ConsoleColors.separator();
+
                         boolean won = player.getPokemonInUse().pokemonBattle(gymPokemon, player);
 
                         if (!won) {
@@ -235,14 +267,25 @@ public class Game {
                     }
 
                     if (gymWon) {
-                        System.out.println("Parabéns! Derrotaste o Brock e ganhaste o Boulder Badge!");
+                        ConsoleColors.separator();
+                        ConsoleColors.story("As rochas de Brock desfazem-se em poeira perante a tua estratégia!");
+                        ConsoleColors.success("Parabéns! Derrotaste o Brock e ganhaste o Boulder Badge!");
+                        ConsoleColors.separator();
+
                         player.addCoins(pewterCityGym.getReward());
                         player.addGymBadge();
-                        inCity = false; // avança para a próxima cidade
+                        inCity = false; // Avança para a próxima cidade
+
+                        System.out.println("\nPressiona Enter para continuar a jornada...");
+                        input.nextLine();
                     }
                     break;
                 case 2:
-                    System.out.println("Bem-vindo à PookéShop!");
+                    boolean inShop = true;
+                    while (inShop) {
+                        ConsoleColors.clear();
+                        ConsoleColors.title("Pooké Shop de Pewter City");
+                        ConsoleColors.println("Bem-vindo à PookéShop!", ConsoleColors.CYAN_BOLD);
 
                     PokeShop pewterCityShop = new PokeShop("Pewter Shop");
                     pewterCityShop.addItem(new Potion("Potion", 300, 20));
@@ -263,29 +306,44 @@ public class Game {
                                 + " - " + shopItems.get(i).getPrice() + " coins");
                     }
                     System.out.println("0. Sair da loja");
-                    System.out.print("O que queres comprar? ");
-                    int shopChoice = input.nextInt();
-
-                    if (shopChoice == 0) break;
-
-                    if (shopChoice > 0 && shopChoice <= shopItems.size()) {
-                        TrainerItem chosen = shopItems.get(shopChoice - 1);
-                        if (player.getCoins() >= chosen.getPrice()) {
-                            player.removeCoins(chosen.getPrice());
-                            player.addItemToBag(chosen);
-                            System.out.println("Compraste " + chosen.getName() + "! Tens agora " + player.getCoins() + " coins.");
-                        } else {
-                            System.out.println("Não tens coins suficientes! Tens apenas " + player.getCoins() + " coins.");
+                        ConsoleColors.print("\nO que queres comprar? ", ConsoleColors.YELLOW_BOLD);
+                        int shopChoice;
+                        try {
+                            shopChoice = input.nextInt();
+                            input.nextLine();
+                        } catch (InputMismatchException e) {
+                            ConsoleColors.error("Escolha inválida!");
+                            input.nextLine();
+                            continue;
                         }
-                    } else {
-                        System.out.println("Opção inválida!");
+
+                        if (shopChoice == 0) {
+                            inShop = false;
+                            break;
+                        }
+
+                        if (shopChoice > 0 && shopChoice <= shopItems.size()) {
+                            TrainerItem chosen = shopItems.get(shopChoice - 1);
+                            if (player.getCoins() >= chosen.getPrice()) {
+                                player.removeCoins(chosen.getPrice());
+                                player.addItemToBag(chosen);
+                                ConsoleColors.success("Compraste " + chosen.getName() + "! Tens agora " + player.getCoins() + " coins.");
+                            } else {
+                                ConsoleColors.error("Não tens coins suficientes! Tens apenas " + player.getCoins() + " coins.");
+                            }
+                        } else {
+                            ConsoleColors.error("Opção inválida!");
+                        }
+                        System.out.println("\nPressiona Enter para continuar na loja...");
+                        input.nextLine();
                     }
                     break;
                 case 3:
-                    System.out.println("Escolheste ir treinar o teu Pookémon!");
                     boolean training = true;
-
                     while (training) {
+                        ConsoleColors.clear();
+                        ConsoleColors.title("Área de Treino - Rota 3");
+
                         // instanciar pokemon wild para os treinos
                         PokemonWild geodude = new PokemonWild("Geodude", 50, 50, 10, 30, 1, 1, 6, 300, 200);
                         PokemonWild onix = new PokemonWild("Onix", 60, 60, 25, 30, 1, 1, 7, 500, 300);
@@ -301,34 +359,60 @@ public class Game {
                         Random random = new Random();
                         PokemonWild enemy = wildPokemonPewterCity[random.nextInt(wildPokemonPewterCity.length)];
 
-                        System.out.println("Um " + enemy.getName() + " selvagem apareceu!");
+                        ConsoleColors.separator();
+                        ConsoleColors.story("Caminhas pela relva alta à procura de oponentes para fortalecer a tua equipa...");
+                        ConsoleColors.println("Um " + enemy.getName() + " selvagem apareceu!", ConsoleColors.RED_BOLD);
+                        ConsoleColors.separator();
+
                         boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player);
 
                         if (!winBattle) { // se perde pokemonBattle, acaba os ciclos porque game over
                             training = false;
                             inCity = false;
                             gameOver();
-                        } else if (winBattle) {
+                            break;
+                        } else {
                             player.addCoins(enemy.getCoins()); // vai buscar os coins do pokemon inimigo para atribuir ao player
+                            ConsoleColors.success("Vitória! Conseguiste " + enemy.getCoins() + " moedas.");
                             player.showDetails(); // mostra o estado atual do jogador
 
                             System.out.println("\nO que queres fazer agora?");
                             System.out.println("1. Continuar a treinar");
                             System.out.println("2. Voltar ao menu da cidade");
-                            int trainingChoice = input.nextInt();
+
+                            ConsoleColors.print("\nEscolhe: ", ConsoleColors.YELLOW_BOLD);
+                            int trainingChoice;
+                            try {
+                                trainingChoice = input.nextInt();
+                                input.nextLine();
+                            } catch (InputMismatchException e) {
+                                input.nextLine();
+                                trainingChoice = 2; // Padrão força a saída se errar o input
+                            }
                             if (trainingChoice == 2) {
-                                training = false; // volta ao menu da cidade
+                                training = false;
                             }
                         }
                     }
                     break;
                 case 4:
-                    System.out.println("Bem-vindo ao PookéCenter!");
-                    System.out.println("A Nurse Joy trata do teu Pookémon...");
+                    ConsoleColors.clear();
+                    ConsoleColors.title("PookéCenter de Pewter City");
+
+                    ConsoleColors.separator();
+                    ConsoleColors.story("Entras no ambiente calmo e higienizado do centro de tratamento.");
+                    ConsoleColors.println("Bem-vindo ao PookéCenter!", ConsoleColors.GREEN_BOLD);
+                    ConsoleColors.story("A Nurse Joy sorri, recolhe o teu dispositivo e trata do teu Pookémon...");
+                    ConsoleColors.separator();
+
                     player.getPokemonInUse().healPokemon();
                     player.getPokemonInUse().resetSpecialAttackUses(); // volta a ter special attack uses
                     player.showDetails();
+
+                    System.out.println("\nPressiona Enter para regressar à cidade...");
+                    input.nextLine();
                     break;
+
                 default:
                     System.out.println("Escolheste uma opção inválida!");
                     break;
@@ -1794,94 +1878,120 @@ public class Game {
     public void winGame() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
-        System.out.println("\n");
-        System.out.println("█████████████████████████████████████████████████████████");
-        System.out.println("█                                                       █");
-        System.out.println("█          PARABÉNS, POOKÉMON MASTER!                  █");
-        System.out.println("█                                                       █");
-        System.out.println("█   Derrotaste Giovanni e todos os 8 Gym Leaders!      █");
-        System.out.println("█   Tornaste-te o maior treinador de Kanto!            █");
-        System.out.println("█                                                       █");
-        System.out.println("█████████████████████████████████████████████████████████");
-        System.out.println("\n  🏅 Crachás conquistados: " + player.getGymBadge() + "/8");
-        System.out.println("  ⭐ Pookémon: " + player.getPokemonInUse().getName()
-                + " | Nível: " + player.getPokemonInUse().getLevel()
-                + " | HP: " + player.getPokemonInUse().getHp());
-        System.out.println("  💰 Coins: " + player.getCoins());
-        System.out.println("\nO que queres fazer?");
-        System.out.println("1. Jogar novamente");
-        System.out.println("2. Sair");
-        int choice = input.nextInt();
+        ConsoleColors.clear();
+        ConsoleColors.title("PARABÉNS, POOKÉMON MASTER!");
 
+        ConsoleColors.separator();
+        ConsoleColors.story("Derrotaste o Giovani e todos os 8 Gym Leaders de Kanto!");
+        ConsoleColors.story("A tua dedicação e estratégia valeram-te e medalha de ouro.");
+        ConsoleColors.story("Tornaste-te oficialmente o/a maior treinador/a da região!");
+        ConsoleColors.separator();
+
+        ConsoleColors.print("\n  Crachás conquistados: ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println(player.getGymBadge() + " / 8", ConsoleColors.PURPLE_BOLD);
+
+        ConsoleColors.print("    Pookémon Principal : ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println(player.getPokemonInUse().getName() + " (Lv. " + player.getPokemonInUse().getLevel() + " | HP: " + player.getPokemonInUse().getHp() + ")", ConsoleColors.GREEN_BOLD);
+
+        ConsoleColors.print("    Moedas Finais      : ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println(player.getCoins() + " coins", ConsoleColors.YELLOW_BOLD);
+
+        System.out.println("\n1. Jogar novamente");
+        System.out.println("2. Sair");
+
+        ConsoleColors.print("\nEscolhe: ", ConsoleColors.YELLOW_BOLD);
+        int choice = 2;
+        try {
+            choice = input.nextInt();
+        } catch (InputMismatchException e) {
+            // Se errar, assume a saída segura
+        }
+
+        Audio.stopAll();
         if (choice == 1) {
-            Audio.stopAll(); // parar o som antes do jogo fechar
-            new Game().pookemon(); // reinicia o jogo
+            new Game().pookemon();
         } else {
-            System.out.println("\nObrigado por jogares Pookémon! Até à próxima, treinador!");
-            Audio.stopAll(); // parar o som antes do jogo fechar
+            System.out.println("\nObrigado/a por jogares Pookémon! Até à próxima, treinador/a!");
             System.exit(0);
         }
     }
     public void winGameMewtwo() throws FileNotFoundException {
             Scanner input = new Scanner(System.in);
 
-            System.out.println("\n");
-            System.out.println("█████████████████████████████████████████████████████████");
-            System.out.println("█                                                       █");
-            System.out.println("█             O DESTINO REVELADO: THE CHOSEN ONE!       █");
-            System.out.println("█                                                       █");
-            System.out.println("█   Penetraste na caverna e a tua aura foi reconhecida  █");
-            System.out.println("█   pela entidade psíquica mais poderosa do universo.   █");
-            System.out.println("█   O Mewtwo escolheu-te. Tu transcendeste a Liga!     █");
-            System.out.println("█                                                       █");
-            System.out.println("█████████████████████████████████████████████████████████");
-            System.out.println("\n  Estado Cósmico: Abençoado por Mewtwo");
-            System.out.println("  Pookémon no momento: " + player.getPokemonInUse().getName()
-                    + " | Nível: " + player.getPokemonInUse().getLevel());
-            System.out.println("  Moedas acumuladas: " + player.getCoins());
-            System.out.println("\n O que queres fazer?");
-            System.out.println("1. Jogar novamente (Explorar o resto do mundo)");
-            System.out.println("2. Sair do jogo");
-            int choice = input.nextInt();
+        ConsoleColors.clear();
+        ConsoleColors.title("O DESTINO REVELADO: THE CHOSEN ONE!");
 
-            if (choice == 1) {
-                Audio.stopAll(); // parar o som antes do jogo fechar
-                new Game().pookemon(); // reinicia o jogo
-            } else {
-                System.out.println("\nA tua lenda ficará guardada nas sombras da Secret Cave. Adeus!");
-                Audio.stopAll(); // parar o som antes do jogo fechar
-                System.exit(0);
-            }
+        ConsoleColors.separator();
+        ConsoleColors.story("Penetraste nas profundezas esquecidas da caverna.");
+        ConsoleColors.story("A tua aura pura de treinador foi reconhecida pela força psíquica mais avassaladora do universo.");
+        ConsoleColors.story("O lendário Mewtwo escolheu-te como o seu parceiro. Tu transcendeste a própria Liga Pookémon!");
+        ConsoleColors.separator();
+
+        ConsoleColors.print("\n    Estado Cósmico    : ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println("Abençoado por Mewtwo", ConsoleColors.PURPLE_BOLD_BRIGHT);
+
+        ConsoleColors.print("    Pookémon no momento: ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println(player.getPokemonInUse().getName() + " (Lv. " + player.getPokemonInUse().getLevel() + ")", ConsoleColors.CYAN_BOLD);
+
+        ConsoleColors.print("    Moedas Acumuladas  : ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println(player.getCoins() + " coins", ConsoleColors.YELLOW_BOLD);
+
+        System.out.println("\n1. Jogar novamente (Explorar o resto do mundo)");
+        System.out.println("2. Sair do jogo");
+
+        ConsoleColors.print("\nEscolhe: ", ConsoleColors.YELLOW_BOLD);
+        int choice = 2;
+        try {
+            choice = input.nextInt();
+        } catch (InputMismatchException e) {
+            // Fallback
         }
+
+        Audio.stopAll();
+        if (choice == 1) {
+            new Game().pookemon();
+        } else {
+            System.out.println("\nA tua lenda ficará guardada para sempre nas sombras da Secret Cave. Adeus!");
+            System.exit(0);
+        }
+    }
     public void winGameBlue() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
-        System.out.println("\n");
-        System.out.println("█████████████████████████████████████████████████████████");
-        System.out.println("█                                                       █");
-        System.out.println("█              NOVO CAMPEÃO DA LIGA INDIGO!             █");
-        System.out.println("█                                                       █");
-        System.out.println("█   Superaste o portal do Gold Ticket e destruíste      █");
-        System.out.println("█   a lendária equipa do Trainer Blue!                  █");
-        System.out.println("█   És oficialmente o número 1 do Indigo Plateau!       █");
-        System.out.println("█                                                       █");
-        System.out.println("█████████████████████████████████████████████████████████");
-        System.out.println("\n  Título: Kanto League Champion");
-        System.out.println("  Pookémon Parceiro: " + player.getPokemonInUse().getName()
-                + " | Nível: " + player.getPokemonInUse().getLevel()
-                + " | HP: " + player.getPokemonInUse().getHp());
-        System.out.println("  Coins de Elite: " + player.getCoins());
-        System.out.println("\nO que queres fazer?");
-        System.out.println("1. Jogar novamente (Tentar outra rota)");
-        System.out.println("2. Sair do jogo");
-        int choice = input.nextInt();
+        ConsoleColors.clear();
+        ConsoleColors.title("PARABÉNS POOKÉMON MASTER DA LIGA INDIGO!");
 
+        ConsoleColors.separator();
+        ConsoleColors.story("Superaste com sucesso o misterioso portal do Gold Ticket!");
+        ConsoleColors.story("Numa batalha épica de proporções históricas, destruíste por completo a equipa do Trainer Blue.");
+        ConsoleColors.story("És orgulhosamente o/a número 1 incontestável do Indigo Plateau!");
+        ConsoleColors.separator();
+
+        ConsoleColors.print("\n Título Alcançado  : ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println("Kanto League Champion", ConsoleColors.CYAN_BOLD_BRIGHT);
+
+        ConsoleColors.print("    Pookémon Parceiro  : ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println(player.getPokemonInUse().getName() + " (Lv. " + player.getPokemonInUse().getLevel() + " | HP: " + player.getPokemonInUse().getHp() + ")", ConsoleColors.GREEN_BOLD);
+
+        ConsoleColors.print("    Coins de Elite     : ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println(player.getCoins() + " coins", ConsoleColors.YELLOW_BOLD);
+
+        System.out.println("\n1. Jogar novamente (Tentar outra rota)");
+        System.out.println("2. Sair do jogo");
+
+        ConsoleColors.print("\nEscolhe: ", ConsoleColors.YELLOW_BOLD);
+        int choice = 2;
+        try {
+            choice = input.nextInt();
+        } catch (InputMismatchException e) {
+            // Fallback
+        }
+
+        Audio.stopAll();
         if (choice == 1) {
-            Audio.stopAll(); // parar o som antes do jogo fechar
-            new Game().pookemon(); // reinicia o jogo
+            new Game().pookemon();
         } else {
-            System.out.println("\nObrigado por jogares Pookémon! Até à próxima, Campeão!");
-            Audio.stopAll(); // parar o som antes do jogo fechar
+            System.out.println("\nObrigado/a por jogares Pookémon! Até à próxima, Treinador/a!");
             System.exit(0);
         }
     }
@@ -1889,29 +1999,40 @@ public class Game {
     public void gameOver() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
-        System.out.println("\n");
-        System.out.println("█████████████████████████████████████████████████████████");
-        System.out.println("█                                                       █");
-        System.out.println("█                     GAME OVER...                      █");
-        System.out.println("█                                                       █");
-        System.out.println("█              O teu Pookémon desmaiou!                 █");
-        System.out.println("█                                                       █");
-        System.out.println("█████████████████████████████████████████████████████████");
-        System.out.println("\n  Pookémon: " + player.getPokemonInUse().getName()
-                + " | Nível: " + player.getPokemonInUse().getLevel());
-        System.out.println("  Crachás conquistados: " + player.getGymBadge() + "/8");
-        System.out.println("  Coins: " + player.getCoins());
-        System.out.println("\nO que queres fazer?");
-        System.out.println("1. Jogar novamente");
-        System.out.println("2. Sair");
-        int choice = input.nextInt();
+        ConsoleColors.clear();
+        ConsoleColors.title("GAME OVER...");
 
+        ConsoleColors.separator();
+        ConsoleColors.story("O teu Pookémon esgotou todas as suas forças e desmaiou em combate!");
+        ConsoleColors.story("Sem energia para continuar a lutar, foste forçado a recuar.");
+        ConsoleColors.story("A tua jornada nesta rota termina aqui, mas a tua determinação mantém-se intacta.");
+        ConsoleColors.separator();
+
+        ConsoleColors.print("\n  Último Pookémon  : ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println(player.getPokemonInUse().getName() + " (Lv. " + player.getPokemonInUse().getLevel() + ")", ConsoleColors.RED_BOLD);
+
+        ConsoleColors.print("    Ginásios Vencidos: ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println(player.getGymBadge() + " / 8", ConsoleColors.PURPLE_BOLD);
+
+        ConsoleColors.print("    Moedas Perdidas  : ", ConsoleColors.WHITE_BOLD);
+        ConsoleColors.println(player.getCoins() + " coins", ConsoleColors.YELLOW_BOLD);
+
+        System.out.println("\n1. Jogar novamente");
+        System.out.println("2. Sair");
+
+        ConsoleColors.print("\nEscolhe: ", ConsoleColors.YELLOW_BOLD);
+        int choice = 2;
+        try {
+            choice = input.nextInt();
+        } catch (InputMismatchException e) {
+            // Fallback seguro
+        }
+
+        Audio.stopAll();
         if (choice == 1) {
-            Audio.stopAll(); // parar o som antes do jogo fechar
-            new Game().pookemon(); // reinicia o jogo
+            new Game().pookemon();
         } else {
-            System.out.println("\nNão desistas, treinador! Até à próxima!");
-            Audio.stopAll(); // parar o som antes do jogo fechar
+            System.out.println("\nNão desistas, treinador/a! A derrota faz parte do caminho. Até à próxima!");
             System.exit(0);
         }
     }
