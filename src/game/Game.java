@@ -1492,7 +1492,7 @@ public class Game {
         Scanner input = new Scanner(System.in);
         Random rand = new Random();
 
-        System.out.println("\n🏔️ INDIGO PLATEAU");
+        System.out.println("\n INDIGO PLATEAU");
         System.out.println("O portal do Gold Ticket fechou-se atrás de ti.");
         System.out.println("À tua frente está o Trainer BLUE — o teu rival desde o início!");
         System.out.println("\"Hah! Sabia que apareceria aqui. Estás pronto para perder?\"");
@@ -1695,9 +1695,11 @@ public class Game {
         int choice = input.nextInt();
 
         if (choice == 1) {
+            Audio.stopAll(); // parar o som antes do jogo fechar
             new Game().pookemon(); // reinicia o jogo
         } else {
             System.out.println("\nObrigado por jogares Pookémon! Até à próxima, treinador!");
+            Audio.stopAll(); // parar o som antes do jogo fechar
             System.exit(0);
         }
     }
@@ -1724,9 +1726,11 @@ public class Game {
             int choice = input.nextInt();
 
             if (choice == 1) {
+                Audio.stopAll(); // parar o som antes do jogo fechar
                 new Game().pookemon(); // reinicia o jogo
             } else {
                 System.out.println("\nA tua lenda ficará guardada nas sombras da Secret Cave. Adeus!");
+                Audio.stopAll(); // parar o som antes do jogo fechar
                 System.exit(0);
             }
         }
@@ -1754,9 +1758,11 @@ public class Game {
         int choice = input.nextInt();
 
         if (choice == 1) {
+            Audio.stopAll(); // parar o som antes do jogo fechar
             new Game().pookemon(); // reinicia o jogo
         } else {
             System.out.println("\nObrigado por jogares Pookémon! Até à próxima, Campeão!");
+            Audio.stopAll(); // parar o som antes do jogo fechar
             System.exit(0);
         }
     }
@@ -1782,9 +1788,11 @@ public class Game {
         int choice = input.nextInt();
 
         if (choice == 1) {
+            Audio.stopAll(); // parar o som antes do jogo fechar
             new Game().pookemon(); // reinicia o jogo
         } else {
             System.out.println("\nNão desistas, treinador! Até à próxima!");
+            Audio.stopAll(); // parar o som antes do jogo fechar
             System.exit(0);
         }
     }
