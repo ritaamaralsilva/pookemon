@@ -6,8 +6,3 @@ public class PokemonLegendary extends Pokemon {
     }
 }
 
-//    @Override
-//    public boolean pokemonBattle(Pokemon opponent) {
-//        return false;
-//    }
-

@@ -1325,7 +1325,7 @@ public class Game {
             }
         }
     }
-
+    // percurso alternativo: cave secreta e indigo plateau (bypass dos gyms para ganhar)
     public void secretCave() {
         Scanner input = new Scanner(System.in);
         Random random = new Random();
@@ -1563,12 +1563,6 @@ public class Game {
                         System.out.println("\n Blue enviou " + bluePokemon.getName() + "!");
                         boolean battleWin = player.getPokemonInUse().pokemonBattle(bluePokemon, player);
 
-                        //Pokemon evolved = player.getPokemonInUse().getPendingEvolution();
-                        //if (evolved != null) {
-                            //player.setPokemonInUse(evolved);
-                            //player.getPokemonInUse().clearPendingEvolution();
-                       // }
-
                         if (!battleWin) {
                             blueDefeated = false;
                             inPlateau = false;
@@ -1601,6 +1595,32 @@ public class Game {
                     indigoPlateauShop.addItem(new BattleConsumable("Chaos Orb", 1500, StatusEffect.PARALYZED));
                     indigoPlateauShop.addItem(new BattleConsumable("Inferno Orb", 1200, StatusEffect.BURNED));
 
+                    ArrayList<TrainerItem> blueShopItems = indigoPlateauShop.getRandomItems();
+
+                    System.out.println("Itens disponíveis hoje:");
+                    for (int i = 0; i < blueShopItems.size(); i++) {
+                        System.out.println((i + 1) + ". " + blueShopItems.get(i).getName()
+                                + " - " + blueShopItems.get(i).getPrice() + " coins");
+                    }
+                    System.out.println("0. Sair da loja");
+                    System.out.print("O que queres comprar? ");
+                    int blueShopChoice = input.nextInt();
+
+                    if (blueShopChoice == 0) break;
+
+                    if (blueShopChoice > 0 && blueShopChoice <= blueShopItems.size()) {
+                        TrainerItem chosen = blueShopItems.get(blueShopChoice - 1);
+                        if (player.getCoins() >= chosen.getPrice()) {
+                            player.removeCoins(chosen.getPrice());
+                            player.addItemToBag(chosen);
+                            System.out.println("Compraste " + chosen.getName() + "! Tens agora " + player.getCoins() + " coins.");
+                        } else {
+                            System.out.println("Não tens coins suficientes! Tens apenas " + player.getCoins() + " coins.");
+                        }
+                    } else {
+                        System.out.println("Opção inválida!");
+                    }
+
                     break;
 
                 case 3:
@@ -1621,12 +1641,6 @@ public class Game {
                         System.out.println("Um " + enemy.getName() + " poderoso apareceu!");
 
                         boolean battleWin = player.getPokemonInUse().pokemonBattle(enemy, player);
-
-                        //Pokemon evolved = player.getPokemonInUse().getPendingEvolution();
-                        //if (evolved != null) {
-                            //player.setPokemonInUse(evolved);
-                            //player.getPokemonInUse().clearPendingEvolution();
-                        //}
 
                         if (!battleWin) {
                             training = false;
@@ -1693,18 +1707,18 @@ public class Game {
             System.out.println("\n");
             System.out.println("█████████████████████████████████████████████████████████");
             System.out.println("█                                                       █");
-            System.out.println("█          🔮 O DESTINO REVELADO: THE CHOSEN ONE!       █");
+            System.out.println("█             O DESTINO REVELADO: THE CHOSEN ONE!       █");
             System.out.println("█                                                       █");
             System.out.println("█   Penetraste na caverna e a tua aura foi reconhecida  █");
             System.out.println("█   pela entidade psíquica mais poderosa do universo.   █");
             System.out.println("█   O Mewtwo escolheu-te. Tu transcendeste a Liga!     █");
             System.out.println("█                                                       █");
             System.out.println("█████████████████████████████████████████████████████████");
-            System.out.println("\n  🔮 Estado Cósmico: Abençoado por Mewtwo");
-            System.out.println("  ⭐ Pookémon no momento: " + player.getPokemonInUse().getName()
+            System.out.println("\n  Estado Cósmico: Abençoado por Mewtwo");
+            System.out.println("  Pookémon no momento: " + player.getPokemonInUse().getName()
                     + " | Nível: " + player.getPokemonInUse().getLevel());
-            System.out.println("  💰 Moedas acumuladas: " + player.getCoins());
-            System.out.println("\nO que queres fazer?");
+            System.out.println("  Moedas acumuladas: " + player.getCoins());
+            System.out.println("\n O que queres fazer?");
             System.out.println("1. Jogar novamente (Explorar o resto do mundo)");
             System.out.println("2. Sair do jogo");
             int choice = input.nextInt();
@@ -1722,18 +1736,18 @@ public class Game {
         System.out.println("\n");
         System.out.println("█████████████████████████████████████████████████████████");
         System.out.println("█                                                       █");
-        System.out.println("█        👑 NOVO CAMPEÃO DA LIGA INDIGO! 👑             █");
+        System.out.println("█              NOVO CAMPEÃO DA LIGA INDIGO!             █");
         System.out.println("█                                                       █");
-        System.out.println("█   Superaste o portal do Gold Ticket e destruíste     █");
+        System.out.println("█   Superaste o portal do Gold Ticket e destruíste      █");
         System.out.println("█   a lendária equipa do Trainer Blue!                  █");
         System.out.println("█   És oficialmente o número 1 do Indigo Plateau!       █");
         System.out.println("█                                                       █");
         System.out.println("█████████████████████████████████████████████████████████");
-        System.out.println("\n  🏆 Título: Kanto League Champion");
-        System.out.println("  ⭐ Pookémon Parceiro: " + player.getPokemonInUse().getName()
+        System.out.println("\n  Título: Kanto League Champion");
+        System.out.println("  Pookémon Parceiro: " + player.getPokemonInUse().getName()
                 + " | Nível: " + player.getPokemonInUse().getLevel()
                 + " | HP: " + player.getPokemonInUse().getHp());
-        System.out.println("  💰 Coins de Elite: " + player.getCoins());
+        System.out.println("  Coins de Elite: " + player.getCoins());
         System.out.println("\nO que queres fazer?");
         System.out.println("1. Jogar novamente (Tentar outra rota)");
         System.out.println("2. Sair do jogo");
@@ -1746,7 +1760,6 @@ public class Game {
             System.exit(0);
         }
     }
-
     // game over
     public void gameOver() {
         Scanner input = new Scanner(System.in);
