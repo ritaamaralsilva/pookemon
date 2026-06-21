@@ -7,6 +7,8 @@ import items.BattleConsumable;
 import items.Consumable;
 import items.Potion;
 import items.TrainerItem;
+
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -14,8 +16,18 @@ import java.util.Scanner;
 public class Game {
     private Trainer player; // atributo da classe Game
 
-    public void pookemon() { // metodo do jogo, instancio aqui todos os objetos
+    public void pookemon() throws FileNotFoundException{ // metodo do jogo, instancio aqui todos os objetos
+
         Scanner userInput = new Scanner(System.in);
+
+        try {
+            FileTools.printFile("resources/art/pokemon.txt");
+        } catch (FileNotFoundException e) {
+            System.out.println(" Erro Real: " + e.getMessage());
+            System.out.println("Aviso: Imagem do logo não encontrada.");
+        }
+
+
         System.out.println("Olá! Bem vindo ao POOKÉMON!");
         System.out.print("Como te chamas? ");
         String userPlayerName = userInput.next();
@@ -30,7 +42,12 @@ public class Game {
 
         // user vai ter de criar o seu Trainer aqui, usar o metodo trainer.showDetails() para mostrar os detalhes no fim
         player = new Trainer(userPlayerName, userGenderName, 1000, null);
-        ;
+        try {
+            FileTools.printFile("resources/art/trainer.txt");
+        } catch (FileNotFoundException e) {
+            System.out.println(" Erro Real: " + e.getMessage());
+            System.out.println("Aviso: Imagem do trainer não encontrada.");
+        }
         System.out.println("... São 7:30h da manhã, o teu despertador está a tocar. O que vais fazer?");
         // criar booleano de acordar quando o despertador toca, user escolhe.
         // se escolher acordar, escolhe depois um dos 3 pokemon (bulbasaur, charmander ou squirtle)
@@ -52,18 +69,42 @@ public class Game {
 
                 if (starterPokemonChoice == 1) {
                     System.out.println("Escolheste o Bulbasaur! ");
+                    try {
+                        FileTools.printFile("resources/art/starters/bulbasaur.txt");
+                    } catch (FileNotFoundException e) {
+                        System.out.println(" Erro Real: " + e.getMessage());
+                        System.out.println("Aviso: Imagem do bulbasaur não encontrada.");
+                    }
                     player.setPokemonInUse(bulbasaur);
                 } else if (starterPokemonChoice == 2) {
                     System.out.println("Escolheste o Charmander! ");
+                    try {
+                        FileTools.printFile("resources/art/starters/charmander.txt");
+                    } catch (FileNotFoundException e) {
+                        System.out.println(" Erro Real: " + e.getMessage());
+                        System.out.println("Aviso: Imagem do charmander não encontrada.");
+                    }
                     player.setPokemonInUse(charmander);
                 } else {
                     System.out.println("Escolheste o Squirtle! ");
+                    try {
+                        FileTools.printFile("resources/art/starters/squirtle.txt");
+                    } catch (FileNotFoundException e) {
+                        System.out.println(" Erro Real: " + e.getMessage());
+                        System.out.println("Aviso: Imagem do squirtle não encontrada.");
+                    }
                     player.setPokemonInUse(squirtle);
                 }
                 break;
 
             case 2:
                 System.out.println("... Ups... Perdeste o autocarro, o pneu da bicicleta está furado e não há ubers por perto, mas ganhaste um Pikachu, nem tudo é mau... Mas cuidade que ele dá choques! ");
+                try {
+                    FileTools.printFile("resources/art/starters/pikachu.txt");
+                } catch (FileNotFoundException e) {
+                    System.out.println(" Erro Real: " + e.getMessage());
+                    System.out.println("Aviso: Imagem do pikachu não encontrada.");
+                }
                 player.setPokemonInUse(pikachu);
                 break;
         }
@@ -76,7 +117,7 @@ public class Game {
         pewterCity();
     }
     // funcoes das 8 cidades
-    public void pewterCity() {
+    public void pewterCity() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
         boolean inCity = true;
@@ -217,7 +258,7 @@ public class Game {
         }
         ceruleanCity(); // se ganhar o pewter city gym, jogo avança para ceruleanCity
     }
-    public void ceruleanCity () {
+    public void ceruleanCity () throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
         boolean inCity = true;
@@ -366,7 +407,7 @@ public class Game {
         }
         vermilionCity();
     }
-    public void vermilionCity () {
+    public void vermilionCity () throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
         boolean inCity = true;
@@ -526,7 +567,7 @@ public class Game {
         }
         celadonCity();
     }
-    public void celadonCity () {
+    public void celadonCity () throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
         // desbloqueia secret cave com 3+ crachás
@@ -691,7 +732,7 @@ public class Game {
         }
         fuchsiaCity();
     }
-    public void fuchsiaCity () {
+    public void fuchsiaCity () throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
         boolean inCity = true;
@@ -848,7 +889,7 @@ public class Game {
         saffronCity();
 
     }
-    public void saffronCity() {
+    public void saffronCity() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
         boolean inCity = true;
@@ -1005,7 +1046,7 @@ public class Game {
         }
         cinnabarIsland();
     }
-    public void cinnabarIsland() {
+    public void cinnabarIsland() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
         boolean inCity = true;
@@ -1163,7 +1204,7 @@ public class Game {
         }
         viridianCity();
     }
-    public void viridianCity() {
+    public void viridianCity() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
         boolean inCity = true;
@@ -1326,7 +1367,7 @@ public class Game {
         }
     }
     // percurso alternativo: cave secreta e indigo plateau (bypass dos gyms para ganhar)
-    public void secretCave() {
+    public void secretCave() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
         Random random = new Random();
 
@@ -1488,7 +1529,7 @@ public class Game {
             }
         }
     }
-    public void indigoPlateau() {
+    public void indigoPlateau() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
         Random rand = new Random();
 
@@ -1672,7 +1713,7 @@ public class Game {
     }
 
     // todos os winGames em baixo
-    public void winGame() {
+    public void winGame() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
         System.out.println("\n");
@@ -1703,7 +1744,7 @@ public class Game {
             System.exit(0);
         }
     }
-    public void winGameMewtwo() {
+    public void winGameMewtwo() throws FileNotFoundException {
             Scanner input = new Scanner(System.in);
 
             System.out.println("\n");
@@ -1734,7 +1775,7 @@ public class Game {
                 System.exit(0);
             }
         }
-    public void winGameBlue() {
+    public void winGameBlue() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
         System.out.println("\n");
@@ -1767,7 +1808,7 @@ public class Game {
         }
     }
     // game over
-    public void gameOver() {
+    public void gameOver() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
         System.out.println("\n");
