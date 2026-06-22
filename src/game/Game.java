@@ -16,16 +16,22 @@ import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
+import static java.lang.Thread.sleep;
+
 public class Game {
     private Trainer player; // atributo da classe Game
 
-    public void pookemon() throws FileNotFoundException{ // metodo do jogo, instancio aqui todos os objetos
+    public void pookemon() throws FileNotFoundException { // metodo do jogo, instancio aqui todos os objetos
 
         // método do jogo, instancio aqui todos os objetos
 
+        // chamar audio inicial para tocar mal se abre o jogo na consola
+        Audio.playSoundtrack("resources/audio/pookemonIntroMusic.wav");
+
         try {
             FileTools.printFile("resources/art/pokemon.txt");
-        } catch (FileNotFoundException e) {
+            sleep(3000);
+        } catch (FileNotFoundException | InterruptedException e) {
             System.out.println(" Erro Real: " + e.getMessage());
             System.out.println("Aviso: Imagem do logo não encontrada.");
         }
@@ -33,6 +39,8 @@ public class Game {
         Scanner userInput = new Scanner(System.in);
         String userPlayerName = "";
         String userGenderName = "";
+
+        ConsoleColors.backgroundRgb(255, 203, 5);
 
         // Título estilizado automaticamente usando o método do ConsoleColors
         ConsoleColors.title("Olá! Bem-vindo/a ao POOKÉMON! ");
@@ -88,7 +96,6 @@ public class Game {
             }
         }
 
-        // CONFIRMAÇÃO FINAL USANDO O MÉTODO BOX DO PROFESSOR
         System.out.println();
         ConsoleColors.box("Treinador/a registado/a! Nome: " + userPlayerName + " | Género: " + userGenderName, ConsoleColors.GREEN_BOLD);
         System.out.println();
@@ -103,7 +110,8 @@ public class Game {
         player = new Trainer(userPlayerName, userGenderName, 1000, null);
         try {
             FileTools.printFile("resources/art/trainer.txt");
-        } catch (FileNotFoundException e) {
+            sleep(3000);
+        } catch (FileNotFoundException | InterruptedException e) {
             System.out.println(" Erro Real: " + e.getMessage());
             System.out.println("Aviso: Imagem do trainer não encontrada.");
         }
@@ -148,27 +156,36 @@ public class Game {
                     System.out.println("Escolheste o Bulbasaur! ");
                     try {
                         FileTools.printFile("resources/art/starters/bulbasaur.txt");
+                        sleep(3000);
                     } catch (FileNotFoundException e) {
                         System.out.println(" Erro Real: " + e.getMessage());
                         System.out.println("Aviso: Imagem do bulbasaur não encontrada.");
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
                     }
                     player.setPokemonInUse(bulbasaur);
                 } else if (starterPokemonChoice == 2) {
                     System.out.println("Escolheste o Charmander! ");
                     try {
                         FileTools.printFile("resources/art/starters/charmander.txt");
+                        sleep(3000);
                     } catch (FileNotFoundException e) {
                         System.out.println(" Erro Real: " + e.getMessage());
                         System.out.println("Aviso: Imagem do charmander não encontrada.");
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
                     }
                     player.setPokemonInUse(charmander);
                 } else {
                     System.out.println("Escolheste o Squirtle! ");
                     try {
                         FileTools.printFile("resources/art/starters/squirtle.txt");
+                        sleep(3000);
                     } catch (FileNotFoundException e) {
                         System.out.println(" Erro Real: " + e.getMessage());
                         System.out.println("Aviso: Imagem do squirtle não encontrada.");
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
                     }
                     player.setPokemonInUse(squirtle);
                 }
@@ -178,9 +195,12 @@ public class Game {
                 ConsoleColors.story("... Ups... Perdeste o autocarro, o pneu da bicicleta está furado e não há ubers por perto, mas ganhaste um Pikachu, nem tudo é mau... Mas cuidade que ele dá choques! ");
                 try {
                     FileTools.printFile("resources/art/starters/pikachu.txt");
+                    sleep(3000);
                 } catch (FileNotFoundException e) {
                     System.out.println(" Erro Real: " + e.getMessage());
                     System.out.println("Aviso: Imagem do pikachu não encontrada.");
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
                 player.setPokemonInUse(pikachu);
                 break;
@@ -194,12 +214,14 @@ public class Game {
 
         pewterCity();
     }
+
     // funcoes das 8 cidades
     public void pewterCity() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
         boolean inCity = true;
         while (inCity) {
+            Audio.changeSoundtrack("resources/audio/pewterCity.wav");
             ConsoleColors.clear();
             ConsoleColors.title("Pewter City - A Cidade dos Penedos");
 
@@ -242,6 +264,7 @@ public class Game {
                         break;
                     }
 
+                    Audio.changeSoundtrack("resources/audio/gyms.wav"); // troca para musica do ginasio
                     ConsoleColors.separator();
                     ConsoleColors.story("Entras no ginásio arenoso. Brock aguarda-te no topo de um pedestal de pedra.");
                     ConsoleColors.story("Escolheste enfrentar o Gym Leader Brock!");
@@ -282,30 +305,31 @@ public class Game {
                     break;
                 case 2:
                     boolean inShop = true;
+                    Audio.changeSoundtrack("resources/audio/pewterCity.wav");
                     while (inShop) {
                         ConsoleColors.clear();
                         ConsoleColors.title("Pooké Shop de Pewter City");
                         ConsoleColors.println("Bem-vindo à PookéShop!", ConsoleColors.CYAN_BOLD);
 
-                    PokeShop pewterCityShop = new PokeShop("Pewter Shop");
-                    pewterCityShop.addItem(new Potion("Potion", 300, 20));
-                    pewterCityShop.addItem(new Potion("Super Potion", 700, 50));
-                    pewterCityShop.addItem(new Consumable("Berry", 100, 10, 0, false, false));
-                    pewterCityShop.addItem(new Consumable("X Attack", 500, 0, 10, false, false));
-                    pewterCityShop.addItem(new Consumable("X Speed", 350, 0, 0, true, false));
-                    pewterCityShop.addItem(new BattleConsumable("Paralyze Orb", 300, StatusEffect.PARALYZED));
-                    pewterCityShop.addItem(new BattleConsumable("Sleep Orb", 400, StatusEffect.ASLEEP));
-                    pewterCityShop.addItem(new BattleConsumable("Poison Orb", 250, StatusEffect.POISONED));
-                    pewterCityShop.addItem(new BattleConsumable("Burn Orb", 250, StatusEffect.BURNED));
+                        PokeShop pewterCityShop = new PokeShop("Pewter Shop");
+                        pewterCityShop.addItem(new Potion("Potion", 300, 20));
+                        pewterCityShop.addItem(new Potion("Super Potion", 700, 50));
+                        pewterCityShop.addItem(new Consumable("Berry", 100, 10, 0, false, false));
+                        pewterCityShop.addItem(new Consumable("X Attack", 500, 0, 10, false, false));
+                        pewterCityShop.addItem(new Consumable("X Speed", 350, 0, 0, true, false));
+                        pewterCityShop.addItem(new BattleConsumable("Paralyze Orb", 300, StatusEffect.PARALYZED));
+                        pewterCityShop.addItem(new BattleConsumable("Sleep Orb", 400, StatusEffect.ASLEEP));
+                        pewterCityShop.addItem(new BattleConsumable("Poison Orb", 250, StatusEffect.POISONED));
+                        pewterCityShop.addItem(new BattleConsumable("Burn Orb", 250, StatusEffect.BURNED));
 
-                    ArrayList<TrainerItem> shopItems = pewterCityShop.getRandomItems();
+                        ArrayList<TrainerItem> shopItems = pewterCityShop.getRandomItems();
 
-                    System.out.println("Itens disponíveis hoje:");
-                    for (int i = 0; i < shopItems.size(); i++) {
-                        System.out.println((i + 1) + ". " + shopItems.get(i).getName()
-                                + " - " + shopItems.get(i).getPrice() + " coins");
-                    }
-                    System.out.println("0. Sair da loja");
+                        System.out.println("Itens disponíveis hoje:");
+                        for (int i = 0; i < shopItems.size(); i++) {
+                            System.out.println((i + 1) + ". " + shopItems.get(i).getName()
+                                    + " - " + shopItems.get(i).getPrice() + " coins");
+                        }
+                        System.out.println("0. Sair da loja");
                         ConsoleColors.print("\nO que queres comprar? ", ConsoleColors.YELLOW_BOLD);
                         int shopChoice;
                         try {
@@ -341,6 +365,7 @@ public class Game {
                 case 3:
                     boolean training = true;
                     while (training) {
+                        Audio.changeSoundtrack("resources/audio/pookemonBattleWild.wav"); // troca para musica de combates com pookemon wild
                         ConsoleColors.clear();
                         ConsoleColors.title("Área de Treino - Rota 3");
 
@@ -396,6 +421,7 @@ public class Game {
                     }
                     break;
                 case 4:
+                    Audio.changeSoundtrack("resources/audio/pewterCity.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title("PookéCenter de Pewter City");
 
@@ -420,7 +446,8 @@ public class Game {
         }
         ceruleanCity(); // se ganhar o pewter city gym, jogo avança para ceruleanCity
     }
-    public void ceruleanCity () throws FileNotFoundException {
+
+    public void ceruleanCity() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
         // momento de história entre pewter city e cerulean city
@@ -438,6 +465,7 @@ public class Game {
 
         boolean inCity = true;
         while (inCity) {
+            Audio.changeSoundtrack("resources/audio/ceruleanCity.wav");
             ConsoleColors.clear();
             ConsoleColors.title("Cerulean City - A Cidade da Chuva");
             ConsoleColors.story("\n Chegaste a Cerulean City, o que vais fazer a seguir? ");
@@ -448,9 +476,9 @@ public class Game {
 
             ConsoleColors.separator();
             ConsoleColors.print("Escolha: ", ConsoleColors.YELLOW_BOLD);
+            int cityChoice = input.nextInt();
             input.nextLine(); // limpar buffer
 
-            int cityChoice = input.nextInt();
             switch (cityChoice) {
                 case 1:
                     Gym ceruleanCityGym = new Gym("Cerulean City Gym", 18, 2142);
@@ -463,6 +491,7 @@ public class Game {
                         input.nextLine();
                         break;
                     }
+                    Audio.changeSoundtrack("resources/audio/gyms.wav");
 
                     ConsoleColors.title("DESAFIO NO GINÁSIO DE CERULEAN");
                     ConsoleColors.story("Entras no ginásio aquático. Misty aguarda na plataforma central flutuante.");
@@ -495,6 +524,7 @@ public class Game {
                     }
                     break;
                 case 2:
+                    Audio.changeSoundtrack("resources/audio/ceruleanCity.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title("POOKÉ SHOP - CERULEAN CITY");
                     System.out.println("Saldo Atual: " + player.getCoins() + " coins\n");
@@ -523,7 +553,7 @@ public class Game {
                                 + " - " + shopItems.get(i).getPrice() + " coins");
                     }
                     System.out.println("0. Sair da loja");
-                    ConsoleColors.print("\n Escolhe: ",  ConsoleColors.YELLOW_BOLD);
+                    ConsoleColors.print("\n Escolhe: ", ConsoleColors.YELLOW_BOLD);
                     int shopChoice = input.nextInt();
                     input.nextLine();
 
@@ -549,17 +579,18 @@ public class Game {
                     ConsoleColors.clear();
                     ConsoleColors.title("ÁREA DE TREINO - SUBÚRBIOS DE CERULEAN CITY");
                     while (training) {
-                        PokemonWild spearow   = new PokemonWild("Spearow",  53, 53, 60, 31, 1, 1, 13, 300, 350);
-                        PokemonWild rattata   = new PokemonWild("Rattata",  44, 44, 56, 25, 1, 1, 13, 250, 200);
-                        PokemonWild pidgey    = new PokemonWild("Pidgey",   51, 51, 45, 35, 1, 1, 12, 250, 300);
-                        PokemonWild oddish    = new PokemonWild("Oddish",   55, 55, 50, 75, 1, 1, 12, 350, 450);
+                        Audio.changeSoundtrack("resources/audio/pookemonBattleWild.wav");
+                        PokemonWild spearow = new PokemonWild("Spearow", 53, 53, 60, 31, 1, 1, 13, 300, 350);
+                        PokemonWild rattata = new PokemonWild("Rattata", 44, 44, 56, 25, 1, 1, 13, 250, 200);
+                        PokemonWild pidgey = new PokemonWild("Pidgey", 51, 51, 45, 35, 1, 1, 12, 250, 300);
+                        PokemonWild oddish = new PokemonWild("Oddish", 55, 55, 50, 75, 1, 1, 12, 350, 450);
                         PokemonWild bellsprout = new PokemonWild("Bellsprout", 60, 60, 75, 70, 1, 1, 13, 350, 350);
-                        PokemonWild venonat   = new PokemonWild("Venonat",  68, 68, 55, 40, 1, 1, 13, 300, 300);
-                        PokemonWild magikarp  = new PokemonWild("Magikarp", 25, 25, 0, 15,  0, 0,5, 100, 100);
-                        PokemonWild poliwag   = new PokemonWild("Poliwag",  52, 52, 50, 40, 1, 1, 15, 350, 450);
-                        PokemonWild goldeen   = new PokemonWild("Goldeen",  57, 57, 67, 50, 1, 1,15, 400, 350);
-                        PokemonWild psyduck   = new PokemonWild("Psyduck",  65, 65, 52, 50, 2, 2, 20, 450, 600);
-                        PokemonWild krabby    = new PokemonWild("Krabby",   45, 45, 105, 25, 2, 2, 20, 500, 350);
+                        PokemonWild venonat = new PokemonWild("Venonat", 68, 68, 55, 40, 1, 1, 13, 300, 300);
+                        PokemonWild magikarp = new PokemonWild("Magikarp", 25, 25, 0, 15, 0, 0, 5, 100, 100);
+                        PokemonWild poliwag = new PokemonWild("Poliwag", 52, 52, 50, 40, 1, 1, 15, 350, 450);
+                        PokemonWild goldeen = new PokemonWild("Goldeen", 57, 57, 67, 50, 1, 1, 15, 400, 350);
+                        PokemonWild psyduck = new PokemonWild("Psyduck", 65, 65, 52, 50, 2, 2, 20, 450, 600);
+                        PokemonWild krabby = new PokemonWild("Krabby", 45, 45, 105, 25, 2, 2, 20, 500, 350);
 
 
                         PokemonWild[] wildPokemonCeruleanCity = {spearow, rattata, pidgey, oddish, bellsprout, venonat, magikarp, poliwag, goldeen, psyduck, krabby};
@@ -594,6 +625,7 @@ public class Game {
                     }
                     break;
                 case 4:
+                    Audio.changeSoundtrack("resources/audio/ceruleanCity.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title("POOKÉCENTER - CERULEAN CITY");
                     ConsoleColors.story("A Nurse Joy trata do teu Pookémon...");
@@ -615,7 +647,8 @@ public class Game {
         }
         vermilionCity();
     }
-    public void vermilionCity () throws FileNotFoundException {
+
+    public void vermilionCity() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
         ConsoleColors.clear();
@@ -652,7 +685,7 @@ public class Game {
                     Gym vermilionCityGym = new Gym("Vermilion City Gym", 21, 2471);
                     vermilionCityGym.addPokemon(new PokemonWildGymSurge("Voltorb", 40, 40, 35, 55, 2, 2, 21, 612, 635));
                     vermilionCityGym.addPokemon(new PokemonWildGymSurge("Pikachu", 45, 45, 55, 50, 2, 2, 18, 350, 500));
-                    vermilionCityGym.addPokemon(new PokemonWildGymSurge("Raichu",  60, 60, 90, 90, 2, 2, 24, 800, 1200));
+                    vermilionCityGym.addPokemon(new PokemonWildGymSurge("Raichu", 60, 60, 90, 90, 2, 2, 24, 800, 1200));
 
                     if (player.getPokemonInUse().getLevel() < vermilionCityGym.getMinLevelToBattle()) {
                         ConsoleColors.error("Lt. Surge barra-te a entrada! 'Volta quando fores um soldado de elite! Nível mínimo: " + vermilionCityGym.getMinLevelToBattle() + "'");
@@ -750,21 +783,21 @@ public class Game {
                     while (training) {
                         ConsoleColors.clear();
                         ConsoleColors.title("SABOTAGEM NA DIGLETT'S CAVE, PORTO & CAMPOS DE ARROZ");
-                        PokemonWild ekans      = new PokemonWild("Ekans",      48,  48,  60,  50, 1, 1, 18, 350, 300); // Red exclusivo
-                        PokemonWild sandshrew  = new PokemonWild("Sandshrew",  58,  58,  75,  30, 1, 1, 18, 350, 300); // Blue exclusivo
-                        PokemonWild drowzee    = new PokemonWild("Drowzee",    68,  68,  48,  93, 1, 1, 20, 400, 400);
-                        PokemonWild voltorb    = new PokemonWild("Voltorb",    50,  50,  30,  55, 1, 1, 20, 400, 350);
-                        PokemonWild meowth     = new PokemonWild("Meowth",     50,  50,  45,  40, 1, 1, 18, 300, 300);
-                        PokemonWild diglett    = new PokemonWild("Diglett",    22,  22,  55,  45, 1, 1, 19, 350, 300);
-                        PokemonWild jigglypuff = new PokemonWild("Jigglypuff", 125, 125, 45,  25, 1, 1, 18, 300, 250);
-                        PokemonWild doduo      = new PokemonWild("Doduo",       55,  55,  85,  35, 1, 1, 20, 350, 300); // Route 22 e arredores, nível 20
-                        PokemonWild mankey     = new PokemonWild("Mankey",      50,  50,  80,  35, 1, 1, 18, 350, 300); // Route 5/6, agressivo fisicamente
-                        PokemonWild growlithe  = new PokemonWild("Growlithe",   63,  63,  70,  70, 1, 1, 19, 400, 400); // Red exclusivo, Route 7/8
-                        PokemonWild tentacool  = new PokemonWild("Tentacool",   52,  52,  40, 100, 2, 2, 20, 450, 400);
-                        PokemonWild shellder   = new PokemonWild("Shellder",    42,  42,  65,  45, 2, 2, 20, 400, 350);
-                        PokemonWild horsea     = new PokemonWild("Horsea",      40,  40,  40,  70, 2, 2, 20, 400, 350); // Special alto para o nível
-                        PokemonWild seel       = new PokemonWild("Seel",        70,  70,  45,  70, 2, 2, 21, 450, 400); // aguenta bem, Special decente
-                        PokemonWild staryu     = new PokemonWild("Staryu",      52,  52,  45,  70, 2, 2, 21, 450, 400); // aparece em água em várias zonas de Kanto
+                        PokemonWild ekans = new PokemonWild("Ekans", 48, 48, 60, 50, 1, 1, 18, 350, 300); // Red exclusivo
+                        PokemonWild sandshrew = new PokemonWild("Sandshrew", 58, 58, 75, 30, 1, 1, 18, 350, 300); // Blue exclusivo
+                        PokemonWild drowzee = new PokemonWild("Drowzee", 68, 68, 48, 93, 1, 1, 20, 400, 400);
+                        PokemonWild voltorb = new PokemonWild("Voltorb", 50, 50, 30, 55, 1, 1, 20, 400, 350);
+                        PokemonWild meowth = new PokemonWild("Meowth", 50, 50, 45, 40, 1, 1, 18, 300, 300);
+                        PokemonWild diglett = new PokemonWild("Diglett", 22, 22, 55, 45, 1, 1, 19, 350, 300);
+                        PokemonWild jigglypuff = new PokemonWild("Jigglypuff", 125, 125, 45, 25, 1, 1, 18, 300, 250);
+                        PokemonWild doduo = new PokemonWild("Doduo", 55, 55, 85, 35, 1, 1, 20, 350, 300); // Route 22 e arredores, nível 20
+                        PokemonWild mankey = new PokemonWild("Mankey", 50, 50, 80, 35, 1, 1, 18, 350, 300); // Route 5/6, agressivo fisicamente
+                        PokemonWild growlithe = new PokemonWild("Growlithe", 63, 63, 70, 70, 1, 1, 19, 400, 400); // Red exclusivo, Route 7/8
+                        PokemonWild tentacool = new PokemonWild("Tentacool", 52, 52, 40, 100, 2, 2, 20, 450, 400);
+                        PokemonWild shellder = new PokemonWild("Shellder", 42, 42, 65, 45, 2, 2, 20, 400, 350);
+                        PokemonWild horsea = new PokemonWild("Horsea", 40, 40, 40, 70, 2, 2, 20, 400, 350); // Special alto para o nível
+                        PokemonWild seel = new PokemonWild("Seel", 70, 70, 45, 70, 2, 2, 21, 450, 400); // aguenta bem, Special decente
+                        PokemonWild staryu = new PokemonWild("Staryu", 52, 52, 45, 70, 2, 2, 21, 450, 400); // aparece em água em várias zonas de Kanto
 
                         PokemonWild[] wildPokemonVermilionCity = {
                                 ekans, sandshrew, drowzee, voltorb, meowth,
@@ -822,7 +855,8 @@ public class Game {
         }
         celadonCity();
     }
-    public void celadonCity () throws FileNotFoundException {
+
+    public void celadonCity() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
         ConsoleColors.clear();
@@ -871,6 +905,7 @@ public class Game {
             ConsoleColors.separator();
             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
             int cityChoice = input.nextInt();
+            input.nextLine();
             switch (cityChoice) {
                 case 1:
                     Gym celadonCityGym = new Gym("Celadon City Gym", 27, 2831);
@@ -967,21 +1002,21 @@ public class Game {
                     ConsoleColors.title("ÁREA SAFARI & RESERVAS BRAVIAS DE CELADON");
 
                     while (training) {
-                        PokemonWild vulpix     = new PokemonWild("Vulpix",     48,  48,  41,  65, 1, 1, 25, 500, 400); // Red exclusivo
-                        PokemonWild growlithe2 = new PokemonWild("Growlithe",  67,  67,  70,  70, 1, 1, 27, 550, 450); // Blue exclusivo
-                        PokemonWild ponyta     = new PokemonWild("Ponyta",     73,  73,  85,  65, 1, 1, 26, 500, 400);
-                        PokemonWild doduo2     = new PokemonWild("Doduo",      59,  59,  85,  35, 1, 1, 25, 400, 350);
-                        PokemonWild meowth2    = new PokemonWild("Meowth",     54,  54,  45,  40, 1, 1, 24, 350, 300);
-                        PokemonWild persian    = new PokemonWild("Persian",    70,  70,  70,  65, 1, 1, 28, 600, 500);
-                        PokemonWild scyther    = new PokemonWild("Scyther",    80,  80, 110,  55, 2, 2, 28, 700, 600); // raro, Safari Zone
-                        PokemonWild kangaskhan = new PokemonWild("Kangaskhan", 115, 115,  95,  40, 2, 2, 28, 800, 700); // Safari Zone
-                        PokemonWild tauros     = new PokemonWild("Tauros",     95,  95, 100,  70, 2, 2, 27, 750, 650); // Safari Zone
-                        PokemonWild lickitung  = new PokemonWild("Lickitung",  90,  90,  55,  60, 2, 2, 26, 600, 500);
-                        PokemonWild slowpoke   = new PokemonWild("Slowpoke",   90,  90,  65,  40, 2, 2, 25, 500, 400);
-                        PokemonWild krabby2    = new PokemonWild("Krabby",     49,  49, 105,  25, 2, 2, 25, 550, 400);
-                        PokemonWild poliwhirl  = new PokemonWild("Poliwhirl",  70,  70,  65,  50, 2, 2, 27, 600, 500);
-                        PokemonWild horsea2    = new PokemonWild("Horsea",     44,  44,  40,  70, 2, 2, 25, 450, 400);
-                        PokemonWild goldeen2   = new PokemonWild("Goldeen",    61,  61,  67,  50, 2, 2, 25, 450, 400);
+                        PokemonWild vulpix = new PokemonWild("Vulpix", 48, 48, 41, 65, 1, 1, 25, 500, 400); // Red exclusivo
+                        PokemonWild growlithe2 = new PokemonWild("Growlithe", 67, 67, 70, 70, 1, 1, 27, 550, 450); // Blue exclusivo
+                        PokemonWild ponyta = new PokemonWild("Ponyta", 73, 73, 85, 65, 1, 1, 26, 500, 400);
+                        PokemonWild doduo2 = new PokemonWild("Doduo", 59, 59, 85, 35, 1, 1, 25, 400, 350);
+                        PokemonWild meowth2 = new PokemonWild("Meowth", 54, 54, 45, 40, 1, 1, 24, 350, 300);
+                        PokemonWild persian = new PokemonWild("Persian", 70, 70, 70, 65, 1, 1, 28, 600, 500);
+                        PokemonWild scyther = new PokemonWild("Scyther", 80, 80, 110, 55, 2, 2, 28, 700, 600); // raro, Safari Zone
+                        PokemonWild kangaskhan = new PokemonWild("Kangaskhan", 115, 115, 95, 40, 2, 2, 28, 800, 700); // Safari Zone
+                        PokemonWild tauros = new PokemonWild("Tauros", 95, 95, 100, 70, 2, 2, 27, 750, 650); // Safari Zone
+                        PokemonWild lickitung = new PokemonWild("Lickitung", 90, 90, 55, 60, 2, 2, 26, 600, 500);
+                        PokemonWild slowpoke = new PokemonWild("Slowpoke", 90, 90, 65, 40, 2, 2, 25, 500, 400);
+                        PokemonWild krabby2 = new PokemonWild("Krabby", 49, 49, 105, 25, 2, 2, 25, 550, 400);
+                        PokemonWild poliwhirl = new PokemonWild("Poliwhirl", 70, 70, 65, 50, 2, 2, 27, 600, 500);
+                        PokemonWild horsea2 = new PokemonWild("Horsea", 44, 44, 40, 70, 2, 2, 25, 450, 400);
+                        PokemonWild goldeen2 = new PokemonWild("Goldeen", 61, 61, 67, 50, 2, 2, 25, 450, 400);
 
                         PokemonWild[] wildPokemonCeladonCity = {
                                 vulpix, growlithe2, ponyta, doduo2, meowth2,
@@ -1038,7 +1073,8 @@ public class Game {
         }
         fuchsiaCity();
     }
-    public void fuchsiaCity () throws FileNotFoundException {
+
+    public void fuchsiaCity() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
         ConsoleColors.clear();
@@ -1167,21 +1203,21 @@ public class Game {
                     boolean training = true;
 
                     while (training) {
-                        PokemonWild pinsir     = new PokemonWild("Pinsir",      90,  90, 125,  55, 2, 2, 33, 800, 700); // Safari Zone, rival do Scyther
-                        PokemonWild rhyhorn2   = new PokemonWild("Rhyhorn",     90,  90, 130,  30, 2, 2, 32, 750, 600);
-                        PokemonWild nidorina   = new PokemonWild("Nidorina",    80,  80,  62,  55, 2, 2, 31, 650, 550);
-                        PokemonWild nidorino   = new PokemonWild("Nidorino",    81,  81,  72,  57, 2, 2, 31, 650, 550);
-                        PokemonWild exeggcute  = new PokemonWild("Exeggcute",   80,  80,  40,  45, 2, 2, 30, 550, 450); // Safari Zone
-                        PokemonWild parasect   = new PokemonWild("Parasect",    80,  80,  95,  80, 2, 2, 32, 700, 550);
-                        PokemonWild venomoth   = new PokemonWild("Venomoth",    80,  80,  65,  90, 2, 2, 33, 700, 550);
-                        PokemonWild weepinbell = new PokemonWild("Weepinbell",  80,  80,  90,  85, 2, 2, 31, 650, 500);
-                        PokemonWild gloom      = new PokemonWild("Gloom",       75,  75,  55,  75, 2, 2, 30, 600, 500);
-                        PokemonWild ditto      = new PokemonWild("Ditto",       76,  76,  48,  48, 2, 2, 31, 600, 500);
-                        PokemonWild tentacruel = new PokemonWild("Tentacruel",  90,  90,  70, 120, 2, 2, 34, 850, 700);
-                        PokemonWild slowbro    = new PokemonWild("Slowbro",    100, 100,  75, 100, 2, 2, 33, 800, 650);
-                        PokemonWild seadra     = new PokemonWild("Seadra",      75,  75,  65,  95, 2, 2, 32, 750, 600);
-                        PokemonWild seaking    = new PokemonWild("Seaking",     95,  95,  92,  65, 2, 2, 33, 750, 600);
-                        PokemonWild dewgong    = new PokemonWild("Dewgong",    100, 100,  70,  70, 2, 2, 33, 750, 600);
+                        PokemonWild pinsir = new PokemonWild("Pinsir", 90, 90, 125, 55, 2, 2, 33, 800, 700); // Safari Zone, rival do Scyther
+                        PokemonWild rhyhorn2 = new PokemonWild("Rhyhorn", 90, 90, 130, 30, 2, 2, 32, 750, 600);
+                        PokemonWild nidorina = new PokemonWild("Nidorina", 80, 80, 62, 55, 2, 2, 31, 650, 550);
+                        PokemonWild nidorino = new PokemonWild("Nidorino", 81, 81, 72, 57, 2, 2, 31, 650, 550);
+                        PokemonWild exeggcute = new PokemonWild("Exeggcute", 80, 80, 40, 45, 2, 2, 30, 550, 450); // Safari Zone
+                        PokemonWild parasect = new PokemonWild("Parasect", 80, 80, 95, 80, 2, 2, 32, 700, 550);
+                        PokemonWild venomoth = new PokemonWild("Venomoth", 80, 80, 65, 90, 2, 2, 33, 700, 550);
+                        PokemonWild weepinbell = new PokemonWild("Weepinbell", 80, 80, 90, 85, 2, 2, 31, 650, 500);
+                        PokemonWild gloom = new PokemonWild("Gloom", 75, 75, 55, 75, 2, 2, 30, 600, 500);
+                        PokemonWild ditto = new PokemonWild("Ditto", 76, 76, 48, 48, 2, 2, 31, 600, 500);
+                        PokemonWild tentacruel = new PokemonWild("Tentacruel", 90, 90, 70, 120, 2, 2, 34, 850, 700);
+                        PokemonWild slowbro = new PokemonWild("Slowbro", 100, 100, 75, 100, 2, 2, 33, 800, 650);
+                        PokemonWild seadra = new PokemonWild("Seadra", 75, 75, 65, 95, 2, 2, 32, 750, 600);
+                        PokemonWild seaking = new PokemonWild("Seaking", 95, 95, 92, 65, 2, 2, 33, 750, 600);
+                        PokemonWild dewgong = new PokemonWild("Dewgong", 100, 100, 70, 70, 2, 2, 33, 750, 600);
 
                         PokemonWild[] wildPokemonFuchsiaCity = {
                                 pinsir, rhyhorn2, nidorina, nidorino, exeggcute,
@@ -1238,6 +1274,7 @@ public class Game {
         saffronCity();
 
     }
+
     public void saffronCity() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
@@ -1370,21 +1407,21 @@ public class Game {
                         ConsoleColors.clear();
                         ConsoleColors.title("ZONA METROPOLITANA E ARREDORES BRAVIOS");
 
-                        PokemonWild kadabra2   = new PokemonWild("Kadabra",     48,  48,  35, 120, 2, 2, 38, 900, 700);
-                        PokemonWild haunter    = new PokemonWild("Haunter",     55,  55,  50,  95, 2, 2, 36, 850, 650);
-                        PokemonWild gengar     = new PokemonWild("Gengar",      75,  75,  65, 130, 3, 3, 40, 1200, 900); // raro
-                        PokemonWild electabuzz = new PokemonWild("Electabuzz",  85,  85,  83,  95, 2, 2, 38, 900, 750);
-                        PokemonWild magmar     = new PokemonWild("Magmar",      85,  85,  95,  100, 2, 2, 38, 900, 750);
-                        PokemonWild porygon    = new PokemonWild("Porygon",     85,  85,  60,  75, 2, 2, 36, 850, 700);
-                        PokemonWild mr_mime    = new PokemonWild("Mr. Mime",    55,  55,  45,  100, 2, 2, 37, 850, 650);
-                        PokemonWild jynx       = new PokemonWild("Jynx",        75,  75,  50,  115, 2, 2, 38, 900, 700);
-                        PokemonWild persian2   = new PokemonWild("Persian",     74,  74,  70,  65, 2, 2, 37, 700, 600);
-                        PokemonWild clefairy   = new PokemonWild("Clefairy",    80,  80,  45,  60, 2, 2, 35, 700, 550);
-                        PokemonWild poliwrath  = new PokemonWild("Poliwrath",   100, 100,  95,  70, 3, 3, 40, 1000, 800);
-                        PokemonWild gyarados   = new PokemonWild("Gyarados",    130, 130, 125,  100, 3, 3, 42, 1500, 1200); // raro mas devastador
-                        PokemonWild lapras     = new PokemonWild("Lapras",      140, 140,  85,  95, 3, 3, 40, 1200, 1000);
-                        PokemonWild vaporeon   = new PokemonWild("Vaporeon",    140, 140,  65, 110, 3, 3, 40, 1100, 900);
-                        PokemonWild starmie2   = new PokemonWild("Starmie",     80,  80,  75, 100, 3, 3, 40, 1200, 900);
+                        PokemonWild kadabra2 = new PokemonWild("Kadabra", 48, 48, 35, 120, 2, 2, 38, 900, 700);
+                        PokemonWild haunter = new PokemonWild("Haunter", 55, 55, 50, 95, 2, 2, 36, 850, 650);
+                        PokemonWild gengar = new PokemonWild("Gengar", 75, 75, 65, 130, 3, 3, 40, 1200, 900); // raro
+                        PokemonWild electabuzz = new PokemonWild("Electabuzz", 85, 85, 83, 95, 2, 2, 38, 900, 750);
+                        PokemonWild magmar = new PokemonWild("Magmar", 85, 85, 95, 100, 2, 2, 38, 900, 750);
+                        PokemonWild porygon = new PokemonWild("Porygon", 85, 85, 60, 75, 2, 2, 36, 850, 700);
+                        PokemonWild mr_mime = new PokemonWild("Mr. Mime", 55, 55, 45, 100, 2, 2, 37, 850, 650);
+                        PokemonWild jynx = new PokemonWild("Jynx", 75, 75, 50, 115, 2, 2, 38, 900, 700);
+                        PokemonWild persian2 = new PokemonWild("Persian", 74, 74, 70, 65, 2, 2, 37, 700, 600);
+                        PokemonWild clefairy = new PokemonWild("Clefairy", 80, 80, 45, 60, 2, 2, 35, 700, 550);
+                        PokemonWild poliwrath = new PokemonWild("Poliwrath", 100, 100, 95, 70, 3, 3, 40, 1000, 800);
+                        PokemonWild gyarados = new PokemonWild("Gyarados", 130, 130, 125, 100, 3, 3, 42, 1500, 1200); // raro mas devastador
+                        PokemonWild lapras = new PokemonWild("Lapras", 140, 140, 85, 95, 3, 3, 40, 1200, 1000);
+                        PokemonWild vaporeon = new PokemonWild("Vaporeon", 140, 140, 65, 110, 3, 3, 40, 1100, 900);
+                        PokemonWild starmie2 = new PokemonWild("Starmie", 80, 80, 75, 100, 3, 3, 40, 1200, 900);
 
                         PokemonWild[] wildPokemonSaffronCity = {
                                 kadabra2, haunter, gengar, electabuzz, magmar,
@@ -1441,9 +1478,10 @@ public class Game {
         }
         cinnabarIsland();
     }
+
     public void cinnabarIsland() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
-       // momento de historia
+        // momento de historia
         ConsoleColors.clear();
         ConsoleColors.title("A TRAVESSIA PELAS ROTAS MARÍTIMAS");
         ConsoleColors.separator();
@@ -1575,21 +1613,21 @@ public class Game {
                         ConsoleColors.clear();
                         ConsoleColors.title("TRILHOS DE MAGMA E ARRECADAÇÕES MARÍTIMAS");
 
-                        PokemonWild magmar2    = new PokemonWild("Magmar",    91,  91,  95, 100, 3, 3, 43, 1000, 800);
-                        PokemonWild rapidash   = new PokemonWild("Rapidash", 103, 103, 100,  80, 3, 3, 44, 1100, 900);
-                        PokemonWild ninetales  = new PokemonWild("Ninetales", 98,  98,  76, 100, 3, 3, 43, 1100, 900);
-                        PokemonWild flareon    = new PokemonWild("Flareon",  105, 105, 130,  95, 3, 3, 44, 1200, 950);
-                        PokemonWild ponyta2    = new PokemonWild("Ponyta",    83,  83,  85,  65, 3, 3, 42, 900,  750);
-                        PokemonWild dewgong2   = new PokemonWild("Dewgong",  104, 104,  70,  70, 3, 3, 42, 900,  700);
-                        PokemonWild seel2      = new PokemonWild("Seel",      78,  78,  45,  70, 3, 3, 40, 800,  600);
-                        PokemonWild shellder2  = new PokemonWild("Shellder",  46,  46,  65,  45, 3, 3, 40, 750,  600);
-                        PokemonWild cloyster   = new PokemonWild("Cloyster",  80,  80,  95,  85, 3, 3, 43, 1000, 800);
-                        PokemonWild jynx2      = new PokemonWild("Jynx",      79,  79,  50, 115, 3, 3, 42, 950,  750);
-                        PokemonWild tentacruel2 = new PokemonWild("Tentacruel",  94,  94,  70, 120, 3, 3, 43, 1000, 800);
-                        PokemonWild seadra2     = new PokemonWild("Seadra",      79,  79,  65,  95, 3, 3, 42,  950, 750);
-                        PokemonWild seaking2    = new PokemonWild("Seaking",     99,  99,  92,  65, 3, 3, 43,  950, 750);
-                        PokemonWild kingler     = new PokemonWild("Kingler",     85,  85, 130,  50, 3, 3, 43, 1100, 900);
-                        PokemonWild golduck     = new PokemonWild("Golduck",    100, 100,  82,  80, 3, 3, 43, 1000, 800);
+                        PokemonWild magmar2 = new PokemonWild("Magmar", 91, 91, 95, 100, 3, 3, 43, 1000, 800);
+                        PokemonWild rapidash = new PokemonWild("Rapidash", 103, 103, 100, 80, 3, 3, 44, 1100, 900);
+                        PokemonWild ninetales = new PokemonWild("Ninetales", 98, 98, 76, 100, 3, 3, 43, 1100, 900);
+                        PokemonWild flareon = new PokemonWild("Flareon", 105, 105, 130, 95, 3, 3, 44, 1200, 950);
+                        PokemonWild ponyta2 = new PokemonWild("Ponyta", 83, 83, 85, 65, 3, 3, 42, 900, 750);
+                        PokemonWild dewgong2 = new PokemonWild("Dewgong", 104, 104, 70, 70, 3, 3, 42, 900, 700);
+                        PokemonWild seel2 = new PokemonWild("Seel", 78, 78, 45, 70, 3, 3, 40, 800, 600);
+                        PokemonWild shellder2 = new PokemonWild("Shellder", 46, 46, 65, 45, 3, 3, 40, 750, 600);
+                        PokemonWild cloyster = new PokemonWild("Cloyster", 80, 80, 95, 85, 3, 3, 43, 1000, 800);
+                        PokemonWild jynx2 = new PokemonWild("Jynx", 79, 79, 50, 115, 3, 3, 42, 950, 750);
+                        PokemonWild tentacruel2 = new PokemonWild("Tentacruel", 94, 94, 70, 120, 3, 3, 43, 1000, 800);
+                        PokemonWild seadra2 = new PokemonWild("Seadra", 79, 79, 65, 95, 3, 3, 42, 950, 750);
+                        PokemonWild seaking2 = new PokemonWild("Seaking", 99, 99, 92, 65, 3, 3, 43, 950, 750);
+                        PokemonWild kingler = new PokemonWild("Kingler", 85, 85, 130, 50, 3, 3, 43, 1100, 900);
+                        PokemonWild golduck = new PokemonWild("Golduck", 100, 100, 82, 80, 3, 3, 43, 1000, 800);
 
                         PokemonWild[] wildPokemonCinnabarIsland = {
                                 magmar2, rapidash, ninetales, flareon, ponyta2,
@@ -1646,6 +1684,7 @@ public class Game {
         }
         viridianCity();
     }
+
     public void viridianCity() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
@@ -1792,21 +1831,21 @@ public class Game {
                     while (training) {
                         ConsoleColors.clear();
                         ConsoleColors.title("ROTAS DE ALTA DENSIDADE - FRONTEIRA DA LIGA");
-                        PokemonWild rhydon2    = new PokemonWild("Rhydon",    135, 135, 130,  45, 3, 3, 50, 2000, 1500);
-                        PokemonWild nidoking2  = new PokemonWild("Nidoking",  107, 107, 102,  85, 3, 3, 48, 1800, 1400);
-                        PokemonWild nidoqueen2 = new PokemonWild("Nidoqueen", 110, 110,  82,  85, 3, 3, 48, 1800, 1400);
-                        PokemonWild dugtrio    = new PokemonWild("Dugtrio",    65,  65, 100,  50, 3, 3, 48, 1500, 1200);
-                        PokemonWild electrode  = new PokemonWild("Electrode",  80,  80,  50,  80, 3, 3, 48, 1500, 1100);
-                        PokemonWild tauros2    = new PokemonWild("Tauros",    105, 105, 100,  70, 3, 3, 49, 1600, 1300);
-                        PokemonWild dragonair  = new PokemonWild("Dragonair",  91,  91,  84,  70, 3, 3, 50, 2000, 1500);
-                        PokemonWild kangaskhan2= new PokemonWild("Kangaskhan",123, 123,  95,  40, 3, 3, 49, 1700, 1400);
-                        PokemonWild Persian2   = new PokemonWild("Persian",    78,  78,  70,  65, 3, 3, 48, 1400, 1100);
-                        PokemonWild arcanine2  = new PokemonWild("Arcanine",  120, 120, 110, 100, 3, 3, 49, 1600, 1300);
-                        PokemonWild gyarados3  = new PokemonWild("Gyarados",  138, 138, 125, 100, 3, 3, 50, 2000, 1600);
-                        PokemonWild poliwrath  = new PokemonWild("Poliwrath", 104, 104,  95,  70, 3, 3, 49, 1600, 1300);
-                        PokemonWild slowbro2   = new PokemonWild("Slowbro",   108, 108,  75, 100, 3, 3, 49, 1500, 1200);
-                        PokemonWild starmie2   = new PokemonWild("Starmie",    84,  84,  75, 100, 3, 3, 49, 1600, 1200);
-                        PokemonWild lapras     = new PokemonWild("Lapras",    145, 145,  85,  95, 3, 3, 50, 2000, 1500);
+                        PokemonWild rhydon2 = new PokemonWild("Rhydon", 135, 135, 130, 45, 3, 3, 50, 2000, 1500);
+                        PokemonWild nidoking2 = new PokemonWild("Nidoking", 107, 107, 102, 85, 3, 3, 48, 1800, 1400);
+                        PokemonWild nidoqueen2 = new PokemonWild("Nidoqueen", 110, 110, 82, 85, 3, 3, 48, 1800, 1400);
+                        PokemonWild dugtrio = new PokemonWild("Dugtrio", 65, 65, 100, 50, 3, 3, 48, 1500, 1200);
+                        PokemonWild electrode = new PokemonWild("Electrode", 80, 80, 50, 80, 3, 3, 48, 1500, 1100);
+                        PokemonWild tauros2 = new PokemonWild("Tauros", 105, 105, 100, 70, 3, 3, 49, 1600, 1300);
+                        PokemonWild dragonair = new PokemonWild("Dragonair", 91, 91, 84, 70, 3, 3, 50, 2000, 1500);
+                        PokemonWild kangaskhan2 = new PokemonWild("Kangaskhan", 123, 123, 95, 40, 3, 3, 49, 1700, 1400);
+                        PokemonWild Persian2 = new PokemonWild("Persian", 78, 78, 70, 65, 3, 3, 48, 1400, 1100);
+                        PokemonWild arcanine2 = new PokemonWild("Arcanine", 120, 120, 110, 100, 3, 3, 49, 1600, 1300);
+                        PokemonWild gyarados3 = new PokemonWild("Gyarados", 138, 138, 125, 100, 3, 3, 50, 2000, 1600);
+                        PokemonWild poliwrath = new PokemonWild("Poliwrath", 104, 104, 95, 70, 3, 3, 49, 1600, 1300);
+                        PokemonWild slowbro2 = new PokemonWild("Slowbro", 108, 108, 75, 100, 3, 3, 49, 1500, 1200);
+                        PokemonWild starmie2 = new PokemonWild("Starmie", 84, 84, 75, 100, 3, 3, 49, 1600, 1200);
+                        PokemonWild lapras = new PokemonWild("Lapras", 145, 145, 85, 95, 3, 3, 50, 2000, 1500);
 
                         PokemonWild[] wildPokemonViridianCity = {
                                 rhydon2, nidoking2, nidoqueen2, dugtrio, electrode,
@@ -1864,40 +1903,63 @@ public class Game {
             }
         }
     }
+
     // percurso alternativo: cave secreta e indigo plateau (bypass dos gyms para ganhar)
     public void secretCave() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
         Random random = new Random();
 
-        System.out.println("\n No caminho para Celadon City, encontras uma entrada escondida atrás de uma cascata...");
-        System.out.println("É uma caverna. Está escuro. Quase não se vê nada.");
-        System.out.println("Mas ao pé de uma rocha, encontras uma LANTERNA e um PAPEL VELHO dobrado...");
-        System.out.println("Parece um mapa, mas está muito gasto para leres bem.");
-        System.out.println("\n O que queres fazer?");
-        System.out.println("1. Entrar na caverna e explorar");
-        System.out.println("2. Ignorar e seguir para Celadon City");
+        ConsoleColors.clear();
+        ConsoleColors.title(" O SEGREDO ATRÁS DA CASCATA ");
+        ConsoleColors.separator();
+        ConsoleColors.story("No trilho montanhoso em direção a Celadon City, o som ensurdecedor de uma queda d'água chama-te à atenção.");
+        ConsoleColors.story("Ao afastar a vegetação densa, reparas num brilho azulado difuso vindo de trás da imensa cortina de água.");
+        ConsoleColors.story("Atravessas a torrente e deparas-te com uma fenda na rocha. Está escuro. O ar é denso, frio e estático.");
+        ConsoleColors.story("Perto de uma estalagmite ancestral, o teu pé bate em algo metálico: uma LANTERNA funcional");
+        ConsoleColors.story("e um PAPEL VELHO, desgastado pelo tempo, que parece desenhar um labirinto esquecido pela humanidade...");
+        ConsoleColors.separator();
+
+
+        System.out.println("O que pretendes fazer perante este mistério?");
+        System.out.println("1. Ligar a lanterna e quebrar o silêncio da caverna (Explorar)");
+        System.out.println("2. Ignorar a curiosidade e retomar a marcha para Celadon City");
+        ConsoleColors.separator();
+        ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
         int entranceCaveChoice = input.nextInt();
+        input.nextLine();
 
         if (entranceCaveChoice == 2) { // para voltar para o menu de Celadon City e fazer a rota normal dos ginasios
-            System.out.println("Decides não arriscar. Seguiste para Celadon City.");
+            ConsoleColors.println("\nDecides não arriscar a segurança do teu Pookémon. Afastas-te da cascata e segues viagem...", ConsoleColors.CYAN_BRIGHT);
+            System.out.println("Pressiona Enter para continuar para Celadon City...");
+            input.nextLine();
             return;
         }
 
         // se jogador escolher outra opcao que não a 2, entra na caverna secreta
-        System.out.println("\nPegas na lanterna e no mapa. A caverna é enorme e misteriosa...");
-        System.out.println("Sentes que há algo especial aqui dentro.");
+        ConsoleColors.clear();
+        ConsoleColors.title("SANTUÁRIO ESQUECIDO - PROFUNDEZAS DA TERRA");
+        ConsoleColors.story("O feixe de luz da lanterna corta a escuridão milenar, revelando cristais gigantes que contêm uma energia estranha...");
+        ConsoleColors.story("O mapa gasto aponta direções que parecem desafiar a própria geometria. Sentes uma pressão psíquica no ar...");
+        System.out.println("\nPressiona Enter para cravar as botas na humidade da caverna...");
+        input.nextLine();
 
         boolean inSecretCave = true;
         while (inSecretCave) {
-            System.out.println("\n═══════════════════════════════");
-            System.out.println("       CAVERNA SECRETA");
-            System.out.println("═══════════════════════════════");
-            System.out.println("1. Continuar a explorar e seguir o mapa");
-            System.out.println("2. Voltar a Celadon City");
+            ConsoleColors.clear();
+            ConsoleColors.title(" A CAVERNA SECRETA - ANOMALIA QUÂNTICA ");
+            ConsoleColors.separator();
+            System.out.println("O eco dos teus passos avisa-te que estás muito profundo. O que fazes?");
+            System.out.println("1. Decifrar as linhas do mapa e continuar a explorar");
+            System.out.println("2. Usar um escape rope para voltar à superfície e regressar ao trilho para Celadon City");
+            ConsoleColors.separator();
+            ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
             int secretCaveChoice = input.nextInt();
+            input.nextLine();
 
             if (secretCaveChoice == 2) {
-                System.out.println("Decides sair da caverna. A luz do dia é bem-vinda e tu tens medo do escuro.");
+                ConsoleColors.println("\nA opressão das sombras e o medo do desconhecido vencem-te. Corres de volta para a luz do sol!", ConsoleColors.CYAN_BRIGHT);
+                System.out.println("Pressiona Enter para sair da caverna...");
+                input.nextLine();
                 inSecretCave = false;
                 return;
             }
@@ -1906,157 +1968,211 @@ public class Game {
 
             // mewtwo e win game alternativo (mewtwo)
             if (randomSecretCaveEvent < 2) {
-                System.out.println("\n✨ A caverna começa a vibrar...");
-                System.out.println("Uma luz enorme ilumina tudo à tua volta.");
-                System.out.println("É... é o MEWTWO!!!");
-                System.out.println("Os seus olhos fixam-se em ti... e depois fecha os olhos.");
-                System.out.println("O Mewtwo inclina a cabeça, como se reconhecesse algo em ti.");
-                System.out.println("\"...O Chosen One.\"");
-                System.out.println("\n🏆 O MEWTWO ABENÇOOU-TE! O jogo termina aqui — apenas o Chosen One merece este momento!");
+                ConsoleColors.clear();
+                ConsoleColors.title(" ENCONTRO DIVINO: THE CHOSEN ONE ");
+                ConsoleColors.separator();
+                ConsoleColors.println("A caverna inteira começa a sofrer uma distorção gravitacional extrema... ", ConsoleColors.PURPLE_BOLD);
+                ConsoleColors.story("As pedras levitam. A luz da tua lanterna estilhaça-se quando uma aura violeta incandescente inunda a câmara.");
+                ConsoleColors.story("Flutuando no centro do vazio, ergue-se a silhueta imponente de MEWTWO.");
+                ConsoleColors.story("Os seus olhos brilham com uma inteligência fria e cósmica que lê toda a tua alma num microssegundo.");
+                ConsoleColors.story("O titã fecha os olhos lentamente, cessa a pressão psíquica e inclina a cabeça em sinal de profundo respeito.");
+                ConsoleColors.warning("\"...Tu és aquele que aguardava. O Escolhido (The Chosen One).\"");
+                ConsoleColors.separator();
+                ConsoleColors.success("O MEWTWO ABENÇOOU-TE! A tua pureza e coragem transcenderam o próprio jogo. A simulação termina aqui!");
+                System.out.println("\nPressiona Enter para aceitar a bênção lendária...");
+                input.nextLine();
                 winGameMewtwo();
                 return;
             } else if (randomSecretCaveEvent < 12) {
-                System.out.println("\n Uma luz cor-de-rosa aparece ao fundo da caverna...");
-                System.out.println("É o MEW! O Pokémon mais raro do mundo flutua à tua frente!");
+                ConsoleColors.clear();
+                ConsoleColors.title("A REVELAÇÃO DA ORIGEM: MEW ");
+                ConsoleColors.separator();
+                ConsoleColors.println("Uma esfera de luz cor-de-rosa cruza as estalactites com piruetas graciosas...", ConsoleColors.PURPLE_BRIGHT);
+                ConsoleColors.story("É o lendário MEW, o Pookémon ancestral do qual derivam todos os códigos genéticos!");
 
                 if (player.getPokemonInUse().getLevel() < 35) { // se pokemon do jogador estiver abaixo do nivel 35, mew nao combate
-                    System.out.println("O Mew olha para o teu " + player.getPokemonInUse().getName()
-                            + " e sorri... e desaparece num piscar de olhos.");
-                    System.out.println("O teu Pokémon é demasiado fraco para combater o Mew. Precisa de estar acima do nível 35.");
+                    ConsoleColors.warning("O Mew flutua até ao teu " + player.getPokemonInUse().getName() + ", solta uma gargalhada infantil e desaparece no ar.");
+                    ConsoleColors.error("O teu parceiro treme de reverência. És demasiado fraco para este confronto. Nível exigido: Superior a 35.");
+                    System.out.println("\nPressiona Enter para recuperar o fôlego...");
+                    input.nextLine();
                 } else {
-                    System.out.println("O teu " + player.getPokemonInUse().getName()
-                            + " está pronto! O Mew aceita o desafio!");
+                    ConsoleColors.success("O teu " + player.getPokemonInUse().getName() + " ruge, estabilizando a sua energia! O Mew sorri... O desafio foi aceite!");
+                    ConsoleColors.separator();
 
                     // instanciar o mew como pokemonwild para a luta (para nao ter o special attack do mew (pokemon legendary)
                     PokemonWild mewEnemy = new PokemonWild("Mew", 200, 200, 80, 90, 4, 4, 40, 5000, 5000);
 
-                    System.out.println("\n O Mew flutua no ar, rodeado por uma barreira mística! A batalha começou!");
+                    ConsoleColors.println("\nUma barreira mística translúcida ergue-se! O combate pela supremacia ancestral começou!", ConsoleColors.PURPLE_BOLD);
 
                     boolean winMewBattle = player.getPokemonInUse().pokemonBattle(mewEnemy, player);
 
                     if (!winMewBattle) { // se perde contra o mew
-                        System.out.println("O teu Pokémon desmaiou contra a força avassaladora do Mew...");
+                        ConsoleColors.error("A energia cósmica de Mew obliterou as barreiras físicas do teu Pookémon...");
                         gameOver();
                         return;
                     }
 
-                    System.out.println("\n O Mew pára de lutar, desfaz a sua barreira e flutua calmamente até ti...");
-                    System.out.println("Ele sorri, reconhecendo o teu valor e o espírito do teu companheiro de equipa.");
-                    System.out.println("Lanças uma Master Ball e o Mew junta-se a ti!");
-                    System.out.println(" MEW FOI CAPTURADO!");
-                    System.out.println("O Mew substituiu o teu " + player.getPokemonInUse().getName() + " como o teu Pokémon principal!");
+                    ConsoleColors.clear();
+                    ConsoleColors.title(" LENDÁRIO CONQUISTADO ");
+                    ConsoleColors.story("Mew cessa as suas defesas, flutua docemente até ao teu ombro e esfregar a bochecha na tua face.");
+                    ConsoleColors.story("Ele reconhece o teu valor inabalável... Reparas que no chão da caverna, a um passo dos teus pés,  uma Master Ball brilha no escuro...");
+                    ConsoleColors.story("... Pegas na Master Ball, olhas para o Mew, e ele sorri como se aceitasse este destino improvável...");
+                    ConsoleColors.story("... Atiras a Master Ball, o Mew entra para dentro dela e ela abana intensamente no chão rochoso...");
+                    ConsoleColors.success("CLIQUE! MEW FOI CAPTURADO COM SUCESSO!");
+                    ConsoleColors.println("Mew é adicionado com sucesso à tua Pookédex!", ConsoleColors.CYAN_BOLD);
+                    ConsoleColors.println("O Mew substituiu o teu " + player.getPokemonInUse().getName() + " e é agora o teu companheiro de viagem!", ConsoleColors.PURPLE_BOLD);
 
                     Mew mewCaptured = new Mew("Mew", 150, 150, 100, 150, 5, 5, 50, 0);
                     // substitui o pokemon starter do jogador
                     player.setPokemonInUse(mewCaptured);
-                    System.out.println("\n🎫 O Mew deixou cair um GOLD TICKET da sua cauda!");
-                    System.out.println("O Gold Ticket vibra intensamente na tua mão e abre um portal interdimensional...");
-                    System.out.println("Foste transportado diretamente para o INDIGO PLATEAU — onde o Trainer Blue te espera!");
+                    ConsoleColors.separator();
+                    ConsoleColors.println("Algo brilha no chão... Da cauda do Mew caiu um GOLD TICKET tridimensional!", ConsoleColors.YELLOW_BOLD);
+                    ConsoleColors.story("O bilhete vibra violentamente, rasgando o tecido do espaço-tempo e manifestando um portal cilíndrico!");
+                    ConsoleColors.story("O vórtice suga-te instantaneamente através das dimensões, arremessando-te nas escadarias do INDIGO PLATEAU!");
+                    ConsoleColors.warning("O ar cheira a tempestade. O Trainer Blue está de pé, à tua espera no topo.");
+                    System.out.println("\nPressiona Enter para cruzar o portal para o Indigo Plateau...");
+                    input.nextLine();
 
                     inSecretCave = false;
                     indigoPlateau(); // Transição direta para o boss final Blue para obter winGameBlue aka final alternativo
                     return;
                 }
             } else if (randomSecretCaveEvent < 37) {
-                System.out.println("\n Um ABRA aparece de repente à tua frente!");
-                System.out.println("Os seus olhos abrem-se... e em menos de um segundo faz TELEPORT!");
-                System.out.println("Na pressa, o Abra deixou cair tudo o que trazia!");
-                System.out.println("\n O Abra deixou cair:");
+                ConsoleColors.clear();
+                ConsoleColors.title("DESMATERIALIZAÇÃO: RECOMPENSA DE ABRA ");
+                ConsoleColors.separator();
+                ConsoleColors.story("Um Abra desperta assustado de cima de um altar de pedra!");
+                ConsoleColors.story("Os seus olhos brilham azul-celeste e, num estalar de dedos, executa um TELEPORT ruidoso!");
+                ConsoleColors.story("Com o pânico do salto quântico, a sua bolsa de itens rebenta, espalhando relíquias pelo chão!");
+                ConsoleColors.separator();
 
                 AbraEncounter abraAppeared = new AbraEncounter();
 
                 player.addCoins(abraAppeared.getCoinsDropped());
-                System.out.println("  💰 " + abraAppeared.getCoinsDropped() + " coins!");
+                ConsoleColors.success("  Ganhaste " + abraAppeared.getCoinsDropped() + " coins da poeira!");
 
                 ArrayList<TrainerItem> abraDroppedItems = abraAppeared.getDroppedItems(3); // abra deixa 3 itens para o jogador
                 for (TrainerItem item : abraDroppedItems) {
                     player.addItemToBag(item);
-                    System.out.println(" O abra perdeu um " + item.getName() + "!");
+                    ConsoleColors.println(" O abra perdeu um " + item.getName() + "!", ConsoleColors.CYAN_BOLD_BRIGHT);
                 }
-                System.out.println("\nTotal de coins agora: " + player.getCoins());
+                ConsoleColors.separator();
+                System.out.println("Balanço Bancário Atual: " + player.getCoins() + " coins");
                 player.showDetails();
-            }
-            else if (randomSecretCaveEvent <52 ) {
-            TeamRocketAmbush memberTeamRocketSecretCave = new TeamRocketAmbush();
-            System.out.println(" Oh não! " + memberTeamRocketSecretCave.getMember() + " aparece das sombras!");
-            System.out.println("\"Prepara-te para sofrer! A Team Rocket vai tentar roubar-te os coins!\"");
+                System.out.println("\nPressiona Enter para guardar o saque e avançar pela caverna...");
+                input.nextLine();
+            } else if (randomSecretCaveEvent < 52) {
+                ConsoleColors.clear();
+                ConsoleColors.title("TEAM ROCKET - EMBOSCADA NA CAVERNA ");
+                ConsoleColors.separator();
+                ConsoleColors.separator();
+                TeamRocketAmbush memberTeamRocketSecretCave = new TeamRocketAmbush();
+                ConsoleColors.warning("Uma gargalhada sinistra ecoa das paredes húmidas... " + memberTeamRocketSecretCave.getMember() + " salta das sombras com óculos de visão noturna!");
+                ConsoleColors.story("\"Prepara-te para sofrer! A Team Rocket vai tentar roubar-te os coins!\"");
 
-            int teamRocketStealCoins = random.nextInt(100);
-            if (teamRocketStealCoins < 30) {
-                int coinsStolen = Math.min(player.getCoins(), 2000); // rouba 2000 coins do jogador
-                player.removeCoins(coinsStolen);
-                System.out.println("A Team Rocket conseguiu roubar " + coinsStolen + " coins!");
-                System.out.println("Fugiu antes que pudesses reagir...");
-                System.out.println("Tens agora " + player.getCoins() + " coins.");
-            }
-            else {
-                System.out.println("Conseguiste defender-te! A Team Rocket fugiu envergonhada!");
-                System.out.println("Na fuga, deixaram cair 1500 coins no chão!");
-                player.addCoins(1500);
-                System.out.println("Tens agora " + player.getCoins() + " coins.");
-            }
-            }
-            else {
+                int teamRocketStealCoins = random.nextInt(100);
+                if (teamRocketStealCoins < 30) {
+                    int coinsStolen = Math.min(player.getCoins(), 2000); // rouba 2000 coins do jogador
+                    player.removeCoins(coinsStolen);
+                    ConsoleColors.error("A Team Rocket usou uma bomba de fumo e conseguiu roubar " + coinsStolen + " coins da tua mochila!");
+                    ConsoleColors.story("Desaparecem no meio da névoa, rindo-se através dos túneis húmidos que fazem um eco ensurdecedor...");
+                    System.out.println("Saldo Restante: " + player.getCoins() + " coins.");
+                } else {
+                    ConsoleColors.success("Reages na velocidade da luz! O teu Pookémon bloqueia o ataque e faz os criminosos recuarem em pânico!");
+                    ConsoleColors.story("Ao tropeçarem nas pedras durante a fuga, deixam cair uma mala tática com provisões monetárias!");
+                    player.addCoins(1500);
+                    ConsoleColors.println("Recolheste 1500 coins caídas na debandada deles! Saldo Atual: " + player.getCoins() + " coins.", ConsoleColors.GREEN_BRIGHT);
+                }
+                System.out.println("\nPressiona Enter para fazer desaparecer a poeira e continuar...");
+                input.nextLine();
+            } else {
+                ConsoleColors.clear();
+                ConsoleColors.title("ATAQUE ECOSSISTÉMICO SUBTERRÂNEO ");
                 PokemonWild[] secretCavePokemon = {
-                        new PokemonWild("Dragonair",  91,  91,  84,  70, 3, 3, 35, 1500, 1000),
-                        new PokemonWild("Haunter",    55,  55,  50,  95, 3, 3, 33, 1000, 800),
-                        new PokemonWild("Gengar",     75,  75,  65, 130, 3, 3, 38, 1500, 1200),
-                        new PokemonWild("Electabuzz", 85,  85,  83,  95, 3, 3, 35, 1100, 900),
-                        new PokemonWild("Magmar",     85,  85,  95, 100, 3, 3, 35, 1100, 900),
-                        new PokemonWild("Lapras",    110, 110,  85,  95, 3, 3, 37, 1300, 1100),
-                        new PokemonWild("Gyarados",  110, 110, 125, 100, 3, 3, 37, 1500, 1200),
-                        new PokemonWild("Starmie",    75,  75,  75, 100, 3, 3, 35, 1200, 1000),
-                        new PokemonWild("Alakazam",   55,  55,  45, 135, 3, 3, 38, 1500, 1200),
-                        new PokemonWild("Cloyster",   80,  80,  95,  85, 3, 3, 34, 1100, 900)
+                        new PokemonWild("Dragonair", 91, 91, 84, 70, 3, 3, 35, 1500, 1000),
+                        new PokemonWild("Haunter", 55, 55, 50, 95, 3, 3, 33, 1000, 800),
+                        new PokemonWild("Gengar", 75, 75, 65, 130, 3, 3, 38, 1500, 1200),
+                        new PokemonWild("Electabuzz", 85, 85, 83, 95, 3, 3, 35, 1100, 900),
+                        new PokemonWild("Magmar", 85, 85, 95, 100, 3, 3, 35, 1100, 900),
+                        new PokemonWild("Lapras", 110, 110, 85, 95, 3, 3, 37, 1300, 1100),
+                        new PokemonWild("Gyarados", 110, 110, 125, 100, 3, 3, 37, 1500, 1200),
+                        new PokemonWild("Starmie", 75, 75, 75, 100, 3, 3, 35, 1200, 1000),
+                        new PokemonWild("Alakazam", 55, 55, 45, 135, 3, 3, 38, 1500, 1200),
+                        new PokemonWild("Cloyster", 80, 80, 95, 85, 3, 3, 34, 1100, 900)
                 };
                 PokemonWild enemy = secretCavePokemon[random.nextInt(secretCavePokemon.length)];
-                System.out.println("\n Um " + enemy.getName() + " selvagem e poderoso apareceu!");
+                ConsoleColors.warning("Os teus passos perturbaram o ecossistema! Um temível " + enemy.getName() + " das profundezas avança enfurecido!");
+                ConsoleColors.separator();
 
                 boolean winBattle = player.getPokemonInUse().pokemonBattle(enemy, player);
 
                 // aplicar aqui o check das evolucoes
 
                 if (!winBattle) {
-                    System.out.println("A caverna foi demasiado perigosa...");
+                    ConsoleColors.error("As ameaças da Caverna Secreta foram implacáveis demais para o teu nível atual...");
                     inSecretCave = false;
                     gameOver();
                     return;
                 }
                 player.addCoins(enemy.getCoins());
+                ConsoleColors.success("Batalha de sobrevivência vencida! Adicionaste " + enemy.getCoins() + " coins ao teu saldo bancário.");
+                player.showDetails();
+                System.out.println("\nPressiona Enter para reorientar a lanterna...");
+                input.nextLine();
                 player.showDetails();
             }
         }
     }
+
     public void indigoPlateau() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
         Random rand = new Random();
 
-        System.out.println("\n INDIGO PLATEAU");
-        System.out.println("O portal do Gold Ticket fechou-se atrás de ti.");
-        System.out.println("À tua frente está o Trainer BLUE — o teu rival desde o início!");
-        System.out.println("\"Hah! Sabia que apareceria aqui. Estás pronto para perder?\"");
+        ConsoleColors.clear();
+        ConsoleColors.title(" LIGA POOKÉMON - INDIGO PLATEAU ");
+        ConsoleColors.separator();
+        ConsoleColors.story("As distorções do portal quântico aberto pelo Gold Ticket estabilizam-se num ápice.");
+        ConsoleColors.story("O portal de luz fecha-se abruptamente atrás de ti, deixando apenas o silêncio das alturas.");
+        ConsoleColors.story("Olhas em redor: estás no cume do Indigo Plateau, acima das nuvens, onde apenas a elite pisa.");
+        ConsoleColors.story("No centro do majestoso pódio de mármore, de braços cruzados e manto ao vento, está ele...");
+        ConsoleColors.story("O Trainer BLUE, o teu eterno rival, que conquistou o título de Campeão escassos minutos antes!");
+        ConsoleColors.warning("Blue: 'Hah! Sentia a distorção no ar... Sabia que o destino te traria aqui por atalhos impossíveis.");
+        ConsoleColors.warning("Fica a saber que já sou o Mestre desta Liga! Estás pronto para ver o teu sonho virar cinzas?'");
+        ConsoleColors.separator();
+        ConsoleColors.println("O confronto final entre lendas destinadas a colidir vai começar...", ConsoleColors.PURPLE_BRIGHT);
+        System.out.println("\nPressiona Enter para subir os degraus do trono do Campeão...");
+        input.nextLine();
 
         boolean inPlateau = true;
         while (inPlateau) {
-            System.out.println("\n═══════════════════════════════");
-            System.out.println("        INDIGO PLATEAU           ");
-            System.out.println("═══════════════════════════════");
-            System.out.println("1. Enfrentar o Blue");
-            System.out.println("2. Ir à Blue's Shop");
-            System.out.println("3. Treinar com Pokémon semi-lendários");
-            System.out.println("4. Ir ao PookéCenter");
+            ConsoleColors.clear();
+            ConsoleColors.title("Indigo Plateau - O Trono do Mestre Absoluto");
+            ConsoleColors.separator();
+
+            System.out.println("O que pretendes fazer antes do xeque-mate?");
+            System.out.println("1. Desafiar o Campeão Blue (O Combate do Século)");
+            System.out.println("2. Aceder ao Mercado Secreto do Rival (Blue's Shop)");
+            System.out.println("3. Desafiar Guardiões Semi-Lendários no Pátio");
+            System.out.println("4. Recompor Forças no PookéCenter da Elite");
+            ConsoleColors.separator();
+            ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
+
             int choice = input.nextInt();
+            input.nextLine();
 
             switch (choice) {
                 case 1:
-                    System.out.println("\n\"Prepara-te!\" — BLUE");
+                    ConsoleColors.clear();
+                    ConsoleColors.title(" A BATALHA SUPREMA: RIVALIDADE ETERNA ");
+                    ConsoleColors.warning("Blue: 'Prepara-te! Vou demonstrar por que razão o meu nome está no topo do mundo!'");
+                    ConsoleColors.separator();
 
-                    PokemonWild pidgeot   = new PokemonWild("Pidgeot",  108, 108,  80,  70, 4, 4, 50, 2000, 0);
-                    PokemonWild alakazam2 = new PokemonWild("Alakazam",  65,  65,  45, 135, 4, 4, 53, 2500, 0);
-                    PokemonWild rhydon2   = new PokemonWild("Rhydon",   145, 145, 130,  45, 4, 4, 54, 2800, 0);
+                    PokemonWild pidgeot = new PokemonWild("Pidgeot", 108, 108, 80, 70, 4, 4, 50, 2000, 0);
+                    PokemonWild alakazam2 = new PokemonWild("Alakazam", 65, 65, 45, 135, 4, 4, 53, 2500, 0);
+                    PokemonWild rhydon2 = new PokemonWild("Rhydon", 145, 145, 130, 45, 4, 4, 54, 2800, 0);
                     PokemonWild arcanine3 = new PokemonWild("Arcanine", 130, 130, 110, 100, 4, 4, 53, 2500, 0);
-                    PokemonWild exeggutor = new PokemonWild("Exeggutor", 105, 105,  95, 125, 4, 4, 53, 2500, 0);
-                    PokemonWild blastoise2= new PokemonWild("Blastoise", 109, 109,  83, 100, 4, 4, 55, 3000, 0);
+                    PokemonWild exeggutor = new PokemonWild("Exeggutor", 105, 105, 95, 125, 4, 4, 53, 2500, 0);
+                    PokemonWild blastoise2 = new PokemonWild("Blastoise", 109, 109, 83, 100, 4, 4, 55, 3000, 0);
 
                     PokemonWild[] blueTeam = {pidgeot, alakazam2, rhydon2, arcanine3, exeggutor, blastoise2};
 
@@ -2068,12 +2184,14 @@ public class Game {
 
                         // Menu de Interrupção para cura entre combates do Blue (a partir do 2º rival)
                         if (i > 0) {
-                            System.out.println("\n-------------------------------------------------");
-                            System.out.println("Blue prepara-se para mandar o próximo Pookémon.");
-                            System.out.println("Queres abrir a tua mochila para curar o teu Pokémon antes?");
-                            System.out.println("1. Sim, abrir mochila (Menu de Cura)");
-                            System.out.println("2. Não, manda vir o próximo Pookémon!");
+                            ConsoleColors.separator();
+                            ConsoleColors.println("\nBlue recua o seu monstro caído e prepara a próxima Pookébola com fúria nos olhos!", ConsoleColors.YELLOW_BOLD);
+                            System.out.println("Queres abrir taticamente a mochila para curar o teu Pookémon antes do próximo combate?");
+                            System.out.println("1. Sim, abrir compartimento de poções (Menu de Cura)");
+                            System.out.println("2. Não, manda vir o próximo oponente!");
+                            ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
                             int healMenu = input.nextInt();
+                            input.nextLine();
                             if (healMenu == 1) {
                                 // Filtra apenas Poções/Consumíveis da mochila para curar fora de batalha
                                 ArrayList<TrainerItem> mewRestoreHealth = new ArrayList<>();
@@ -2083,23 +2201,27 @@ public class Game {
                                     }
                                 }
                                 if (mewRestoreHealth.isEmpty()) {
-                                    System.out.println("Não tens itens de cura na mochila!");
+                                    ConsoleColors.error("Não restam poções ou elixires na mochila!");
                                 } else {
                                     System.out.println("Escolhe uma Potion/Consumable para usar no teu " + player.getPokemonInUse().getName() + ":");
                                     for (int k = 0; k < mewRestoreHealth.size(); k++) {
                                         System.out.println((k + 1) + ". " + mewRestoreHealth.get(k).getName());
                                     }
+                                    ConsoleColors.print("Escolhe o item: ", ConsoleColors.YELLOW_BOLD);
                                     int itemChoice = input.nextInt();
+                                    input.nextLine(); // Limpar buffer
+
                                     if (itemChoice > 0 && itemChoice <= mewRestoreHealth.size()) {
                                         TrainerItem chosen = mewRestoreHealth.get(itemChoice - 1);
                                         chosen.use(player.getPokemonInUse());
                                         player.getItemsBag().remove(chosen);
+                                        ConsoleColors.success("Efeito aplicado! " + player.getPokemonInUse().getName() + " recuperou energia vital.");
                                     }
                                 }
                             }
                         }
 
-                        System.out.println("\n Blue enviou " + bluePokemon.getName() + "!");
+                        ConsoleColors.println("\nO Campeão ruge: 'Vai, " + bluePokemon.getName() + "! Esmaga tudo!'", ConsoleColors.RED_BOLD);
                         boolean battleWin = player.getPokemonInUse().pokemonBattle(bluePokemon, player);
 
                         if (!battleWin) {
@@ -2116,12 +2238,27 @@ public class Game {
                         System.out.println("Derrotaste o Blue no Indigo Plateau!");
                         player.addCoins(5000);
                         inPlateau = false;
+                        ConsoleColors.clear();
+                        ConsoleColors.title("VEREDICTO DA LIGA: O VERDADEIRO POOKÉMON MASTER ");
+                        ConsoleColors.separator();
+                        ConsoleColors.warning("Blue: 'Im-impossível... O meu treino perfeito... A minha equipa imbati...vél...? Derrotada?!'");
+                        ConsoleColors.story("As lágrimas de frustração do teu rival dão lugar a um sorriso amargo de orgulho partilhado.");
+                        ConsoleColors.story("Tu foste buscar o poder mitológico das profundezas da caverna e provaste que a ambição");
+                        ConsoleColors.story("não vence o elo sagrado que tens com o teu Pookémon.");
+                        ConsoleColors.story("O teto do Indigo Plateau abre-se, banhando-te com luz solar e pétalas de consagração.");
+                        ConsoleColors.story("O trono de Campeão pertence-te por direito divino e cósmico!");
+                        ConsoleColors.separator();
+                        ConsoleColors.success("Vitória Inigualável no Fim do Mundo! Quebraste o reinado do teu rival!");
+                        System.out.println("\nPressiona Enter para ver o ecrã de vitória e os créditos do Final da Indigo Plateau...");
+                        input.nextLine();
                         winGameBlue();
                     }
                     break;
 
                 case 2:
-                    System.out.println("\n Acedendo ao stock da Blue's Shop...");
+                    ConsoleColors.clear();
+                    ConsoleColors.title("BLUE'S BLACK MARKET SHOP - CONTRABANDO DE ELITE");
+                    System.out.println("Saldo atual: " + player.getCoins() + " coins\n");
                     PokeShop indigoPlateauShop = new PokeShop("Blue's Shop");
                     indigoPlateauShop.addItem(new Potion("Sacred Potion", 5000, 999));
                     indigoPlateauShop.addItem(new Consumable("Champion Elixir", 8000, 999, 50, true, true));
@@ -2136,14 +2273,15 @@ public class Game {
 
                     ArrayList<TrainerItem> blueShopItems = indigoPlateauShop.getRandomItems();
 
-                    System.out.println("Itens disponíveis hoje:");
+                    System.out.println("Suprimentos finais disponibilizados pelo campeão Blue:");
                     for (int i = 0; i < blueShopItems.size(); i++) {
                         System.out.println((i + 1) + ". " + blueShopItems.get(i).getName()
                                 + " - " + blueShopItems.get(i).getPrice() + " coins");
                     }
-                    System.out.println("0. Sair da loja");
-                    System.out.print("O que queres comprar? ");
+                    System.out.println("0. Abandonar o recinto");
+                    ConsoleColors.print("\nEscolha: ", ConsoleColors.YELLOW_BOLD);
                     int blueShopChoice = input.nextInt();
+                    input.nextLine();
 
                     if (blueShopChoice == 0) break;
 
@@ -2152,32 +2290,37 @@ public class Game {
                         if (player.getCoins() >= chosen.getPrice()) {
                             player.removeCoins(chosen.getPrice());
                             player.addItemToBag(chosen);
-                            System.out.println("Compraste " + chosen.getName() + "! Tens agora " + player.getCoins() + " coins.");
+                            ConsoleColors.success("Item de classe mestre adicionado: " + chosen.getName() + "! Tens agora " + player.getCoins() + " coins.");
                         } else {
-                            System.out.println("Não tens coins suficientes! Tens apenas " + player.getCoins() + " coins.");
+                            System.out.println("Moedas insuficientes para mercadoria deste calibre.");
                         }
                     } else {
-                        System.out.println("Opção inválida!");
+                        ConsoleColors.error("Ups... Desconheço essa opção...");
                     }
+                    System.out.println("\nPressiona Enter para regressar ao pátio principal...");
+                    input.nextLine();
 
                     break;
 
                 case 3:
-                    System.out.println("Escolheste treinar no Indigo Plateau!");
                     boolean training = true;
 
                     while (training) {
+                        ConsoleColors.clear();
+                        ConsoleColors.title(" PÁTIO DOS TITÃS - COMBATE SEMI-LENDÁRIO ");
+
                         PokemonWild[] indigoPlateauTraining = {
-                                new PokemonWild("Dragonite",  121, 121, 134, 100, 4, 4, 53, 3000, 2000),
-                                new PokemonWild("Gyarados",   138, 138, 125, 100, 4, 4, 52, 2500, 1800),
-                                new PokemonWild("Lapras",     145, 145,  85,  95, 4, 4, 51, 2200, 1600),
-                                new PokemonWild("Gengar",      95,  95,  65, 130, 4, 4, 50, 2000, 1500),
-                                new PokemonWild("Alakazam",    65,  65,  45, 135, 4, 4, 52, 2500, 1800),
-                                new PokemonWild("Exeggutor",  105, 105,  95, 125, 4, 4, 51, 2200, 1600)
+                                new PokemonWild("Dragonite", 121, 121, 134, 100, 4, 4, 53, 3000, 2000),
+                                new PokemonWild("Gyarados", 138, 138, 125, 100, 4, 4, 52, 2500, 1800),
+                                new PokemonWild("Lapras", 145, 145, 85, 95, 4, 4, 51, 2200, 1600),
+                                new PokemonWild("Gengar", 95, 95, 65, 130, 4, 4, 50, 2000, 1500),
+                                new PokemonWild("Alakazam", 65, 65, 45, 135, 4, 4, 52, 2500, 1800),
+                                new PokemonWild("Exeggutor", 105, 105, 95, 125, 4, 4, 51, 2200, 1600)
                         };
 
                         PokemonWild enemy = indigoPlateauTraining[rand.nextInt(indigoPlateauTraining.length)];
-                        System.out.println("Um " + enemy.getName() + " poderoso apareceu!");
+                        ConsoleColors.warning("Um " + enemy.getName() + " poderoso apareceu!");
+                        ConsoleColors.separator();
 
                         boolean battleWin = player.getPokemonInUse().pokemonBattle(enemy, player);
 
@@ -2187,24 +2330,36 @@ public class Game {
                             gameOver();
                         } else {
                             player.addCoins(enemy.getCoins());
+                            ConsoleColors.success("Fera dominada! Adquiriste " + enemy.getCoins() + " moedas imperiais.");
                             player.showDetails();
-                            System.out.println("\n1. Continuar a treinar");
-                            System.out.println("2. Voltar ao menu");
+
+                            System.out.println("\nContinuas nos treinos?");
+                            System.out.println("1. Sim, invocar outra criatura ancestral");
+                            System.out.println("2. Não, voltar à praça central da Indigo Plateau");
+                            ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
                             if (input.nextInt() == 2) training = false;
                         }
+                        input.nextLine();
                     }
                     break;
 
                 case 4:
-                    System.out.println("Bem-vindo ao PookéCenter da Indigo Plateau!");
-                    System.out.println("A Nurse Joy trata do teu Pokémon...");
+                    ConsoleColors.clear();
+                    ConsoleColors.title("POOKÉ CENTER SUPREMO - LIGA INDIGO PLATEAU");
+                    ConsoleColors.story("Nurse Joy: 'Vi os raios quânticos do portal que te trouxe até aqui. O teu Pookémon carrega o peso de universos inteiros. Deixa-me rejuvenescer a sua essência.'");
+                    ConsoleColors.separator();
                     player.getPokemonInUse().healPokemon();
                     player.getPokemonInUse().resetSpecialAttackUses();
+                    ConsoleColors.success("Restauração absoluta efetuada! Estás pronto para reescrever a história?");
                     player.showDetails();
+                    System.out.println("\nPressiona Enter para encarar o Campeão...");
+                    input.nextLine();
                     break;
 
                 default:
-                    System.out.println("Opção inválida!");
+                    ConsoleColors.error("Seleção inválida no pico da Liga.");
+                    System.out.println("\nPressiona Enter para recalibrar o foco...");
+                    input.nextLine();
                     break;
             }
         }
@@ -2251,8 +2406,9 @@ public class Game {
             System.exit(0);
         }
     }
+
     public void winGameMewtwo() throws FileNotFoundException {
-            Scanner input = new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
 
         ConsoleColors.clear();
         ConsoleColors.title("O DESTINO REVELADO: THE CHOSEN ONE!");
@@ -2291,6 +2447,7 @@ public class Game {
             System.exit(0);
         }
     }
+
     public void winGameBlue() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
@@ -2331,12 +2488,27 @@ public class Game {
             System.exit(0);
         }
     }
+
     // game over
     public void gameOver() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
         ConsoleColors.clear();
         ConsoleColors.title("GAME OVER...");
+
+        try {
+            // Imprime a arte ASCII do teu Pokémon
+            FileTools.printFile("resources/art/gameOver.txt");
+
+            // Faz o programa congelar a imagem na consola por 3 segundos (3000 milissegundos)
+            sleep(3000);
+
+        } catch (FileNotFoundException e) {
+            System.out.println(" Erro Real: " + e.getMessage());
+            System.out.println("Aviso: Imagem do game over não encontrada.");
+        } catch (InterruptedException e) {
+            System.out.println("A visualização foi interrompida.");
+        }
 
         ConsoleColors.separator();
         ConsoleColors.story("O teu Pookémon esgotou todas as suas forças e desmaiou em combate!");
@@ -2368,12 +2540,14 @@ public class Game {
         if (choice == 1) {
             new Game().pookemon();
         } else {
-            System.out.println("\nNão desistas, treinador/a! A derrota faz parte do caminho. Até à próxima!");
-            System.exit(0);
+            ConsoleColors.println("\nNão desistas, treinador/a! A derrota faz parte do caminho. Até à próxima aventura!", ConsoleColors.RED_UNDERLINED);
+        }
+        throw new GameOverException();
+    }
+
+    public static class GameOverException extends RuntimeException {
+        public GameOverException() {
+            super("Game Over");
         }
     }
 }
-
-
-
-

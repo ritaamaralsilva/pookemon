@@ -7,11 +7,12 @@ import static java.lang.Thread.sleep;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException, FileNotFoundException {
-        // chamar audio inicial para tocar mal se abre o jogo na consola
-        Audio.playSoundtrack("resources/audio/pookemonIntroMusic.wav");
 
-        Game game = new Game();
-        game.pookemon();
+        try {
+            Game game = new Game();
+            game.pookemon();
+        } catch (Game.GameOverException e) {
+            // jogo terminou  — o jogador já escolheu reiniciar ou sair, isto evita bugs
+        }
     }
-
 }
