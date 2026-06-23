@@ -30,7 +30,7 @@ public class Game {
 
         try {
             FileTools.printFile("resources/art/pokemon.txt");
-            sleep(3000);
+            sleep(500);
         } catch (FileNotFoundException | InterruptedException e) {
             System.out.println(" Erro Real: " + e.getMessage());
             System.out.println("Aviso: Imagem do logo não encontrada.");
@@ -145,6 +145,7 @@ public class Game {
 
         switch (wakeUp) {
             case 1:
+                Audio.changeSoundtrack("resources/audio/professorOakStarters.wav");
                 System.out.println("Chegas ao laboratório do Professor Oak a horas. Há 3 Pookébolas: ");
                 System.out.println("1. Bulbasaur");
                 System.out.println("2. Charmander");
@@ -192,6 +193,7 @@ public class Game {
                 break;
 
             case 2:
+                Audio.changeSoundtrack("resources/audio/professorOakStarters.wav");
                 ConsoleColors.story("... Ups... Perdeste o autocarro, o pneu da bicicleta está furado e não há ubers por perto, mas ganhaste um Pikachu, nem tudo é mau... Mas cuidade que ele dá choques! ");
                 try {
                     FileTools.printFile("resources/art/starters/pikachu.txt");
@@ -421,7 +423,7 @@ public class Game {
                     }
                     break;
                 case 4:
-                    Audio.changeSoundtrack("resources/audio/pewterCity.wav");
+                    Audio.changeSoundtrack("resources/audio/pookeCenter.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title("PookéCenter de Pewter City");
 
@@ -625,7 +627,7 @@ public class Game {
                     }
                     break;
                 case 4:
-                    Audio.changeSoundtrack("resources/audio/ceruleanCity.wav");
+                    Audio.changeSoundtrack("resources/audio/pookeCenter.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title("POOKÉCENTER - CERULEAN CITY");
                     ConsoleColors.story("A Nurse Joy trata do teu Pookémon...");
@@ -666,6 +668,7 @@ public class Game {
 
         boolean inCity = true;
         while (inCity) {
+            Audio.changeSoundtrack("resources/audio/vermilionCity.wav");
             ConsoleColors.clear();
             ConsoleColors.title("Vermilion City - O Porto de Kanto");
             ConsoleColors.separator();
@@ -693,6 +696,7 @@ public class Game {
                         input.nextLine();
                         break;
                     }
+                    Audio.changeSoundtrack("resources/audio/gyms.wav");
 
                     ConsoleColors.title("DESAFIO NO GINÁSIO ELÉTRICO");
                     ConsoleColors.story("Entras num ginásio repleto de geradores de alta voltagem e trincos eletrónicos.");
@@ -724,6 +728,7 @@ public class Game {
                     }
                     break;
                 case 2:
+                    Audio.changeSoundtrack("resources/audio/vermilionCity.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title("POOKÉ SHOP - VERMILION CITY");
                     System.out.println("Moedas Disponíveis: " + player.getCoins() + " coins\n");
@@ -781,6 +786,7 @@ public class Game {
                     boolean training = true;
 
                     while (training) {
+                        Audio.changeSoundtrack("resources/audio/pookemonBattlewild.wav");
                         ConsoleColors.clear();
                         ConsoleColors.title("SABOTAGEM NA DIGLETT'S CAVE, PORTO & CAMPOS DE ARROZ");
                         PokemonWild ekans = new PokemonWild("Ekans", 48, 48, 60, 50, 1, 1, 18, 350, 300); // Red exclusivo
@@ -834,6 +840,7 @@ public class Game {
                     }
                     break;
                 case 4:
+                    Audio.changeSoundtrack("resources/audio/pookeCenter.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title("POOKÉCENTER - VERMILION DOCK BRANCH");
                     ConsoleColors.story("Nurse Joy: 'Vêm cansados da Diglett's Cave? Vou reenergizar o teu " + player.getPokemonInUse() + " num piscar de olhos!'");
@@ -858,6 +865,8 @@ public class Game {
 
     public void celadonCity() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
+
+        Audio.changeSoundtrack("resources/audio/pookemonSurfing.wav");
 
         ConsoleColors.clear();
         ConsoleColors.title("A ROTA 7 E O BLOQUEIO ADORMECIDO");
@@ -893,6 +902,7 @@ public class Game {
 
         boolean inCity = true;
         while (inCity) {
+            Audio.changeSoundtrack("resources/audio/celadonCity.wav");
             ConsoleColors.clear();
             ConsoleColors.title("Celadon City - A Metrópole Arco-Íris");
             ConsoleColors.separator();
@@ -918,6 +928,7 @@ public class Game {
                         input.nextLine();
                         break;
                     }
+                    Audio.changeSoundtrack("resources/audio/gyms.wav");
 
                     ConsoleColors.title("DESAFIO NO GINÁSIO DA NATUREZA");
                     ConsoleColors.story("Entras numa estufa repleta de flores raras e aromas tranquilizantes.");
@@ -949,6 +960,7 @@ public class Game {
                     }
                     break;
                 case 2:
+                    Audio.changeSoundtrack("resources/audio/celadonCity.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title("POOKÉ SHOP - CELADON MEGA DEPT. STORE");
                     System.out.println("Balanço Financeiro: " + player.getCoins() + " coins\n");
@@ -1002,6 +1014,7 @@ public class Game {
                     ConsoleColors.title("ÁREA SAFARI & RESERVAS BRAVIAS DE CELADON");
 
                     while (training) {
+                        Audio.changeSoundtrack("resources/audio/pookemonBattleWild.wav");
                         PokemonWild vulpix = new PokemonWild("Vulpix", 48, 48, 41, 65, 1, 1, 25, 500, 400); // Red exclusivo
                         PokemonWild growlithe2 = new PokemonWild("Growlithe", 67, 67, 70, 70, 1, 1, 27, 550, 450); // Blue exclusivo
                         PokemonWild ponyta = new PokemonWild("Ponyta", 73, 73, 85, 65, 1, 1, 26, 500, 400);
@@ -1053,6 +1066,7 @@ public class Game {
                     }
                     break;
                 case 4:
+                    Audio.changeSoundtrack("resources/audio/pookeCenter.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title("POOKÉCENTER - CENTRAL METROPOLITANA");
                     ConsoleColors.story("Nurse Joy: 'A azáfama da grande cidade esgota qualquer um. Deixa-me tratar do teu Pookémon!'");
@@ -1092,6 +1106,7 @@ public class Game {
 
         boolean inCity = true;
         while (inCity) {
+            Audio.changeSoundtrack("resources/audio/pewterCity.wav");
             ConsoleColors.clear();
             ConsoleColors.title("Fuchsia City - A Vila do Clã Ninja");
             ConsoleColors.separator();
@@ -1119,6 +1134,7 @@ public class Game {
                         input.nextLine();
                         break;
                     }
+                    Audio.changeSoundtrack("resources/audio/gyms.wav");
 
                     ConsoleColors.title("DESAFIO NO GINÁSIO NINJA");
                     ConsoleColors.story("Entras num dojo cheio de paredes falsas e armadilhas invisíveis.");
@@ -1150,6 +1166,7 @@ public class Game {
                     }
                     break;
                 case 2:
+                    Audio.changeSoundtrack("resources/audio/pewterCity.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title("POOKÉ SHOP - FUCHSIA CITY");
                     System.out.println("Balanço Atual: " + player.getCoins() + " coins\n");
@@ -1203,6 +1220,7 @@ public class Game {
                     boolean training = true;
 
                     while (training) {
+                        Audio.changeSoundtrack("resources/audio/pookemonBattleWild.wav");
                         PokemonWild pinsir = new PokemonWild("Pinsir", 90, 90, 125, 55, 2, 2, 33, 800, 700); // Safari Zone, rival do Scyther
                         PokemonWild rhyhorn2 = new PokemonWild("Rhyhorn", 90, 90, 130, 30, 2, 2, 32, 750, 600);
                         PokemonWild nidorina = new PokemonWild("Nidorina", 80, 80, 62, 55, 2, 2, 31, 650, 550);
@@ -1254,6 +1272,7 @@ public class Game {
                     }
                     break;
                 case 4:
+                    Audio.changeSoundtrack("resources/audio/pookeCenter.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title("POOKÉCENTER - SAFARI EDGE BRANCH");
                     ConsoleColors.story("Nurse Joy: 'A toxina destes trilhos é traiçoeira. Vou desintoxicar e recuperar o teu pookémon.'");
@@ -1294,6 +1313,7 @@ public class Game {
 
         boolean inCity = true;
         while (inCity) {
+            Audio.changeSoundtrack("resources/audio/saffronCity.wav");
             ConsoleColors.clear();
             ConsoleColors.title("Saffron City - O Centro Tecnológico e Psíquico");
             ConsoleColors.separator();
@@ -1320,6 +1340,7 @@ public class Game {
                         input.nextLine();
                         break;
                     }
+                    Audio.changeSoundtrack("resources/audio/gyms.wav");
 
                     ConsoleColors.title("DESAFIO NO GINÁSIO PSÍQUICO");
                     ConsoleColors.story("Atravessas uma rede complexa de plataformas de teletransporte.");
@@ -1351,6 +1372,7 @@ public class Game {
                     }
                     break;
                 case 2:
+                    Audio.changeSoundtrack("resources/audio/saffronCity.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title("POOKÉ SHOP - SAFFRON MEGA MALL");
                     System.out.println("Balanço Bancário: " + player.getCoins() + " coins\n");
@@ -1404,6 +1426,7 @@ public class Game {
                     boolean training = true;
 
                     while (training) {
+                        Audio.changeSoundtrack("resources/audio/pookemonBattleWild.wav");
                         ConsoleColors.clear();
                         ConsoleColors.title("ZONA METROPOLITANA E ARREDORES BRAVIOS");
 
@@ -1458,6 +1481,7 @@ public class Game {
                     }
                     break;
                 case 4:
+                    Audio.changeSoundtrack("resources/audio/pookeCenter.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title("POOKÉCENTER - SILPH METRO HQ BRANCH");
                     ConsoleColors.story("Nurse Joy: 'A fadiga mental urbana afeta os nossos reflexos... Vou restaurar o equilíbrio cósmico do teu companheiro.'");
@@ -1498,6 +1522,7 @@ public class Game {
 
         boolean inCity = true;
         while (inCity) {
+            Audio.changeSoundtrack("resources/audio/cinnabarIsland.wav");
 
             ConsoleColors.clear();
             ConsoleColors.title("Cinnabar Island - O Laboratório Vulcânico");
@@ -1528,6 +1553,7 @@ public class Game {
                         input.nextLine();
                         break;
                     }
+                    Audio.changeSoundtrack("resources/audio/gyms.wav");
 
                     ConsoleColors.title("CONFRONTO SOU INFRAVERMELHO - CINNABAR ISLAND GYM");
                     ConsoleColors.story("Entras numa arena suspensa diretamente sobre um poço de lava a esfumaçar.");
@@ -1559,6 +1585,7 @@ public class Game {
                     }
                     break;
                 case 2:
+                    Audio.changeSoundtrack("resources/audio/pookeCenter.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title("POOKÉ SHOP - CINNABAR SCIENTIFIC SUPPLY");
                     System.out.println("Moedas Disponíveis: " + player.getCoins() + " coins\n");
@@ -1610,6 +1637,7 @@ public class Game {
                     boolean training = true;
 
                     while (training) {
+                        Audio.changeSoundtrack("resources/audio/pookemonBattleWild.wav");
                         ConsoleColors.clear();
                         ConsoleColors.title("TRILHOS DE MAGMA E ARRECADAÇÕES MARÍTIMAS");
 
@@ -1664,6 +1692,7 @@ public class Game {
                     }
                     break;
                 case 4:
+                    Audio.changeSoundtrack("resources/audio/cinnabarIsland.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title("POOKÉCENTER - CINNABAR LAB STATION");
                     ConsoleColors.story("Nurse Joy: 'O calor extremo desgasta as células dos Pookémon. Vou aplicar crioterapia para o estabilizar.'");
@@ -1704,6 +1733,7 @@ public class Game {
 
         boolean inCity = true;
         while (inCity) {
+            Audio.changeSoundtrack("resources/audio/viridianCity.wav");
             ConsoleColors.clear();
             ConsoleColors.title("Viridian City - O Ginásio do Terramoto");
             ConsoleColors.separator();
@@ -1730,6 +1760,8 @@ public class Game {
                         input.nextLine();
                         break;
                     }
+
+                    Audio.changeSoundtrack("resources/audio/gyms.wav");
 
                     ConsoleColors.title("BATALHA SUPREMA - GIOVANNI, O CHEFE DA MAFIA");
                     ConsoleColors.story("As portas de aço fecham-se atrás de ti. O chão de pedra vibra com tremores de terra.");
@@ -1772,6 +1804,7 @@ public class Game {
                     }
                     break;
                 case 2:
+                    Audio.changeSoundtrack("resources/audio/viridianCity.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title("POOKÉ SHOP - ARSENAL ULTRA DE ELITE");
                     System.out.println("Fundos Totais: " + player.getCoins() + " coins\n");
@@ -1829,6 +1862,7 @@ public class Game {
                     boolean training = true;
 
                     while (training) {
+                        Audio.changeSoundtrack("resources/audio/pookemonBattleWild.wav");
                         ConsoleColors.clear();
                         ConsoleColors.title("ROTAS DE ALTA DENSIDADE - FRONTEIRA DA LIGA");
                         PokemonWild rhydon2 = new PokemonWild("Rhydon", 135, 135, 130, 45, 3, 3, 50, 2000, 1500);
@@ -1883,6 +1917,7 @@ public class Game {
                     }
                     break;
                 case 4:
+                    Audio.changeSoundtrack("resources/audio/pookeCenter.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title("POOKÉCENTER - SUPREME FRONTIER STATION");
                     ConsoleColors.story("Nurse Joy: 'Este é o último porto seguro antes da glória. Deixa-me preparar o teu parceiro para o combate da vida dele!'");
@@ -1908,6 +1943,8 @@ public class Game {
     public void secretCave() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
         Random random = new Random();
+
+        Audio.changeSoundtrack("resources/audio/secretCave.wav");
 
         ConsoleColors.clear();
         ConsoleColors.title(" O SEGREDO ATRÁS DA CASCATA ");
@@ -2062,6 +2099,7 @@ public class Game {
                 System.out.println("\nPressiona Enter para guardar o saque e avançar pela caverna...");
                 input.nextLine();
             } else if (randomSecretCaveEvent < 52) {
+                Audio.changeSoundtrack("resources/audio/teamRocketAmbush.wav");
                 ConsoleColors.clear();
                 ConsoleColors.title("TEAM ROCKET - EMBOSCADA NA CAVERNA ");
                 ConsoleColors.separator();
@@ -2086,6 +2124,7 @@ public class Game {
                 System.out.println("\nPressiona Enter para fazer desaparecer a poeira e continuar...");
                 input.nextLine();
             } else {
+                Audio.changeSoundtrack("resources/audio/pookemonBattleWild.wav");
                 ConsoleColors.clear();
                 ConsoleColors.title("ATAQUE ECOSSISTÉMICO SUBTERRÂNEO ");
                 PokemonWild[] secretCavePokemon = {
@@ -2145,6 +2184,7 @@ public class Game {
 
         boolean inPlateau = true;
         while (inPlateau) {
+            Audio.changeSoundtrack("resources/audio/indigoPlateau.wav");
             ConsoleColors.clear();
             ConsoleColors.title("Indigo Plateau - O Trono do Mestre Absoluto");
             ConsoleColors.separator();
@@ -2162,6 +2202,7 @@ public class Game {
 
             switch (choice) {
                 case 1:
+                    Audio.changeSoundtrack("resources/audio/blueBattle.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title(" A BATALHA SUPREMA: RIVALIDADE ETERNA ");
                     ConsoleColors.warning("Blue: 'Prepara-te! Vou demonstrar por que razão o meu nome está no topo do mundo!'");
@@ -2256,6 +2297,7 @@ public class Game {
                     break;
 
                 case 2:
+                    Audio.changeSoundtrack("resources/audio/indigoPlateau.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title("BLUE'S BLACK MARKET SHOP - CONTRABANDO DE ELITE");
                     System.out.println("Saldo atual: " + player.getCoins() + " coins\n");
@@ -2306,6 +2348,7 @@ public class Game {
                     boolean training = true;
 
                     while (training) {
+                        Audio.changeSoundtrack("resources/audio/pookemonBattleWild.wav");
                         ConsoleColors.clear();
                         ConsoleColors.title(" PÁTIO DOS TITÃS - COMBATE SEMI-LENDÁRIO ");
 
@@ -2344,6 +2387,7 @@ public class Game {
                     break;
 
                 case 4:
+                    Audio.changeSoundtrack("resources/audio/pookeCenter.wav");
                     ConsoleColors.clear();
                     ConsoleColors.title("POOKÉ CENTER SUPREMO - LIGA INDIGO PLATEAU");
                     ConsoleColors.story("Nurse Joy: 'Vi os raios quânticos do portal que te trouxe até aqui. O teu Pookémon carrega o peso de universos inteiros. Deixa-me rejuvenescer a sua essência.'");
@@ -2368,6 +2412,8 @@ public class Game {
     // todos os winGames em baixo
     public void winGame() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
+
+        Audio.changeSoundtrack("resources/audio/winGyms.wav");
 
         ConsoleColors.clear();
         ConsoleColors.title("PARABÉNS, POOKÉMON MASTER!");
@@ -2410,6 +2456,8 @@ public class Game {
     public void winGameMewtwo() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
+        Audio.changeSoundtrack("resources/audio/winMewtwo.wav");
+
         ConsoleColors.clear();
         ConsoleColors.title("O DESTINO REVELADO: THE CHOSEN ONE!");
 
@@ -2450,6 +2498,8 @@ public class Game {
 
     public void winGameBlue() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
+
+        Audio.changeSoundtrack("resources/audio/winBlue.wav");
 
         ConsoleColors.clear();
         ConsoleColors.title("PARABÉNS POOKÉMON MASTER DA LIGA INDIGO!");
@@ -2492,6 +2542,8 @@ public class Game {
     // game over
     public void gameOver() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
+
+        Audio.changeSoundtrack("resources/audio/gameOver.wav");
 
         ConsoleColors.clear();
         ConsoleColors.title("GAME OVER...");
