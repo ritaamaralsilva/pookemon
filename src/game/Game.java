@@ -8,8 +8,6 @@ import items.Consumable;
 import items.Potion;
 import items.TrainerItem;
 
-import game.ConsoleColors;
-import game.FileTools;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -21,6 +19,10 @@ import static java.lang.Thread.sleep;
 public class Game {
     private Trainer player; // atributo da classe Game
 
+    /**
+     * Método inicial do jogo, inicializa sempre aqui e precede todas as cidades
+     * @throws FileNotFoundException
+     */
     public void pookemon() throws FileNotFoundException { // metodo do jogo, instancio aqui todos os objetos
 
         // método do jogo, instancio aqui todos os objetos
@@ -37,10 +39,9 @@ public class Game {
         }
 
         Scanner userInput = new Scanner(System.in);
-        String userPlayerName = "";
-        String userGenderName = "";
+        String userPlayerName;
+        String userGenderName;
 
-        ConsoleColors.backgroundRgb(255, 203, 5);
 
         // Título estilizado automaticamente usando o método do ConsoleColors
         ConsoleColors.title("Olá! Bem-vindo/a ao POOKÉMON! ");
@@ -73,9 +74,7 @@ public class Game {
 
             ConsoleColors.print("Escolha (1-3): ", ConsoleColors.YELLOW_BOLD);
 
-            try {
-                int opcaoGend = userInput.nextInt();
-                userInput.nextLine(); // Limpar o buffer do Scanner
+                int opcaoGend = UserInput.checkForUserInputError(userInput);
 
                 if (opcaoGend == 1) {
                     userGenderName = "Feminino";
@@ -89,11 +88,6 @@ public class Game {
                 } else {
                     ConsoleColors.error("Opção inválida! Escolhe um número entre 1 e 3.\n");
                 }
-
-            } catch (InputMismatchException e) {
-                ConsoleColors.error("Tipo de dados inválido! Deves introduzir um número (1, 2 ou 3).\n");
-                userInput.nextLine(); // Limpar o buffer
-            }
         }
 
         System.out.println();
@@ -116,7 +110,7 @@ public class Game {
             System.out.println("Aviso: Imagem do trainer não encontrada.");
         }
 
-        int wakeUp = 0;
+        int wakeUp;
 
         while (true) {
             ConsoleColors.separator();
@@ -128,19 +122,13 @@ public class Game {
 
             ConsoleColors.print("O que vais fazer: ", ConsoleColors.YELLOW_BOLD);
 
-            try {
-                wakeUp = userInput.nextInt();
-                userInput.nextLine(); // Limpa o buffer
+                wakeUp = UserInput.checkForUserInputError(userInput);
 
                 if (wakeUp == 1 || wakeUp == 2) {
                     break; // Opção válida, sai do loop
                 } else {
                     ConsoleColors.error("Opção inválida! Escolhe 1 ou 2.\n");
                 }
-            } catch (InputMismatchException e) {
-                ConsoleColors.error("Entrada inválida! Introduz um número (1 ou 2).\n");
-                userInput.nextLine(); // Limpa o buffer
-            }
         }
 
         switch (wakeUp) {
@@ -151,7 +139,7 @@ public class Game {
                 System.out.println("2. Charmander");
                 System.out.println("3. Squirtle");
                 System.out.print("Escolhe: ");
-                int starterPokemonChoice = userInput.nextInt();
+                int starterPokemonChoice = UserInput.checkForUserInputError(userInput);
 
                 if (starterPokemonChoice == 1) {
                     System.out.println("Escolheste o Bulbasaur! ");
@@ -218,6 +206,11 @@ public class Game {
     }
 
     // funcoes das 8 cidades
+
+    /**
+     * Metodo da cidade de pewter city (1a cidade do jogo) com menu de navegacao, gym, poke center, loja, e treino com instancias de pokemon wild
+     * @throws FileNotFoundException
+     */
     public void pewterCity() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
@@ -239,15 +232,7 @@ public class Game {
 
             ConsoleColors.print("\nEscolha: ", ConsoleColors.YELLOW_BOLD);
 
-            int cityChoice;
-            try {
-                cityChoice = input.nextInt();
-                input.nextLine(); // Limpar buffer
-            } catch (InputMismatchException e) {
-                ConsoleColors.error("Opção inválida! Introduz um número.");
-                input.nextLine();
-                continue;
-            }
+            int cityChoice = UserInput.checkForUserInputError(input);
 
             switch (cityChoice) {
                 case 1:
@@ -333,15 +318,7 @@ public class Game {
                         }
                         System.out.println("0. Sair da loja");
                         ConsoleColors.print("\nO que queres comprar? ", ConsoleColors.YELLOW_BOLD);
-                        int shopChoice;
-                        try {
-                            shopChoice = input.nextInt();
-                            input.nextLine();
-                        } catch (InputMismatchException e) {
-                            ConsoleColors.error("Escolha inválida!");
-                            input.nextLine();
-                            continue;
-                        }
+                        int shopChoice = UserInput.checkForUserInputError(input);
 
                         if (shopChoice == 0) {
                             inShop = false;
@@ -408,14 +385,7 @@ public class Game {
                             System.out.println("2. Voltar ao menu da cidade");
 
                             ConsoleColors.print("\nEscolhe: ", ConsoleColors.YELLOW_BOLD);
-                            int trainingChoice;
-                            try {
-                                trainingChoice = input.nextInt();
-                                input.nextLine();
-                            } catch (InputMismatchException e) {
-                                input.nextLine();
-                                trainingChoice = 2; // Padrão força a saída se errar o input
-                            }
+                            int trainingChoice = UserInput.checkForUserInputError(input);
                             if (trainingChoice == 2) {
                                 training = false;
                             }
@@ -449,6 +419,10 @@ public class Game {
         ceruleanCity(); // se ganhar o pewter city gym, jogo avança para ceruleanCity
     }
 
+    /**
+     * Metodo da cidade de cerulean city (2a cidade do jogo)
+     * @throws FileNotFoundException
+     */
     public void ceruleanCity() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
@@ -478,8 +452,7 @@ public class Game {
 
             ConsoleColors.separator();
             ConsoleColors.print("Escolha: ", ConsoleColors.YELLOW_BOLD);
-            int cityChoice = input.nextInt();
-            input.nextLine(); // limpar buffer
+            int cityChoice = UserInput.checkForUserInputError(input);
 
             switch (cityChoice) {
                 case 1:
@@ -556,8 +529,7 @@ public class Game {
                     }
                     System.out.println("0. Sair da loja");
                     ConsoleColors.print("\n Escolhe: ", ConsoleColors.YELLOW_BOLD);
-                    int shopChoice = input.nextInt();
-                    input.nextLine();
+                    int shopChoice = UserInput.checkForUserInputError(input);
 
                     if (shopChoice == 0) break;
 
@@ -609,7 +581,7 @@ public class Game {
                             training = false;
                             inCity = false;
                             gameOver();
-                        } else if (winBattle) {
+                        } else {
                             player.addCoins(enemy.getCoins()); // vai buscar os coins do pokemon inimigo para atribuir ao player
                             ConsoleColors.success("Combate vencido! Recolheste " + enemy.getCoins() + " coins.");
                             player.showDetails(); // mostra o estado atual do jogador
@@ -618,8 +590,7 @@ public class Game {
                             System.out.println("1. Continuar a treinar");
                             System.out.println("2. Regressar à cidade");
                             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
-                            int trainingChoice = input.nextInt();
-                            input.nextLine();
+                            int trainingChoice = UserInput.checkForUserInputError(input);
                             if (trainingChoice == 2) {
                                 training = false; // volta ao menu da cidade
                             }
@@ -650,6 +621,10 @@ public class Game {
         vermilionCity();
     }
 
+    /**
+     * Metodo da 3a cidade do jogo (vermilion city)
+     * @throws FileNotFoundException
+     */
     public void vermilionCity() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
@@ -680,8 +655,7 @@ public class Game {
             System.out.println("4. Descansar no PookéCenter");
             ConsoleColors.separator();
             ConsoleColors.print("Escolha: ", ConsoleColors.YELLOW_BOLD);
-            int cityChoice = input.nextInt();
-            input.nextLine();
+            int cityChoice = UserInput.checkForUserInputError(input);
             switch (cityChoice) {
                 case 1:
                     ConsoleColors.clear();
@@ -761,8 +735,7 @@ public class Game {
                     }
                     System.out.println("0. Sair do estabelecimento");
                     ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
-                    int shopChoice = input.nextInt();
-                    input.nextLine();
+                    int shopChoice = UserInput.checkForUserInputError(input);
 
                     if (shopChoice == 0) break;
 
@@ -822,7 +795,7 @@ public class Game {
                             inCity = false;
                             gameOver();
 
-                        } else if (winBattle) {
+                        } else {
                             player.addCoins(enemy.getCoins()); // vai buscar os coins do pokemon inimigo para atribuir ao player
                             ConsoleColors.success("Vitória limpa! Saqueaste " + enemy.getCoins() + " moedas do oponente.");
                             player.showDetails(); // mostra o estado atual do jogador
@@ -831,8 +804,7 @@ public class Game {
                             System.out.println("1. Continuar a explorar as imediações bravias");
                             System.out.println("2. Cessar treino e voltar às ruas principais");
                             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
-                            int trainingChoice = input.nextInt();
-                            input.nextLine();
+                            int trainingChoice = UserInput.checkForUserInputError(input);
                             if (trainingChoice == 2) {
                                 training = false; // volta ao menu da cidade
                             }
@@ -863,6 +835,10 @@ public class Game {
         celadonCity();
     }
 
+    /**
+     * Metodo da 4a cidade do jogo (celadon city) - Nesta cidade entra a bifurcacao, onde user escolhe se continua o caminho classico do jogo (8 ginasios) ou vai para a Secret Cave - metodo secretCave()
+     * @throws FileNotFoundException
+     */
     public void celadonCity() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
@@ -893,8 +869,7 @@ public class Game {
             System.out.println("2. Ignorar e seguir para o centro de Celadon City");
             ConsoleColors.separator();
             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
-            int caveDecision = input.nextInt();
-            input.nextLine();
+            int caveDecision = UserInput.checkForUserInputError(input);
             if (caveDecision == 1) {
                 secretCave();
             }
@@ -914,8 +889,7 @@ public class Game {
             System.out.println("4. Descansar no PookéCenter");
             ConsoleColors.separator();
             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
-            int cityChoice = input.nextInt();
-            input.nextLine();
+            int cityChoice = UserInput.checkForUserInputError(input);
             switch (cityChoice) {
                 case 1:
                     Gym celadonCityGym = new Gym("Celadon City Gym", 27, 2831);
@@ -987,8 +961,7 @@ public class Game {
                     }
                     System.out.println("0. Sair dos Grandes Armazéns");
                     ConsoleColors.print("\nEscolhe: ", ConsoleColors.YELLOW_BOLD);
-                    int shopChoice = input.nextInt();
-                    input.nextLine();
+                    int shopChoice = UserInput.checkForUserInputError(input);
 
                     if (shopChoice == 0) break;
 
@@ -1049,7 +1022,7 @@ public class Game {
                             inCity = false;
                             gameOver();
                             //System.out.println("Ohhh, o teu " + player.getPokemonInUse().getName() + " era tão fraquinho que morreu... Game Over, melhor sorte da próxima!");
-                        } else if (winBattle) {
+                        } else {
                             player.addCoins(enemy.getCoins()); // vai buscar os coins do pokemon inimigo para atribuir ao player
                             ConsoleColors.success("Vitória tática! Arrecadaste " + enemy.getCoins() + " coins do Pookémon derrotado.");
                             player.showDetails(); // mostra o estado atual do jogador
@@ -1058,7 +1031,7 @@ public class Game {
                             System.out.println("1. Continuar a treinar na Safari Zone");
                             System.out.println("2. Terminar a expedição e regressar ao centro");
                             ConsoleColors.print("Escolha: ", ConsoleColors.YELLOW_BOLD);
-                            int trainingChoice = input.nextInt();
+                            int trainingChoice = UserInput.checkForUserInputError(input);
                             if (trainingChoice == 2) {
                                 training = false; // volta ao menu da cidade
                             }
@@ -1088,6 +1061,10 @@ public class Game {
         fuchsiaCity();
     }
 
+    /**
+     * Metodo da 5a cidade do jo (fuchsia city)
+     * @throws FileNotFoundException
+     */
     public void fuchsiaCity() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
@@ -1118,8 +1095,7 @@ public class Game {
             System.out.println("4. Visitar o PookéCenter local");
             ConsoleColors.separator();
             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
-            int cityChoice = input.nextInt();
-            input.nextLine();
+            int cityChoice = UserInput.checkForUserInputError(input);
             switch (cityChoice) {
                 case 1:
                     Gym fuchsiaCityGym = new Gym("Fuchsia City Gym", 35, 3278);
@@ -1194,8 +1170,7 @@ public class Game {
                     }
                     System.out.println("0. Sair do estabelecimento");
                     ConsoleColors.print("\nEscolhe: ", ConsoleColors.YELLOW_BOLD);
-                    int shopChoice = input.nextInt();
-                    input.nextLine();
+                    int shopChoice = UserInput.checkForUserInputError(input);
 
                     if (shopChoice == 0) break;
 
@@ -1255,7 +1230,7 @@ public class Game {
                             inCity = false;
                             gameOver();
                             //System.out.println("Ohhh, o teu " + player.getPokemonInUse().getName() + " era tão fraquinho que morreu... Game Over, melhor sorte da próxima!");
-                        } else if (winBattle) {
+                        } else {
                             player.addCoins(enemy.getCoins()); // vai buscar os coins do pokemon inimigo para atribuir ao player
                             ConsoleColors.success("Alvo derrotado! Encontraste " + enemy.getCoins() + " moedas perdidas na lama.");
                             player.showDetails(); // mostra o estado atual do jogador
@@ -1264,7 +1239,7 @@ public class Game {
                             System.out.println("1. Continuar a treinar na zona densa");
                             System.out.println("2. Terminar a patrulha e regressar à civilização");
                             ConsoleColors.print("Escolha: ", ConsoleColors.YELLOW_BOLD);
-                            int trainingChoice = input.nextInt();
+                            int trainingChoice = UserInput.checkForUserInputError(input);
                             if (trainingChoice == 2) {
                                 training = false; // volta ao menu da cidade
                             }
@@ -1294,6 +1269,10 @@ public class Game {
 
     }
 
+    /**
+     * Metodo da 6a cidade do jogo (saffron city)
+     * @throws FileNotFoundException
+     */
     public void saffronCity() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
@@ -1325,7 +1304,7 @@ public class Game {
             System.out.println("4. Ir ao PookéCenter Central");
             ConsoleColors.separator();
             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
-            int cityChoice = input.nextInt();
+            int cityChoice = UserInput.checkForUserInputError(input);
             switch (cityChoice) {
                 case 1:
                     Gym saffronCityGym = new Gym("Saffron City Gym", 18, 2142);
@@ -1401,8 +1380,7 @@ public class Game {
                     System.out.println("0. Sair das Galerias");
 
                     ConsoleColors.print("\nEscolhe: ", ConsoleColors.YELLOW_BOLD);
-                    int shopChoice = input.nextInt();
-                    input.nextLine();
+                    int shopChoice = UserInput.checkForUserInputError(input);
 
                     if (shopChoice == 0) break;
 
@@ -1464,7 +1442,7 @@ public class Game {
                             inCity = false;
                             gameOver();
                             //System.out.println("Ohhh, o teu " + player.getPokemonInUse().getName() + " era tão fraquinho que morreu... Game Over, melhor sorte da próxima!");
-                        } else if (winBattle) {
+                        } else {
                             player.addCoins(enemy.getCoins()); // vai buscar os coins do pokemon inimigo para atribuir ao player
                             ConsoleColors.success("Vitória confirmada! Recebeste " + enemy.getCoins() + " coins do teu combate.");
                             player.showDetails(); // mostra o estado atual do jogador
@@ -1473,7 +1451,7 @@ public class Game {
                             System.out.println("1. Procurar novos sinais biológicos para treinar");
                             System.out.println("2. Encerrar simulação de terreno e regressar");
                             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
-                            int trainingChoice = input.nextInt();
+                            int trainingChoice = UserInput.checkForUserInputError(input);
                             if (trainingChoice == 2) {
                                 training = false; // volta ao menu da cidade
                             }
@@ -1503,6 +1481,10 @@ public class Game {
         cinnabarIsland();
     }
 
+    /**
+     * Metodo da 7a cidade do jogo (cinnabar island)
+     * @throws FileNotFoundException
+     */
     public void cinnabarIsland() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
         // momento de historia
@@ -1537,8 +1519,7 @@ public class Game {
             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
 
 
-            int cityChoice = input.nextInt();
-            input.nextLine();
+            int cityChoice = UserInput.checkForUserInputError(input);
             switch (cityChoice) {
                 case 1:
                     Gym cinnabarIslandGym = new Gym("Cinnabar Island Gym", 45, 2142);
@@ -1614,7 +1595,7 @@ public class Game {
                     }
                     System.out.println("0. Sair do laboratório comercial");
                     ConsoleColors.print("\nEscolha: ", ConsoleColors.YELLOW_BOLD);
-                    int shopChoice = input.nextInt();
+                    int shopChoice = UserInput.checkForUserInputError(input);
 
                     if (shopChoice == 0) break;
 
@@ -1675,7 +1656,7 @@ public class Game {
                             inCity = false;
                             gameOver();
                             //System.out.println("Ohhh, o teu " + player.getPokemonInUse().getName() + " era tão fraquinho que morreu... Game Over, melhor sorte da próxima!");
-                        } else if (winBattle) {
+                        } else {
                             player.addCoins(enemy.getCoins()); // vai buscar os coins do pokemon inimigo para atribuir ao player
                             ConsoleColors.success("Inimigo neutralizado! Recolheste " + enemy.getCoins() + " coins calcinadas pela lava.");
                             player.showDetails(); // mostra o estado atual do jogador
@@ -1684,7 +1665,7 @@ public class Game {
                             System.out.println("1. Continuar patrulha na encosta vulcânica");
                             System.out.println("2. Suspender o treino e regressar ao centro");
                             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
-                            int trainingChoice = input.nextInt();
+                            int trainingChoice = UserInput.checkForUserInputError(input);
                             if (trainingChoice == 2) {
                                 training = false; // volta ao menu da cidade
                             }
@@ -1714,6 +1695,10 @@ public class Game {
         viridianCity();
     }
 
+    /**
+     * Metodo da ultima cidade do jogo em modo classico (viridian city).
+     * @throws FileNotFoundException
+     */
     public void viridianCity() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
@@ -1745,8 +1730,7 @@ public class Game {
             System.out.println("4. Ir ao PookéCenter Central");
             ConsoleColors.separator();
             ConsoleColors.print("Escolha: ", ConsoleColors.YELLOW_BOLD);
-            int cityChoice = input.nextInt();
-            input.nextInt();
+            int cityChoice = UserInput.checkForUserInputError(input);
             switch (cityChoice) {
                 case 1:
                     Gym viridianCityGym = new Gym("Viridian City Gym", 47, 3790);
@@ -1838,8 +1822,7 @@ public class Game {
                     System.out.println("0. Sair do Arsenal de Elite");
                     ConsoleColors.print("\nEscolha: ", ConsoleColors.YELLOW_BOLD);
 
-                    int shopChoice = input.nextInt();
-                    input.nextLine();
+                    int shopChoice = UserInput.checkForUserInputError(input);
 
                     if (shopChoice == 0) break;
 
@@ -1900,7 +1883,7 @@ public class Game {
                             System.out.println("Ohhh, o teu " + player.getPokemonInUse().getName() + " era tão fraquinho que morreu...");
                             gameOver();
 
-                        } else if (winBattle) {
+                        } else {
                             player.addCoins(enemy.getCoins()); // vai buscar os coins do pokemon inimigo para atribuir ao player
                             ConsoleColors.success("Pookémon superado! Recolheste as recompensas remanescentes no valor de " + enemy.getCoins() + " coins.");
                             player.showDetails(); // mostra o estado atual do jogador
@@ -1909,7 +1892,7 @@ public class Game {
                             System.out.println("1. Continuar a empurrar os limites do treino");
                             System.out.println("2. Terminar aquecimento para o Giovanni");
                             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
-                            int trainingChoice = input.nextInt();
+                            int trainingChoice = UserInput.checkForUserInputError(input);
                             if (trainingChoice == 2) {
                                 training = false; // volta ao menu da cidade
                             }
@@ -1940,6 +1923,12 @@ public class Game {
     }
 
     // percurso alternativo: cave secreta e indigo plateau (bypass dos gyms para ganhar)
+
+    /**
+     * Metodo da bifurcacao do jogo que parte do inicio do metodo de celadonCity() // Este metodo leva o jogador para o metodo indigoPlateau() que e o metodo que contem o confronto final do modo alternativo do jogo
+     * Tambem pode conduzir a um win game especial, o metodo winGameMewtwo()
+     * @throws FileNotFoundException
+     */
     public void secretCave() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
         Random random = new Random();
@@ -1962,8 +1951,7 @@ public class Game {
         System.out.println("2. Ignorar a curiosidade e retomar a marcha para Celadon City");
         ConsoleColors.separator();
         ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
-        int entranceCaveChoice = input.nextInt();
-        input.nextLine();
+        int entranceCaveChoice = UserInput.checkForUserInputError(input);
 
         if (entranceCaveChoice == 2) { // para voltar para o menu de Celadon City e fazer a rota normal dos ginasios
             ConsoleColors.println("\nDecides não arriscar a segurança do teu Pookémon. Afastas-te da cascata e segues viagem...", ConsoleColors.CYAN_BRIGHT);
@@ -1990,8 +1978,7 @@ public class Game {
             System.out.println("2. Usar um escape rope para voltar à superfície e regressar ao trilho para Celadon City");
             ConsoleColors.separator();
             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
-            int secretCaveChoice = input.nextInt();
-            input.nextLine();
+            int secretCaveChoice = UserInput.checkForUserInputError(input);
 
             if (secretCaveChoice == 2) {
                 ConsoleColors.println("\nA opressão das sombras e o medo do desconhecido vencem-te. Corres de volta para a luz do sol!", ConsoleColors.CYAN_BRIGHT);
@@ -2163,6 +2150,10 @@ public class Game {
         }
     }
 
+    /**
+     * Metodo do confronto final do modo alternativo do jogo, que conduz ao metodo winGameBlue, caso o jogador ganhe
+     * @throws FileNotFoundException
+     */
     public void indigoPlateau() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
         Random rand = new Random();
@@ -2197,8 +2188,7 @@ public class Game {
             ConsoleColors.separator();
             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
 
-            int choice = input.nextInt();
-            input.nextLine();
+            int choice = UserInput.checkForUserInputError(input);
 
             switch (choice) {
                 case 1:
@@ -2231,8 +2221,7 @@ public class Game {
                             System.out.println("1. Sim, abrir compartimento de poções (Menu de Cura)");
                             System.out.println("2. Não, manda vir o próximo oponente!");
                             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
-                            int healMenu = input.nextInt();
-                            input.nextLine();
+                            int healMenu = UserInput.checkForUserInputError(input);
                             if (healMenu == 1) {
                                 // Filtra apenas Poções/Consumíveis da mochila para curar fora de batalha
                                 ArrayList<TrainerItem> mewRestoreHealth = new ArrayList<>();
@@ -2249,8 +2238,7 @@ public class Game {
                                         System.out.println((k + 1) + ". " + mewRestoreHealth.get(k).getName());
                                     }
                                     ConsoleColors.print("Escolhe o item: ", ConsoleColors.YELLOW_BOLD);
-                                    int itemChoice = input.nextInt();
-                                    input.nextLine(); // Limpar buffer
+                                    int itemChoice = UserInput.checkForUserInputError(input);
 
                                     if (itemChoice > 0 && itemChoice <= mewRestoreHealth.size()) {
                                         TrainerItem chosen = mewRestoreHealth.get(itemChoice - 1);
@@ -2322,8 +2310,7 @@ public class Game {
                     }
                     System.out.println("0. Abandonar o recinto");
                     ConsoleColors.print("\nEscolha: ", ConsoleColors.YELLOW_BOLD);
-                    int blueShopChoice = input.nextInt();
-                    input.nextLine();
+                    int blueShopChoice = UserInput.checkForUserInputError(input);
 
                     if (blueShopChoice == 0) break;
 
@@ -2380,9 +2367,8 @@ public class Game {
                             System.out.println("1. Sim, invocar outra criatura ancestral");
                             System.out.println("2. Não, voltar à praça central da Indigo Plateau");
                             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
-                            if (input.nextInt() == 2) training = false;
+                            if (UserInput.checkForUserInputError(input) == 2) training = false;
                         }
-                        input.nextLine();
                     }
                     break;
 
@@ -2410,6 +2396,11 @@ public class Game {
     }
 
     // todos os winGames em baixo
+
+    /**
+     * Metodo do win game do modo classico (ginasios)
+     * @throws FileNotFoundException
+     */
     public void winGame() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
@@ -2437,12 +2428,7 @@ public class Game {
         System.out.println("2. Sair");
 
         ConsoleColors.print("\nEscolhe: ", ConsoleColors.YELLOW_BOLD);
-        int choice = 2;
-        try {
-            choice = input.nextInt();
-        } catch (InputMismatchException e) {
-            // Se errar, assume a saída segura
-        }
+        int choice = UserInput.checkForUserInputError(input);
 
         Audio.stopAll();
         if (choice == 1) {
@@ -2453,6 +2439,10 @@ public class Game {
         }
     }
 
+    /**
+     * Metodo do win game especial do modo alternativo, caso o Mewtwo apareca no metodo secretCave()
+     * @throws FileNotFoundException
+     */
     public void winGameMewtwo() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
@@ -2482,7 +2472,7 @@ public class Game {
         ConsoleColors.print("\nEscolhe: ", ConsoleColors.YELLOW_BOLD);
         int choice = 2;
         try {
-            choice = input.nextInt();
+            choice = UserInput.checkForUserInputError(input);
         } catch (InputMismatchException e) {
             // Fallback
         }
@@ -2496,6 +2486,10 @@ public class Game {
         }
     }
 
+    /**
+     * Metodo do win game do modo alternativo, caso o jogador venca o confronto final do metodo indigoPlateau()
+     * @throws FileNotFoundException
+     */
     public void winGameBlue() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
@@ -2525,7 +2519,7 @@ public class Game {
         ConsoleColors.print("\nEscolhe: ", ConsoleColors.YELLOW_BOLD);
         int choice = 2;
         try {
-            choice = input.nextInt();
+            choice = UserInput.checkForUserInputError(input);
         } catch (InputMismatchException e) {
             // Fallback
         }
@@ -2540,6 +2534,11 @@ public class Game {
     }
 
     // game over
+
+    /**
+     * Metodo do game over que é chamado em qualquer momento do jogo, caso o jogador perca (hp do pokemonInUse <= 0)
+     * @throws FileNotFoundException
+     */
     public void gameOver() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
 
@@ -2583,7 +2582,7 @@ public class Game {
         ConsoleColors.print("\nEscolhe: ", ConsoleColors.YELLOW_BOLD);
         int choice = 2;
         try {
-            choice = input.nextInt();
+            choice = UserInput.checkForUserInputError(input);
         } catch (InputMismatchException e) {
             // Fallback seguro
         }
@@ -2597,6 +2596,9 @@ public class Game {
         throw new GameOverException();
     }
 
+    /**
+     * Este metodo serve para garantir que o jogador caso perca o jogo e entre no metodo gameOver(), se escolher a opcao de reiniciar o jogo, ele reinicia do inicio (ppokemon()) e nao do ponto onde estava quando perdeu
+     */
     public static class GameOverException extends RuntimeException {
         public GameOverException() {
             super("Game Over");
