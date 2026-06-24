@@ -1,8 +1,11 @@
 package entities;
 
 public class Raichu extends Pokemon { // evolução do Pikachu no nível 22
-    public Raichu(String name, int maxHp, int hp, int strength, int specialAttack, int specialAttackUses, int specialAttackUsesLeft, int level, int exp) {
-        super(name, maxHp, hp, strength, specialAttack, specialAttackUses, specialAttackUsesLeft, level, exp);
+    public Raichu(int maxHp, int hp, int strength, int specialAttack, int level, int exp) {
+        super("Raichu", maxHp, hp, strength, specialAttack,
+                1 + (level / 10),
+                1 + (level / 10),
+                level, exp);
     }
 
     @Override

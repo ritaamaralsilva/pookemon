@@ -2000,6 +2000,12 @@ public class Game {
                 ConsoleColors.story("Flutuando no centro do vazio, ergue-se a silhueta imponente de MEWTWO.");
                 ConsoleColors.story("Os seus olhos brilham com uma inteligência fria e cósmica que lê toda a tua alma num microssegundo.");
                 ConsoleColors.story("O titã fecha os olhos lentamente, cessa a pressão psíquica e inclina a cabeça em sinal de profundo respeito.");
+                try { // carrega ascii do mewtwo para momento mais dramatico
+                    FileTools.printFile("resources/art/mewtwo.txt");
+                    sleep(2000);
+                } catch (FileNotFoundException | InterruptedException e) {
+                    System.out.println("Aviso: Imagem do Mewtwo não encontrada.");
+                }
                 ConsoleColors.warning("\"...Tu és aquele que aguardava. O Escolhido (The Chosen One).\"");
                 ConsoleColors.separator();
                 ConsoleColors.success("O MEWTWO ABENÇOOU-TE! A tua pureza e coragem transcenderam o próprio jogo. A simulação termina aqui!");
@@ -2020,6 +2026,12 @@ public class Game {
                     System.out.println("\nPressiona Enter para recuperar o fôlego...");
                     input.nextLine();
                 } else {
+                    try {
+                        FileTools.printFile("resources/art/mew.txt");
+                        sleep(1500);
+                    } catch (FileNotFoundException | InterruptedException e) {
+                        System.out.println("Aviso: Imagem do Mew não encontrada.");
+                    }
                     ConsoleColors.success("O teu " + player.getPokemonInUse().getName() + " ruge, estabilizando a sua energia! O Mew sorri... O desafio foi aceite!");
                     ConsoleColors.separator();
 

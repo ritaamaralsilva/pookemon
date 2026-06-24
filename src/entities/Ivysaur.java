@@ -1,5 +1,11 @@
 package entities;
 
+import game.FileTools;
+
+import java.io.FileNotFoundException;
+
+import static java.lang.Thread.sleep;
+
 public class Ivysaur extends Pokemon { // evolucao do bulbasaur nivel 16
     public Ivysaur(int maxHp, int hp, int strength, int specialAttack, int level, int exp) {
         super("Ivysaur", maxHp, hp, strength, specialAttack,
@@ -20,7 +26,13 @@ public class Ivysaur extends Pokemon { // evolucao do bulbasaur nivel 16
     @Override
     public Pokemon evolve() {
         if (this.getLevel() == 32) {
-            System.out.println("✨ Ivysaur evoluiu para VENUSAUR! ✨");
+            try {
+                FileTools.printFile("resources/art/starters/venusaur.txt");
+                sleep(1500);
+            } catch (FileNotFoundException | InterruptedException e) {
+                System.out.println("Aviso: Imagem do Venusaur não encontrada.");
+            }
+            //System.out.println("Ivysaur evoluiu para VENUSAUR! ");
             Venusaur venusaur = new Venusaur( //  construtor do ivysaur e o que ele herda do bulbasaur
                     this.getMaxHp() + 20,
                     this.getHp() + 20,

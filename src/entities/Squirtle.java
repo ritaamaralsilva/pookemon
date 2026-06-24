@@ -1,6 +1,11 @@
 package entities;
 
+import game.FileTools;
+
+import java.io.FileNotFoundException;
 import java.util.Random;
+
+import static java.lang.Thread.sleep;
 
 public class Squirtle extends Pokemon {
     public Squirtle(String name, int maxHp, int hp, int strength, int specialAttack, int specialAttackUses, int specialAttackUsesLeft,  int level, int exp) {
@@ -18,9 +23,28 @@ public class Squirtle extends Pokemon {
         return damage;
     }
 
-//    @Override
-//    public boolean pokemonBattle(Pokemon opponent) {
-//        //metodo de ataque do squirtle, esta entre o bulbasaur e o charmander
-//        return false;
-//    }
+    @Override
+    public Pokemon evolve() {
+        if (this.getLevel() == 16) { // quando squirtle chega a nivel 16 evolui para Wartotle
+            try {
+                FileTools.printFile("resources/art/starters/wartotle.txt");
+                sleep(1500);
+            } catch (FileNotFoundException | InterruptedException e) {
+                    System.out.println("Aviso: Imagem do Wartotle não encontrada.");
+            }
+
+                Wartotle wartotle = new Wartotle(
+                    this.getMaxHp() + 15, // boost de vida ao evoluir
+                    this.getHp() + 15,
+                    this.getStrength() + 15, // boost de força (ataque normal)
+                    this.getSpecialAttack() + 15, // boost de special attack
+                    this.getLevel(),
+                    this.getExp()
+            );
+            wartotle.resetSpecialAttackUses(); // começa com PP a cheio
+            return wartotle;
+        }
+        return null;
+    }
+
 }

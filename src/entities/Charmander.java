@@ -1,5 +1,10 @@
 package entities;
+import game.FileTools;
+
+import java.io.FileNotFoundException;
 import java.util.Random;
+
+import static java.lang.Thread.sleep;
 
 public class Charmander extends Pokemon {
     public Charmander(String name, int maxHp, int hp, int strength, int specialAttack, int specialAttackUses, int specialAttackUsesLeft,  int level, int exp) {
@@ -19,7 +24,13 @@ public class Charmander extends Pokemon {
     @Override
     public Pokemon evolve() {
         if (this.getLevel() == 16) {
-            System.out.println(" Charmander evoluiu para CHARMELEON! ");
+            try {
+                FileTools.printFile("resources/art/starters/charmeleon.txt");
+                sleep(1500);
+            } catch (FileNotFoundException | InterruptedException e) {
+                System.out.println("Aviso: Imagem do Charmeleon não encontrada.");
+            }
+            //System.out.println(" Charmander evoluiu para CHARMELEON! ");
             Charmeleon charmeleon = new Charmeleon( //  construtor do ivysaur e o que ele herda do bulbasaur
                     this.getMaxHp() + 20, // boost de vida ao evoluir
                     this.getHp() + 20,
@@ -33,6 +44,4 @@ public class Charmander extends Pokemon {
         }
         return null;
     }
-
-
 }
