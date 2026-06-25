@@ -146,4 +146,8 @@ public class Audio {
     public static boolean isSoundtrackPlaying() {
         return soundtrack != null && soundtrack.isRunning();
     }
+
+    public static String getSoundtrackAtual() {
+        return soundtrackAtual;
+    }
 }

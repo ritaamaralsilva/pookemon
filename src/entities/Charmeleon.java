@@ -28,7 +28,7 @@ public class Charmeleon extends Pokemon{ // evolucao do charmander no nivel 16
     }
     @Override
     public Pokemon evolve() {
-        if (this.getLevel() == 32) {
+        if (this.getLevel() >= 32) { // num teste que fiz, onde o pokemon evoluiu 2niveis seguidos, como a condicao estava como ==, o pokemon nao evoluiu, por isso alterei a condicao para >= para todos os starters para garantir que evoluem
             try {
                 FileTools.printFile("resources/art/starters/charizard.txt");
                 sleep(1500);

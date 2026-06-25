@@ -30,7 +30,7 @@ public class Pikachu extends Pokemon{
 
     @Override
     public Pokemon evolve() {
-        if (this.getLevel() == 22) { // quando pikachu chega a nivel 22 evolui para Raichu
+        if (this.getLevel() >= 22) { // quando pikachu chega a nivel 22 evolui para Raichu
             try {
                 FileTools.printFile("resources/art/starters/raichu.txt");
                 sleep(1500);

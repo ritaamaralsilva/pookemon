@@ -22,7 +22,7 @@ public class Bulbasaur extends Pokemon {
 
     @Override
     public Pokemon evolve() {
-        if (this.getLevel() == 16) { // quando bulbasaur chega a nivel 16, evolui para ivysaur, mas os stats do bulbasaur passam para esta evolucao, o que vai mudar depois é o special attack que o ivysaur tem especifico na subclasse dele
+        if (this.getLevel() >= 16) { // quando bulbasaur chega a nivel 16, evolui para ivysaur, mas os stats do bulbasaur passam para esta evolucao, o que vai mudar depois é o special attack que o ivysaur tem especifico na subclasse dele
             try {
                 FileTools.printFile("resources/art/starters/ivysaur.txt");
                 sleep(1500);

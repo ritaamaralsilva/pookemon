@@ -323,14 +323,13 @@ public abstract class Pokemon {
                     break;
             }
 
-            // DETERMINAÇÃO DE VELOCIDADE
+            // determinar quem ataca primeiro
             boolean myPokemonFirst = this.hasSpeedBoost() || this.getLevel() >= enemy.getLevel();
             this.setSpeedBoost(false);
 
             System.out.println();
             ConsoleColors.separator();
 
-            // EXECUÇÃO DO FLUXO DE TURNO (AGORA COM SUPORTE A ITENS)
             if (usedItem) {
                 // Se usou item, o jogador NÃO ataca. Apenas o inimigo joga se puder.
                 if (enemyCanAttack(enemy)) {
@@ -421,14 +420,46 @@ public abstract class Pokemon {
             ConsoleColors.success(enemy.getName() + " foi completamente derrotado!");
             this.gainExp(enemy.getExp());
 
-            Pokemon evolved = this.evolve();
+            Pokemon evolved = this.evolve(); // se detectar que o pokemonInUse chega a x nivel para evoluir como mencionado no metodo evolve de cada pokemon que evolui, caixa de mensagem com o nome do pokemon que evoluiu
             if (evolved != null) {
-                ConsoleColors.box("Incrível! O teu Pookémon reuniu energia suficiente e evoluiu!", ConsoleColors.CYAN_BOLD);
-                player.setPokemonInUse(evolved);
-            }
+                String nomePookemonAntigo = this.getName();
+
+                String musicaAntiga = game.Audio.getSoundtrackAtual(); // guarda a musica que estava a tocar antes do pookemon evoluir
+
+                game.Audio.changeSoundtrack("resources/audio/evolve.wav"); // troca para musica de evolucao
+
+                // momento dramatico de evolucao para maior imersao no jogo
+                try {
+                    System.out.println("\n O que se está a passar com o teu " + nomePookemonAntigo + "?! ");
+                    Thread.sleep(2000); // Pausa de suspense de 2 segundos (como nos jogos OG)
+
+                    player.setPokemonInUse(evolved);
+                    String nomePookemonNovo = player.getPokemonInUse().getName();
+
+                    ConsoleColors.clear();
+                    ConsoleColors.box(
+                            " Incrível! O teu " + nomePookemonAntigo + " reuniu energia suficiente e evoluiu para " + nomePookemonNovo + " ! ",
+                            ConsoleColors.CYAN_BOLD
+                    );
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+
+                    player.setPokemonInUse(evolved);
+                }
 
             System.out.println("\nPressiona Enter para recolher as recompensas...");
             input.nextLine();
+
+                if (musicaAntiga != null) {
+                    game.Audio.changeSoundtrack(musicaAntiga);
+                } else {
+                    game.Audio.stopSoundtrack();
+                }
+            } else {
+            // Se NÃO houver evolução, o fluxo normal do jogo continua aqui
+            System.out.println("\nPressiona Enter para recolher as recompensas...");
+            input.nextLine();
+        }
             return true;
         }
     }

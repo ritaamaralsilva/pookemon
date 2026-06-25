@@ -75,6 +75,7 @@ public class Game {
             ConsoleColors.print("Escolha (1-3): ", ConsoleColors.YELLOW_BOLD);
 
                 int opcaoGend = UserInput.checkForUserInputError(userInput);
+            userInput.nextLine();
 
                 if (opcaoGend == 1) {
                     userGenderName = "Feminino";
@@ -123,6 +124,7 @@ public class Game {
             ConsoleColors.print("O que vais fazer: ", ConsoleColors.YELLOW_BOLD);
 
                 wakeUp = UserInput.checkForUserInputError(userInput);
+                userInput.nextLine();
 
                 if (wakeUp == 1 || wakeUp == 2) {
                     break; // Opção válida, sai do loop
@@ -140,6 +142,7 @@ public class Game {
                 System.out.println("3. Squirtle");
                 System.out.print("Escolhe: ");
                 int starterPokemonChoice = UserInput.checkForUserInputError(userInput);
+                userInput.nextLine();
 
                 if (starterPokemonChoice == 1) {
                     System.out.println("Escolheste o Bulbasaur! ");
@@ -233,6 +236,7 @@ public class Game {
             ConsoleColors.print("\nEscolha: ", ConsoleColors.YELLOW_BOLD);
 
             int cityChoice = UserInput.checkForUserInputError(input);
+            input.nextLine();
 
             switch (cityChoice) {
                 case 1:
@@ -319,6 +323,7 @@ public class Game {
                         System.out.println("0. Sair da loja");
                         ConsoleColors.print("\nO que queres comprar? ", ConsoleColors.YELLOW_BOLD);
                         int shopChoice = UserInput.checkForUserInputError(input);
+                        input.nextLine();
 
                         if (shopChoice == 0) {
                             inShop = false;
@@ -386,6 +391,7 @@ public class Game {
 
                             ConsoleColors.print("\nEscolhe: ", ConsoleColors.YELLOW_BOLD);
                             int trainingChoice = UserInput.checkForUserInputError(input);
+                            input.nextLine();
                             if (trainingChoice == 2) {
                                 training = false;
                             }
@@ -453,6 +459,7 @@ public class Game {
             ConsoleColors.separator();
             ConsoleColors.print("Escolha: ", ConsoleColors.YELLOW_BOLD);
             int cityChoice = UserInput.checkForUserInputError(input);
+            input.nextLine();
 
             switch (cityChoice) {
                 case 1:
@@ -530,6 +537,7 @@ public class Game {
                     System.out.println("0. Sair da loja");
                     ConsoleColors.print("\n Escolhe: ", ConsoleColors.YELLOW_BOLD);
                     int shopChoice = UserInput.checkForUserInputError(input);
+                    input.nextLine();
 
                     if (shopChoice == 0) break;
 
@@ -591,6 +599,7 @@ public class Game {
                             System.out.println("2. Regressar à cidade");
                             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
                             int trainingChoice = UserInput.checkForUserInputError(input);
+                            input.nextLine();
                             if (trainingChoice == 2) {
                                 training = false; // volta ao menu da cidade
                             }
@@ -656,6 +665,7 @@ public class Game {
             ConsoleColors.separator();
             ConsoleColors.print("Escolha: ", ConsoleColors.YELLOW_BOLD);
             int cityChoice = UserInput.checkForUserInputError(input);
+            input.nextLine();
             switch (cityChoice) {
                 case 1:
                     ConsoleColors.clear();
@@ -736,6 +746,7 @@ public class Game {
                     System.out.println("0. Sair do estabelecimento");
                     ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
                     int shopChoice = UserInput.checkForUserInputError(input);
+                    input.nextLine();
 
                     if (shopChoice == 0) break;
 
@@ -805,6 +816,7 @@ public class Game {
                             System.out.println("2. Cessar treino e voltar às ruas principais");
                             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
                             int trainingChoice = UserInput.checkForUserInputError(input);
+                            input.nextLine();
                             if (trainingChoice == 2) {
                                 training = false; // volta ao menu da cidade
                             }
@@ -870,6 +882,7 @@ public class Game {
             ConsoleColors.separator();
             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
             int caveDecision = UserInput.checkForUserInputError(input);
+            input.nextLine();
             if (caveDecision == 1) {
                 secretCave();
             }
@@ -890,6 +903,7 @@ public class Game {
             ConsoleColors.separator();
             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
             int cityChoice = UserInput.checkForUserInputError(input);
+            input.nextLine();
             switch (cityChoice) {
                 case 1:
                     Gym celadonCityGym = new Gym("Celadon City Gym", 27, 2831);
@@ -962,6 +976,7 @@ public class Game {
                     System.out.println("0. Sair dos Grandes Armazéns");
                     ConsoleColors.print("\nEscolhe: ", ConsoleColors.YELLOW_BOLD);
                     int shopChoice = UserInput.checkForUserInputError(input);
+                    input.nextLine();
 
                     if (shopChoice == 0) break;
 
@@ -1032,6 +1047,7 @@ public class Game {
                             System.out.println("2. Terminar a expedição e regressar ao centro");
                             ConsoleColors.print("Escolha: ", ConsoleColors.YELLOW_BOLD);
                             int trainingChoice = UserInput.checkForUserInputError(input);
+                            input.nextLine();
                             if (trainingChoice == 2) {
                                 training = false; // volta ao menu da cidade
                             }
@@ -1096,6 +1112,7 @@ public class Game {
             ConsoleColors.separator();
             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
             int cityChoice = UserInput.checkForUserInputError(input);
+            input.nextLine();
             switch (cityChoice) {
                 case 1:
                     Gym fuchsiaCityGym = new Gym("Fuchsia City Gym", 35, 3278);
@@ -1171,6 +1188,7 @@ public class Game {
                     System.out.println("0. Sair do estabelecimento");
                     ConsoleColors.print("\nEscolhe: ", ConsoleColors.YELLOW_BOLD);
                     int shopChoice = UserInput.checkForUserInputError(input);
+                    input.nextLine();
 
                     if (shopChoice == 0) break;
 
@@ -1240,6 +1258,7 @@ public class Game {
                             System.out.println("2. Terminar a patrulha e regressar à civilização");
                             ConsoleColors.print("Escolha: ", ConsoleColors.YELLOW_BOLD);
                             int trainingChoice = UserInput.checkForUserInputError(input);
+                            input.nextLine();
                             if (trainingChoice == 2) {
                                 training = false; // volta ao menu da cidade
                             }
@@ -1305,6 +1324,7 @@ public class Game {
             ConsoleColors.separator();
             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
             int cityChoice = UserInput.checkForUserInputError(input);
+            input.nextLine();
             switch (cityChoice) {
                 case 1:
                     Gym saffronCityGym = new Gym("Saffron City Gym", 18, 2142);
@@ -1381,6 +1401,7 @@ public class Game {
 
                     ConsoleColors.print("\nEscolhe: ", ConsoleColors.YELLOW_BOLD);
                     int shopChoice = UserInput.checkForUserInputError(input);
+                    input.nextLine();
 
                     if (shopChoice == 0) break;
 
@@ -1452,6 +1473,7 @@ public class Game {
                             System.out.println("2. Encerrar simulação de terreno e regressar");
                             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
                             int trainingChoice = UserInput.checkForUserInputError(input);
+                            input.nextLine();
                             if (trainingChoice == 2) {
                                 training = false; // volta ao menu da cidade
                             }
@@ -1520,6 +1542,7 @@ public class Game {
 
 
             int cityChoice = UserInput.checkForUserInputError(input);
+            input.nextLine();
             switch (cityChoice) {
                 case 1:
                     Gym cinnabarIslandGym = new Gym("Cinnabar Island Gym", 45, 2142);
@@ -1596,6 +1619,7 @@ public class Game {
                     System.out.println("0. Sair do laboratório comercial");
                     ConsoleColors.print("\nEscolha: ", ConsoleColors.YELLOW_BOLD);
                     int shopChoice = UserInput.checkForUserInputError(input);
+                    input.nextLine();
 
                     if (shopChoice == 0) break;
 
@@ -1666,6 +1690,7 @@ public class Game {
                             System.out.println("2. Suspender o treino e regressar ao centro");
                             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
                             int trainingChoice = UserInput.checkForUserInputError(input);
+                            input.nextLine();
                             if (trainingChoice == 2) {
                                 training = false; // volta ao menu da cidade
                             }
@@ -1731,6 +1756,7 @@ public class Game {
             ConsoleColors.separator();
             ConsoleColors.print("Escolha: ", ConsoleColors.YELLOW_BOLD);
             int cityChoice = UserInput.checkForUserInputError(input);
+            input.nextLine();
             switch (cityChoice) {
                 case 1:
                     Gym viridianCityGym = new Gym("Viridian City Gym", 47, 3790);
@@ -1823,6 +1849,7 @@ public class Game {
                     ConsoleColors.print("\nEscolha: ", ConsoleColors.YELLOW_BOLD);
 
                     int shopChoice = UserInput.checkForUserInputError(input);
+                    input.nextLine();
 
                     if (shopChoice == 0) break;
 
@@ -1893,6 +1920,7 @@ public class Game {
                             System.out.println("2. Terminar aquecimento para o Giovanni");
                             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
                             int trainingChoice = UserInput.checkForUserInputError(input);
+                            input.nextLine();
                             if (trainingChoice == 2) {
                                 training = false; // volta ao menu da cidade
                             }
@@ -1952,6 +1980,7 @@ public class Game {
         ConsoleColors.separator();
         ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
         int entranceCaveChoice = UserInput.checkForUserInputError(input);
+        input.nextLine();
 
         if (entranceCaveChoice == 2) { // para voltar para o menu de Celadon City e fazer a rota normal dos ginasios
             ConsoleColors.println("\nDecides não arriscar a segurança do teu Pookémon. Afastas-te da cascata e segues viagem...", ConsoleColors.CYAN_BRIGHT);
@@ -1979,6 +2008,7 @@ public class Game {
             ConsoleColors.separator();
             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
             int secretCaveChoice = UserInput.checkForUserInputError(input);
+            input.nextLine();
 
             if (secretCaveChoice == 2) {
                 ConsoleColors.println("\nA opressão das sombras e o medo do desconhecido vencem-te. Corres de volta para a luz do sol!", ConsoleColors.CYAN_BRIGHT);
@@ -2201,6 +2231,7 @@ public class Game {
             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
 
             int choice = UserInput.checkForUserInputError(input);
+            input.nextLine();
 
             switch (choice) {
                 case 1:
@@ -2234,6 +2265,7 @@ public class Game {
                             System.out.println("2. Não, manda vir o próximo oponente!");
                             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
                             int healMenu = UserInput.checkForUserInputError(input);
+                            input.nextLine();
                             if (healMenu == 1) {
                                 // Filtra apenas Poções/Consumíveis da mochila para curar fora de batalha
                                 ArrayList<TrainerItem> mewRestoreHealth = new ArrayList<>();
@@ -2251,6 +2283,7 @@ public class Game {
                                     }
                                     ConsoleColors.print("Escolhe o item: ", ConsoleColors.YELLOW_BOLD);
                                     int itemChoice = UserInput.checkForUserInputError(input);
+                                    input.nextLine();
 
                                     if (itemChoice > 0 && itemChoice <= mewRestoreHealth.size()) {
                                         TrainerItem chosen = mewRestoreHealth.get(itemChoice - 1);
@@ -2323,6 +2356,7 @@ public class Game {
                     System.out.println("0. Abandonar o recinto");
                     ConsoleColors.print("\nEscolha: ", ConsoleColors.YELLOW_BOLD);
                     int blueShopChoice = UserInput.checkForUserInputError(input);
+                    input.nextLine();
 
                     if (blueShopChoice == 0) break;
 
@@ -2380,6 +2414,7 @@ public class Game {
                             System.out.println("2. Não, voltar à praça central da Indigo Plateau");
                             ConsoleColors.print("Escolhe: ", ConsoleColors.YELLOW_BOLD);
                             if (UserInput.checkForUserInputError(input) == 2) training = false;
+                            input.nextLine();
                         }
                     }
                     break;
@@ -2441,6 +2476,7 @@ public class Game {
 
         ConsoleColors.print("\nEscolhe: ", ConsoleColors.YELLOW_BOLD);
         int choice = UserInput.checkForUserInputError(input);
+        input.nextLine();
 
         Audio.stopAll();
         if (choice == 1) {
@@ -2485,6 +2521,7 @@ public class Game {
         int choice = 2;
         try {
             choice = UserInput.checkForUserInputError(input);
+            input.nextLine();
         } catch (InputMismatchException e) {
             // Fallback
         }
@@ -2532,6 +2569,7 @@ public class Game {
         int choice = 2;
         try {
             choice = UserInput.checkForUserInputError(input);
+            input.nextLine();
         } catch (InputMismatchException e) {
             // Fallback
         }
@@ -2595,6 +2633,7 @@ public class Game {
         int choice = 2;
         try {
             choice = UserInput.checkForUserInputError(input);
+            input.nextLine();
         } catch (InputMismatchException e) {
             // Fallback seguro
         }

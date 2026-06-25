@@ -29,7 +29,7 @@ public class Wartotle extends Pokemon{ // evolucao do squirtle no nivel 16
 
     @Override
     public Pokemon evolve() {
-        if (this.getLevel() == 32) { // quando Wartotle chega a nivel 32 evolui para Blastoise
+        if (this.getLevel() >= 32) { // quando Wartotle chega a nivel 32 evolui para Blastoise
             try {
                 FileTools.printFile("resources/art/starters/blastoise.txt");
                 sleep(1500);

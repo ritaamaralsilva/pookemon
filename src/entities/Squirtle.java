@@ -25,7 +25,7 @@ public class Squirtle extends Pokemon {
 
     @Override
     public Pokemon evolve() {
-        if (this.getLevel() == 16) { // quando squirtle chega a nivel 16 evolui para Wartotle
+        if (this.getLevel() >= 16) { // quando squirtle chega a nivel 16 evolui para Wartotle
             try {
                 FileTools.printFile("resources/art/starters/wartotle.txt");
                 sleep(1500);

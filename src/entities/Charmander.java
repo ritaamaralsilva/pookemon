@@ -23,7 +23,7 @@ public class Charmander extends Pokemon {
     }
     @Override
     public Pokemon evolve() {
-        if (this.getLevel() == 16) {
+        if (this.getLevel() >= 16) {
             try {
                 FileTools.printFile("resources/art/starters/charmeleon.txt");
                 sleep(1500);

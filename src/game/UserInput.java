@@ -16,7 +16,7 @@ public class UserInput {
         while (true) {
             try {
                 int value = input.nextInt(); // verifica se o input é inteiro
-                input.nextLine(); // se for int, avança
+                //input.nextLine(); // se for int, avança
                 return value; // retorna o valor do input para avançar nos menus
             } catch (InputMismatchException e) {
                 input.nextLine(); // caso user tenha introduzido string em vez de inteiro

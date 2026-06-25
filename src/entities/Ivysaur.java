@@ -25,7 +25,7 @@ public class Ivysaur extends Pokemon { // evolucao do bulbasaur nivel 16
 
     @Override
     public Pokemon evolve() {
-        if (this.getLevel() == 32) {
+        if (this.getLevel() >= 32) {
             try {
                 FileTools.printFile("resources/art/starters/venusaur.txt");
                 sleep(1500);

@@ -1,5 +1,6 @@
 ### IntelliJ IDEA ###
 out/
+*.jar
 !**/src/main/**/out/
 !**/src/test/**/out/
 .kotlin
