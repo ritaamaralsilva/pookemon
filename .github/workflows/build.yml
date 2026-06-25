@@ -1,0 +1,43 @@
+name: Java JAR Compiler
+
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clonar o repositório
+      uses: actions/checkout@v4
+
+    - name: Configurar o Java JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17' # Ajusta para a versão do Java que usas (11, 17, 21...)
+        distribution: 'temurin'
+
+    - name: Criar pastas e Compilar as classes Java
+      run: |
+        mkdir -p out/production
+        javac -d out/production $(find src -name "*.java")
+
+    - name: Criar o ficheiro MANIFEST.MF temporário
+      run: |
+        mkdir -p out/META-INF
+        echo "Manifest-Version: 1.0" > out/META-INF/MANIFEST.MF
+        echo "Main-Class: game.Main" >> out/META-INF/MANIFEST.MF 
+
+    - name: Empacotar o JAR e incluir os Resources
+      run: |
+        jar cvfm pookemon.jar out/META-INF/MANIFEST.MF -C out/production/ .
+        mkdir -p artifact_release
+        mv pookemon.jar artifact_release/
+        cp -r resources artifact_release/ # Isto mete os sons e textos na mesma pasta do JAR
+
+    - name: Disponibilizar o Jogo para Download
+      uses: actions/upload-artifact@v4
+      with:
+        name: Pookemon-Jogo-Completo
+        path: artifact_release/
