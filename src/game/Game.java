@@ -16,12 +16,16 @@ import java.util.Scanner;
 
 import static java.lang.Thread.sleep;
 
+/**
+ * Motor central que orquestra o fluxo da narrativa, controlo de estados,
+ * transições de mapas e gestão dos ciclos de menus e combates do jogo.
+ */
 public class Game {
     private Trainer player; // atributo da classe Game
 
     /**
-     * Método inicial do jogo, inicializa sempre aqui e precede todas as cidades
-     * @throws FileNotFoundException
+     * Inicializa a jornada, processa a introdução audiovisual, valida
+     * a criação da personagem e gere a atribuição do Pokémon inicial.
      */
     public void pookemon() throws FileNotFoundException { // metodo do jogo, instancio aqui todos os objetos
 
@@ -1953,9 +1957,12 @@ public class Game {
     // percurso alternativo: cave secreta e indigo plateau (bypass dos gyms para ganhar)
 
     /**
-     * Metodo da bifurcacao do jogo que parte do inicio do metodo de celadonCity() // Este metodo leva o jogador para o metodo indigoPlateau() que e o metodo que contem o confronto final do modo alternativo do jogo
-     * Tambem pode conduzir a um win game especial, o metodo winGameMewtwo()
-     * @throws FileNotFoundException
+     * Método da bifurcação do jogo que parte do início do método de celadonCity().
+     * Este método leva o jogador para o método {@link #indigoPlateau()} que contém o
+     * confronto final do modo alternativo do jogo.
+     * Também pode conduzir a um win game especial através do método {@link #winGameMewtwo()}.
+     *
+     * @throws FileNotFoundException Se os ficheiros de arte ASCII não forem encontrados.
      */
     public void secretCave() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
@@ -2193,8 +2200,10 @@ public class Game {
     }
 
     /**
-     * Metodo do confronto final do modo alternativo do jogo, que conduz ao metodo winGameBlue, caso o jogador ganhe
-     * @throws FileNotFoundException
+     * Método do confronto final do modo alternativo do jogo.
+     * Conduz ao método {@link #winGameBlue()} caso o jogador consiga derrotar o Campeão.
+     *
+     * @throws FileNotFoundException Se as dependências de áudio ou ficheiros locais falharem.
      */
     public void indigoPlateau() throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
@@ -2586,7 +2595,7 @@ public class Game {
     // game over
 
     /**
-     * Metodo do game over que é chamado em qualquer momento do jogo, caso o jogador perca (hp do pokemonInUse <= 0)
+     * Metodo do game over que é chamado em qualquer momento do jogo, caso o jogador perca (hp do pokemonInUse menor ou igual que 0)
      * @throws FileNotFoundException
      */
     public void gameOver() throws FileNotFoundException {

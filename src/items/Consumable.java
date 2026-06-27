@@ -2,6 +2,15 @@ package items;
 
 import entities.Pokemon;
 
+/**
+ * Representa itens utilitários avançados de alteração estatística ou progressão de nível.
+ * <p>
+ * Estende {@link TrainerItem} e atua como uma classe de efeitos múltiplos. Conforme os
+ * parâmetros injetados na sua construção, pode funcionar como uma fruta restauradora,
+ * um catalisador de atributos temporários/permanentes (X Attack, X Speed) ou um item de
+ * avanço evolutivo forçado (Rare Candy).
+ * </p>
+ */
 public class Consumable extends TrainerItem {
     private int healAmount;      // para Berries e consumiveis do genero (0 se não aplicável)
     private int strengthBoost;   // para X Attack
@@ -19,6 +28,16 @@ public class Consumable extends TrainerItem {
         this.levelUp = levelUp;
     }
 
+    /**
+     * Executa de forma sequencial todos os gatilhos estatísticos ativos configurados para este item.
+     * <p>
+     * O método analisa quais as propriedades ativas (maiores que zero ou verdadeiras) e despacha
+     * as mutações diretamente para a API de métodos da instância alvo, como {@code target.levelUp()}
+     * ou {@code target.boostStrength()}.
+     * </p>
+     *
+     * @param target O {@link Pokemon} recetor das mutações estatísticas.
+     */
     @Override
     public void use(Pokemon target) {
         if (healAmount > 0) target.heal(healAmount);
@@ -28,6 +47,8 @@ public class Consumable extends TrainerItem {
         System.out.println("Usaste " + getName() + "!");
     }
 
+    /** @return O modificador de incremento de força física deste consumível. */
     public int getStrengthBoost() { return strengthBoost; }
+    /** @return Verdadeiro se o item contiver o efeito de prioridade de velocidade; falso caso contrário. */
     public boolean hasSpeedBoost() { return speedBoost; }
 }

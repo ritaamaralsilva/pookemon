@@ -1,5 +1,8 @@
 package entities;
 
+/**
+ * lista dos Status Effect do jogo
+ */
 public enum StatusEffect {
     PARALYZED,  // 50% chance de não atacar
     ASLEEP,     // não ataca durante 2 turnos
