@@ -6,8 +6,8 @@ Um motor de jogo de RPG em texto baseado em turnos, desenvolvido em **Java (POO)
 
 ##  Objetivos Core do Sistema
 
-*   **Simulação de Ciclo de Vida:** Gerir o estado completo de um treinador (inventário, progresso, moedas) e a progressão do seu Pookémon inicial.
-*   **Abstração de Combate Semanal:** Consolidar a lógica de batalha por turnos interpretando atributos mutáveis, restrições de estado e tomada de decisão com Random em tempo real.
+*   **Simulação de Ciclo de Vida:** Gerir o estado completo de um treinador (inventário, progresso, moedas) e a progressão do seu Pookémon inicial (nível, hp, evoluções).
+*   **Método de Combate por turnos com alterações de estado e cura através de poções e consumíveis:** Consolidar a lógica de batalha por turnos interpretando atributos mutáveis, restrições de estado e tomada de decisão com Random em tempo real.
 *   **Encapsulamento de Fluxo:** Centralizar as interações de exploração, comércio (Pooké Shop) e recuperação (Pooké Center) num ciclo de jogo controlado e livre de fugas de memória.
 
 ---
